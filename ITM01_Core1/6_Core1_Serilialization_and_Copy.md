@@ -512,153 +512,6 @@ protected Object readResolve() throws ObjectStreamException {
 
 
 <details>
-        <summary>Head</summary>
-
-```text
-***** из методички *****
-```
-</details>
-
-
-
-
-<details>
-        <summary>Head</summary>
-
-```text
-***** из методички *****
-```
-</details>
-
-
-
-<details>
-        <summary>Head</summary>
-
-```text
-***** из методички *****
-```
-</details>
-
-
-
-
-<details>
-        <summary>Head</summary>
-
-```text
-***** из методички *****
-```
-</details>
-
-
-
-<details>
-        <summary>Head</summary>
-
-```text
-***** из методички *****
-```
-</details>
-
-
-
-
-<details>
-        <summary>Head</summary>
-
-```text
-***** из методички *****
-```
-</details>
-
-
-
-<details>
-        <summary>Head</summary>
-
-```text
-***** из методички *****
-```
-</details>
-
-
-
-
-<details>
-        <summary>Head</summary>
-
-```text
-***** из методички *****
-```
-</details>
-
-
-
-<details>
-        <summary>Head</summary>
-
-```text
-***** из методички *****
-```
-</details>
-
-
-
-
-<details>
-        <summary>Head</summary>
-
-```text
-***** из методички *****
-```
-</details>
-
-
-
-<details>
-        <summary>Head</summary>
-
-```text
-***** из методички *****
-```
-</details>
-
-
-
-
-<details>
-        <summary>Head</summary>
-
-```text
-***** из методички *****
-```
-</details>
-
-
-
-<details>
-        <summary>Head</summary>
-
-```text
-***** из методички *****
-```
-</details>
-
-
-
-
-<details>
-        <summary>Head</summary>
-
-```text
-***** из методички *****
-```
-</details>
-
-
-
-<details>
         <summary>sealed классы</summary>
 
 Введены в **Java 15** (_в предварительном виде_) и окончательно закреплены в **Java 17**. 
@@ -729,14 +582,10 @@ static void processAnimal(Animal animal) {
 
 
 
-
-
-
-
-
-
-
 <details>
         <summary>Head</summary>
-</details>
 
+```text
+***** из методички *****
+```
+</details>
