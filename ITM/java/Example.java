@@ -11,7 +11,7 @@ package ITM;
 
  */
 
-public class Example {
+public class Example extends Object {
 
     public static void main(String[] args) {
 
