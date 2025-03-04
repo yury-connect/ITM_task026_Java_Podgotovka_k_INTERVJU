@@ -1,7 +1,7 @@
-[< **PREVIOUS** < Предыдущая страница <](/ITM/ITM01_Core1/4_Core1_OOP_v_Java.md)
+[<<< **PREVIOUS** < _Предыдущая страница_ <<<](/ITM/ITM01_Core1/4_Core1_OOP_v_Java.md)
 
 ---
-## Исключения
+# Исключения
 
 
 
@@ -343,7 +343,7 @@ finally-секция может «перебить» throw/return при пом�
 ---
 </details>
 
-[> **NEXT** > Следующая страница >](/ITM/ITM01_Core1/6_Core1_Serilialization_and_Copy.md)
+[>>> **NEXT** > _Следующая страница_ >>>](/ITM/ITM01_Core1/6_Core1_Serilialization_and_Copy.md)
 
 
 

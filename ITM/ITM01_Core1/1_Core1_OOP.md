@@ -232,7 +232,6 @@ _Полиморфная **переменная**, это переменная, �
 http://java-course.ru/begin/relations/
 ```
     [ссылка](http://java-course.ru/begin/relations/")
-
 ---
 </details>
 
@@ -395,7 +394,11 @@ D(Dependency Inversion Principle) - принцип инверсии зависи
 ---
 </details>
 
- [>>> **NEXT** > _Следующая страница_ >>>](/ITM/ITM01_Core1/2_Core1_Java.md)
+
+
+[>>> **NEXT** > _Следующая страница_ >>>](/ITM/ITM01_Core1/2_Core1_Java.md)
+
+
 
 
 
