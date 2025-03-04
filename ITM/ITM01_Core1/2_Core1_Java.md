@@ -1,3 +1,4 @@
+[< **PREVIOUS** < Предыдущая страница <](/ITM/ITM01_Core1/1_Core1_OOP.md)
 
 ---
 ## Java
@@ -567,7 +568,7 @@ JVM хранит здесь весь статический контент.
 </details>
 
 
-
+[> **NEXT** > Следующая страница >](/ITM/ITM01_Core1/3_Core1_ProcedureJava.md)
 
 
 

@@ -1,3 +1,4 @@
+[< **PREVIOUS** < Предыдущая страница <](/ITM/ITM01_Core1/2_Core1_Java.md)
 
 ---
 ## Процедурная Java
@@ -833,7 +834,7 @@ https://javarush.ru/groups/posts/857-peredacha-parametrov-v-java"
 </details>
 
 
-
+[> **NEXT** > Следующая страница >](/ITM/ITM01_Core1/4_Core1_OOP_v_Java.md)
 
 
 

@@ -395,7 +395,7 @@ D(Dependency Inversion Principle) - принцип инверсии зависи
 ---
 </details>
 
-
+ [> **NEXT** > Следующая страница >](/ITM/ITM01_Core1/2_Core1_Java.md)
 
 
 

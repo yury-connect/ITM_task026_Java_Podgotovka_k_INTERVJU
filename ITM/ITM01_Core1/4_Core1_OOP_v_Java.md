@@ -1,3 +1,4 @@
+[< **PREVIOUS** < Предыдущая страница <](/ITM/ITM01_Core1/3_Core1_ProcedureJava.md)
 
 ---
 ## ООП в Java
@@ -1535,7 +1536,7 @@ getClass() получает только класс, а оператор instanc
 ---
 </details>
 
-
+[> **NEXT** > Следующая страница >](/ITM/ITM01_Core1/5_Core1_Exceptions.md)
 
 
 
