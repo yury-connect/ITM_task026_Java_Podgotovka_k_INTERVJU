@@ -1,4 +1,9 @@
-<link rel="stylesheet" href="/ITM/styles.css">
+<style>
+  .writing_question { color: #4A90E2; font-weight: bold; }
+  .important  { color: #E74C3C; font-weight: bold; }
+  .note { color: #4A90E2; font-style: italic; }
+  .success { color: #50C878; font-weight: bold; }
+</style>
 
 [<<< **PREVIOUS** < _Предыдущая страница_ <<<](/ITM/ITM01_Core1/3_Core1_ProcedureJava.md)
 
@@ -8,7 +13,7 @@
 
 
 <details>
-        <summary><span class="writing_question">47. Какие виды классов есть в java?</span></summary>
+        <summary>47. <span class="writing_question">Какие виды классов есть в java?</span></summary>
 
 **Виды классов в Java**:
 
@@ -65,7 +70,7 @@
 
 
 <details>
-        <summary>48. _вложенные классы</summary>
+        <summary>48. <span class="writing_question">_вложенные классы</span></summary>
 
 **Расскажите про вложенные классы. В каких случаях они применяются?**
 
@@ -129,7 +134,7 @@
 
 
 <details>
-        <summary>49. Что такое «локальный класс»? Каковы его особенности?</summary>
+        <summary>49. <span class="writing_question">Что такое «локальный класс»? Каковы его особенности?</span></summary>
 
 **Локальный класс** – это класс, объявленный **внутри метода**, **конструктора** или **блока инициализации**.
 
@@ -160,7 +165,7 @@
 
 
 <details>
-        <summary>50. Что такое «анонимные классы»? Где они применяются?</summary>
+        <summary>50. <span class="writing_question">Что такое «анонимные классы»? Где они применяются?</span></summary>
 
 Анонимный класс — это **вложенный локальный класс без имени**, который объявляется и создаётся 
 одновременно в месте его использования.
