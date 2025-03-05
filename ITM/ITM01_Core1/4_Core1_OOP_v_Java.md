@@ -1,3 +1,5 @@
+<link rel="stylesheet" href="/ITM/styles.css">
+
 [<<< **PREVIOUS** < _Предыдущая страница_ <<<](/ITM/ITM01_Core1/3_Core1_ProcedureJava.md)
 
 ---
@@ -6,7 +8,7 @@
 
 
 <details>
-        <summary>47. Какие виды классов есть в java?</summary>
+        <summary><span class="writing_question">47. Какие виды классов есть в java?</span></summary>
 
 **Виды классов в Java**:
 
