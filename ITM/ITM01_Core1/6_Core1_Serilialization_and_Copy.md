@@ -1,4 +1,4 @@
-[<<< **PREVIOUS** < _Предыдущая страница_ <<<](/ITM/ITM01_Core1/5_Core1_Exceptions.md)
+[⏪ **PREVIOUS** < _Предыдущая страница_ ⏪](/ITM/ITM01_Core1/5_Core1_Exceptions.md)
 
 ---
 ## Сериализация и копирование

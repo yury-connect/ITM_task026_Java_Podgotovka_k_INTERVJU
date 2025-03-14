@@ -1,4 +1,4 @@
-[<<< **PREVIOUS** < _Предыдущая страница_ <<<](/ITM/ITM01_Core1/2_Core1_Java.md)
+[⏪ **PREVIOUS** < _Предыдущая страница_ ⏪](/ITM/ITM01_Core1/2_Core1_Java.md)
 
 ---
 ## Процедурная Java

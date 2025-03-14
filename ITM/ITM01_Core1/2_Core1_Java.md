@@ -1,4 +1,4 @@
-[<<< **PREVIOUS** < _Предыдущая страница_ <<<](/ITM/ITM01_Core1/1_Core1_OOP.md)
+[⏪ **PREVIOUS** < _Предыдущая страница_ ⏪](/ITM/ITM01_Core1/1_Core1_OOP.md)
 
 ---
 ## Java

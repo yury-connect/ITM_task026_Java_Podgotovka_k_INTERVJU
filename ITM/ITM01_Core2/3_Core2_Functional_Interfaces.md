@@ -1,3 +1,4 @@
+[⏪ **PREVIOUS** < _Предыдущая страница_ ⏪](/ITM/ITM01_Core2/2_Core2_Collections.md)
 
 ---
 ## Функциональные интерфейсы
@@ -367,6 +368,9 @@ Runnable r = () -> System.out.println(""hello world"");
 ```
 ---
 </details>
+
+
+[⏭️ **NEXT** > _Следующая страница_ ⏭️](/ITM/ITM01_Core2/4_Core2_Stream_API.md)
 
 
 

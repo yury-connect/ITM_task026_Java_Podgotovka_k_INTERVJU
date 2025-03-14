@@ -1,3 +1,4 @@
+[⏪ **PREVIOUS** < _ПРЕДЫДУЩИЙ РАЗДЕЛ_ ⏪](/ITM/ITM01_Core1/6_Core1_Serilialization_and_Copy.md)
 
 ---
 # Core-2. Дженерики
@@ -244,6 +245,10 @@ Producer Extends Consumer Super
 ```
 ---
 </details>
+
+
+[⏭️ **NEXT** > _Следующая страница_ ⏭️](/ITM/ITM01_Core2/2_Core2_Collections.md)
+
 
 
 <details>

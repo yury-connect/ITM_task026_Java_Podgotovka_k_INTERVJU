@@ -1,3 +1,4 @@
+[⏪ **PREVIOUS** < _Предыдущая страница_ ⏪](/ITM/ITM01_Core2/1_Core2.md)
 
 ---
 ## Коллекции
@@ -1823,6 +1824,9 @@ O(N) - линейное
 ```
 ---
 </details>
+
+
+[⏭️ **NEXT** > _Следующая страница_ ⏭️](/ITM/ITM01_Core2/3_Core2_Functional_Interfaces.md)
 
 
 

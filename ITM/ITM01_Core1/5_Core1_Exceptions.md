@@ -1,4 +1,4 @@
-[<<< **PREVIOUS** < _Предыдущая страница_ <<<](/ITM/ITM01_Core1/4_Core1_OOP_v_Java.md)
+[⏪ **PREVIOUS** < _Предыдущая страница_ ⏪](/ITM/ITM01_Core1/4_Core1_OOP_v_Java.md)
 
 ---
 ## Исключения
