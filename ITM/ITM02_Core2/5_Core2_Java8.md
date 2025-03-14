@@ -1,4 +1,4 @@
-[⏪ **PREVIOUS** < _Предыдущая страница_ ⏪](/ITM/ITM01_Core2/4_Core2_Stream_API.md)
+[⏪ **PREVIOUS** < _Предыдущая страница_ ⏪](/ITM/ITM02_Core2/4_Core2_Stream_API.md)
 
 ---
 ## Java 8

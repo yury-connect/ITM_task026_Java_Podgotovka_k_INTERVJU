@@ -1,4 +1,4 @@
-[⏪ **PREVIOUS** < _Предыдущая страница_ ⏪](/ITM/ITM01_Core2/3_Core2_Functional_Interfaces.md)
+[⏪ **PREVIOUS** < _Предыдущая страница_ ⏪](/ITM/ITM02_Core2/3_Core2_Functional_Interfaces.md)
 
 ---
 ## Stream API
@@ -794,7 +794,7 @@ sum(), average(), mapToObj()
 </details>
 
 
-[⏭️ **NEXT** > _Следующая страница_ ⏭️](/ITM/ITM01_Core2/5_Core2_Java8.md)
+[⏭️ **NEXT** > _Следующая страница_ ⏭️](/ITM/ITM02_Core2/5_Core2_Java8.md)
 
 
 

@@ -218,7 +218,7 @@ Wildcard — удобный инструмент, чтобы смягчить н
 > * Метод **записывает** данные → аргумент **consumer** (`? super T`).  
 > * **Оба** действия → **без** `wildcard`
 
-![Примеры принципа PECS](/ITM/ITM01_Core2/imgs/2025-02-28_12-37-16.png)
+![Примеры принципа PECS](/ITM/ITM02_Core2/imgs/2025-02-28_12-37-16.png)
 
 ```text
 ***** из методички *****
@@ -247,7 +247,7 @@ Producer Extends Consumer Super
 </details>
 
 
-[⏭️ **NEXT** > _Следующая страница_ ⏭️](/ITM/ITM01_Core2/2_Core2_Collections.md)
+[⏭️ **NEXT** > _Следующая страница_ ⏭️](/ITM/ITM02_Core2/2_Core2_Collections.md)
 
 
 
