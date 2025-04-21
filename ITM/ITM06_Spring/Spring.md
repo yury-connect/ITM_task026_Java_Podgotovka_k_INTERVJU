@@ -233,7 +233,7 @@ ApplicationContext загружает все бины при запуске, а 
 ### 🔧 Основные свойства `@Bean`:
 
 | Свойство            | 	Описание                                                         |
-|---------------------|-------------------------------------------------------------------|
+|:--------------------|:------------------------------------------------------------------|
 | `name` / `value`    | 	Уникальное имя бина (_по умолчанию — имя метода_)                |
 | `initMethod`        | 	Метод, вызываемый при инициализации бина                         |
 | `destroyMethod`     | 	Метод, вызываемый при удалении бина из контекста                 |
@@ -242,17 +242,17 @@ ApplicationContext загружает все бины при запуске, а 
 ---
 ### 📦 Области видимости (_scopes_) бинов:
 
-| Scope         | 	Описание                                       |
-|---------------|-------------------------------------------------|
-| `Singleton`   | 	(_по умолчанию_) — один экземпляр на контейнер |
-| `Prototype`   | 	новый экземпляр при каждом запросе             |
-| `Request`     | 	один бин на HTTP-запрос (_Web_)                |
-| `Session`     | 	один бин на HTTP-сессию (_Web_)                |
-| `Application` | 	один бин на `ServletContext` (_Web_)           |
+| Scope         | 	Описание                                               |
+|:--------------|:--------------------------------------------------------|
+| `Singleton`   | 	(_**по умолчанию**_) — один экземпляр **на контейнер** |
+| `Prototype`   | 	новый экземпляр **при каждом запросе**                 |
+| `Request`     | 	один бин на **HTTP-запрос** (_Web_)                    |
+| `Session`     | 	один бин на **HTTP-сессию** (_Web_)                    |
+| `Application` | 	один бин на `ServletContext` (_Web_)                   |
 
 ---
 ### 💡 Важно:
-* @Bean — альтернатива аннотациям @Component, @Service, и т.п., когда нужна ручная регистрация.
+* `@Bean` — альтернатива аннотациям `@Component`, `@Service`, и т.п., когда нужна **ручная** регистрация.
 * Используется, когда бин создаётся через стороннюю библиотеку или требует сложной инициализации.
 
 ---
@@ -1189,7 +1189,7 @@ application-prod.properties      # prod-специфичные
 
 ## Расскажите про жизненный цикл бина, аннотации @PostConstruct и @PreDestroy()
 
-### 💖 ЖИЗНЕННЫЙ ЦИКЛ БИНА В SPRING
+### 💖 ЖИЗНЕННЫЙ ЦИКЛ БИНА В SPRING [_//видео_](https://youtu.be/5lmmB1yb0ZQ?si=TSJHmjUgi2K-MLF1&t=1085)
 
 🔁 Полный цикл от А до Я:
 
@@ -2909,12 +2909,230 @@ public String getFoos(@RequestParam List<String> id){...}
 
 ## Как работает Spring Security? Как сконфигурировать? Какие интерфейсы используются?
 
+**Кратко**: `Spring Security` строится вокруг цепочки фильтров (`SecurityFilterChain`), 
+которая перехватывает все HTTP‑запросы и проводит их через модули аутентификации и авторизации. 
+Ядром является `SecurityContextHolder`, где хранится информация о текущем пользователе (`Authentication`). 
+[`Home`](https://docs.spring.io/spring-security/reference/servlet/authentication/architecture.html?utm_source=chatgpt.com)  
 
+Для аутентификации используется `AuthenticationManager` (_обычно реализация_ `ProviderManager`), 
+перебирающий список `AuthenticationProvider` для проверки учётных данных. 
+[`Medium`](https://medium.com/%40iamssrofficial/demystifying-spring-security-and-its-architecture-25e537e4d53b?utm_source=chatgpt.com) 
+[`Stack Overflow`](https://stackoverflow.com/questions/2323377/spring-security-authenticationmanager-vs-authenticationprovider?utm_source=chatgpt.com)  
+
+Загрузка данных о пользователе осуществляет `UserDetailsService`, возвращающий `UserDetails` (_логин, пароль, роли_).
+[`GeeksforGeeks`](https://www.geeksforgeeks.org/spring-security-userdetailsservice-and-userdetails-with-example/?utm_source=chatgpt.com)  
+
+Пароли кодируются через `PasswordEncoder` (_например,_ `BCryptPasswordEncoder`).
+[Home](https://docs.spring.io/spring-security/reference/servlet/authentication/passwords/index.html?utm_source=chatgpt.com)  
+
+Конфигурация обычно делается в Java‑классе с `@EnableWebSecurity`, 
+где создаётся bean `SecurityFilterChain` и настраивается `HttpSecurity`. 
+[Home](https://docs.spring.io/spring-security/reference/servlet/configuration/java.html?utm_source=chatgpt.com)  
+
+---
+### 🔐 Основные компоненты и интерфейсы
+
+| Интерфейс / класс	                     | Роль	                                                    |                                                                       Источник                                                                         |
+|:---------------------------------------|:---------------------------------------------------------|:------------------------------------------------------------------------------------------------------------------------------------------------------:|
+| `SecurityFilterChain`                  | 	Цепочка фильтров безопасности, перехватывает запросы    |                   [`Home`](https://docs.spring.io/spring-security/reference/servlet/configuration/java.html?utm_source=chatgpt.com)                    |
+| `SecurityContextHolder`                | 	Хранит `SecurityContext` с текущим `Authentication`     |                   [`Home`](https://docs.spring.io/spring-security/reference/servlet/configuration/java.html?utm_source=chatgpt.com)                    |
+| `AuthenticationManager`                | 	Точка входа аутентификации (`authenticate()`)           |         [`Medium`](https://medium.com/%40iamssrofficial/demystifying-spring-security-and-its-architecture-25e537e4d53b?utm_source=chatgpt.com)         |
+| `ProviderManager`                      | 	Стандартная реализация `AuthenticationManager`          |         [`Medium`](https://medium.com/%40iamssrofficial/demystifying-spring-security-and-its-architecture-25e537e4d53b?utm_source=chatgpt.com)         |
+| `AuthenticationProvider`               | 	Выполняет аутентификацию конкретным способом            | [`Stack Overflow`](https://stackoverflow.com/questions/2323377/spring-security-authenticationmanager-vs-authenticationprovider?utm_source=chatgpt.com) |
+| `UserDetailsService`                   | 	Загружает `UserDetails` по username                     | [`GeeksforGeeks`](https://stackoverflow.com/questions/2323377/spring-security-authenticationmanager-vs-authenticationprovider?utm_source=chatgpt.com)  |
+| `UserDetails`                          | 	Хранит данные пользователя (_пароль, роли_)             |        [`GeeksforGeeks`](https://www.geeksforgeeks.org/spring-security-userdetailsservice-and-userdetails-with-example/?utm_source=chatgpt.com)        |
+| `PasswordEncoder`                      | 	Кодирует и сверяет пароли                               |            [`Home`](https://www.geeksforgeeks.org/spring-security-userdetailsservice-and-userdetails-with-example/?utm_source=chatgpt.com)             |
+| `UsernamePasswordAuthenticationFilter` | 	Формирует `UsernamePasswordAuthenticationToken`         | [`Medium`](https://medium.com/%40sallu-salman/understanding-the-key-components-in-spring-security-authentication-245297a40b93?utm_source=chatgpt.com)  |
+| `AccessDecisionManager`                | 	Принимает решение об авторизации доступа                | [`Medium`](https://medium.com/%40sallu-salman/understanding-the-key-components-in-spring-security-authentication-245297a40b93?utm_source=chatgpt.com)  |
+
+---
+### 🔄 Порядок обработки запроса
+```mermaid
+flowchart TD
+A[Client Request] --> B[SecurityFilterChain]
+B --> C[UsernamePasswordAuthenticationFilter]
+C --> D[AuthenticationManager]
+D --> E[AuthenticationProvider*]
+E --> F[UserDetailsService → UserDetails]
+F --> G[PasswordEncoder.verify]
+G --> H[AuthenticationSuccessHandler / FailureHandler]
+H --> I[AccessDecisionManager]
+I --> J[Proceed or Deny Request]
+```
+
+1. **Фильтры** (`SecurityFilterChain`) перехватывают запрос. 
+[`Home`](https://docs.spring.io/spring-security/reference/servlet/configuration/java.html?utm_source=chatgpt.com)
+
+2. `UsernamePasswordAuthenticationFilter` создаёт токен `UsernamePasswordAuthenticationToken` (principal + credentials)
+[`Medium`](https://medium.com/%40sallu-salman/understanding-the-key-components-in-spring-security-authentication-245297a40b93?utm_source=chatgpt.com)
+
+3. Токен отдаётся `AuthenticationManager` (`ProviderManager`)
+[`Medium`](https://medium.com/%40sallu-salman/understanding-the-key-components-in-spring-security-authentication-245297a40b93?utm_source=chatgpt.com)
+
+4. `ProviderManager` перебирает список `AuthenticationProvider` и для каждого вызывает `authenticate()`
+[`Stack Overflow`](https://stackoverflow.com/questions/2323377/spring-security-authenticationmanager-vs-authenticationprovider?utm_source=chatgpt.com)
+
+5. `DaoAuthenticationProvider` (_одна из реализаций_) через `UserDetailsService` загружает `UserDetails` из БД
+[`GeeksforGeeks`](https://stackoverflow.com/questions/2323377/spring-security-authenticationmanager-vs-authenticationprovider?utm_source=chatgpt.com)
+
+6. `PasswordEncoder` сверяет введённый пароль с хранилищем
+[`Home`](https://docs.spring.io/spring-security/reference/servlet/authentication/passwords/index.html?utm_source=chatgpt.com)
+
+7. При успехе создаётся полная `Authentication`, сохраняется в `SecurityContextHolder`
+[`Home`](https://docs.spring.io/spring-security/reference/servlet/authentication/passwords/index.html?utm_source=chatgpt.com)
+
+8. `AccessDecisionManager` разрешает/запрещает доступ на основе ролей и прав (`GrantedAuthority`).
+
+---
+### ⚙️ Конфигурация (_Java Config_)
+```java
+@Configuration
+@EnableWebSecurity
+public class SecurityConfig {
+
+   @Bean
+   public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+      http
+         .authorizeHttpRequests(auth -> auth
+            .requestMatchers("/admin/**").hasRole("ADMIN")
+            .anyRequest().authenticated()
+         )
+         .formLogin(Customizer.withDefaults())
+         .logout(Customizer.withDefaults());
+      return http.build();
+   }
+   
+   @Bean
+   public UserDetailsService userDetailsService() {
+      return new InMemoryUserDetailsManager(
+         User.withUsername("user")
+            .password(passwordEncoder().encode("pass"))
+            .roles("USER")
+            .build()
+      );
+   }
+   
+   @Bean
+   public PasswordEncoder passwordEncoder() {
+       return new BCryptPasswordEncoder();
+   }
+}
+```
+
+* Определяем `SecurityFilterChain` — **цепочку фильтров** для URL-правил/
+[`Home`](https://docs.spring.io/spring-security/reference/servlet/configuration/java.html?utm_source=chatgpt.com)
+
+* Реализуем `UserDetailsService` — **источник пользователей** (_InMemory, JDBC, LDAP и пр._)
+[`GeeksforGeeks`](https://www.geeksforgeeks.org/spring-security-userdetailsservice-and-userdetails-with-example/?utm_source=chatgpt.com)
+
+* Bean `PasswordEncoder` — **кодировщик паролей**
+[`Home`](https://docs.spring.io/spring-security/reference/servlet/authentication/passwords/index.html?utm_source=chatgpt.com)
+
+---
+### 🔎 Настройка дополнительных фич
+* **OAuth2 / OpenID Connect** через `oauth2Login()` 
+[`Home`](https://spring.io/blog/2022/02/21/spring-security-without-the-websecurityconfigureradapter?utm_source=chatgpt.com)
+
+* **JWT**: добавляем фильтр перед `UsernamePasswordAuthenticationFilter` 
+[`Coding Shuttle`](https://www.codingshuttle.com/blogs/spring-security-is-really-not-that-hard-internal-working-of-spring-security/?utm_source=chatgpt.com)
+
+* **CORS/CSRF**: настраивается через `HttpSecurity.cors()` и `csrf()` 
+[`Home`](https://docs.spring.io/spring-security/reference/servlet/configuration/java.html?utm_source=chatgpt.com)
+
+* **Method Security**: `@EnableGlobalMethodSecurity(prePostEnabled = true)` + `@PreAuthorize` 
+[`Marco Behler`](https://docs.spring.io/spring-security/reference/servlet/configuration/java.html?utm_source=chatgpt.com)
+
+---
+###### _«Spring Security — это не просто фреймворк, а архитектура, где каждый фильтр, каждый провайдер и каждый сервис отвечает за свой кусочек безопасности. Правильно собранная цепочка — залог надёжного приложения.»_
 
 ---
 
 ```text
 ***** из методички *****
+В кратце, основными блоками Spring Security являются:
+
+* SecurityContextHolder, чтобы обеспечить доступ к SecurityContext.
+
+* SecurityContext, содержит объект Authentication и в случае необходимости 
+информацию системы безопасности, связанную с запросом.
+
+* Authentication представляет принципала с точки зрения Spring Security.
+
+* GrantedAuthority отражает разрешения выданные доверителю в масштабе всего приложения.
+
+* UserDetails предоставляет необходимую информацию для построения объекта Authentication 
+из DAO объектов приложения или других источника данных системы безопасности.
+
+* UserDetailsService, чтобы создать UserDetails, когда передано имя пользователя в виде String 
+(или идентификатор сертификата или что-то подобное).
+
+
+Подробно:
+Самым фундаментальным явлется SecurityContextHolder. В нем мы храним информацию о текущем контексте 
+безопасности приложения, который включает в себя подробную информацию о пользователе, работающем с приложением. 
+По умолчанию SecurityContextHolder использует MODE_THREADLOCAL для хранения такой информации, что означает, 
+что контекст безопасности всегда доступен для методов исполняющихся в том же самом потоке, 
+даже если контекст безопасности явно не передается в качестве аргумента этих методов:
+
+SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+UserDetails выступает в качестве принципала.
+MODE_GLOBAL - все потоки Java-машины используют один контекст безопасности.
+MODE_INHERITABLETHREADLOCAL - потоки порожденные от одного защищенного потока, наличие аналогичной безопасности.
+Интерфейс UserDetailsService - подход к загрузке информации о пользователе в Spring Security. 
+Единственный метод этого интерфейса принимает имя пользователя в виде String и возвращает UserDetails. 
+Он представляет собой принципала, но в расширенном виде и с учетом специфики приложения.
+В случае успешной аутентификации, UserDetails используется для создания Authentication объекта, 
+который хранится в SecurityContextHolder.
+Ещё одним важным методом Authentication явлется getAuthorities() - предоставляет массив объектов GrantedAuthority(роли).
+Credentials - под ними понимаются пароль пользователя, но им может быть и отпечаток пальца, фото сетчатки и т.п.
+
+
+AuthenticationManager - основной стратегический интерфейс для аутентификации. 
+ProviderManager, который содержит поле private List<AuthenticationProvider>. 
+AuthenticationProvider - интерфейс объекта, выполняющего аутентификацию.  
+Имеет массу готовых реализаций. Т
+providers со списком AuthenticationProvider-ов и итерирует запрос аутентификации 
+по этому списку AuthenticationProvider-ов.
+
+
+❖ Пользователь вводит в форму и отправляет логин и пароль. 
+❖ UsernamePasswordAuthenticationFilter создает объект Authentication - UsernamePasswordAuthenticationToken, 
+    где в качестве Principal - логин, а в качестве Credentials - пароль. 
+❖ Затем UsernamePasswordAuthenticationToken передаёт объект Authentication 
+    с логином и паролем AuthenticationManager-у. 
+❖ AuthenticationManager в виде конкретного класса ProviderManager внутри своего 
+    списка объектов AuthenticationProvider, имеющих разные логики аутентификации, 
+    пытается аутентифицировать посетителя, вызывая его метод authenticate(). 
+    У каждого AuthenticationProvider-а: 
+    ➢ Метод authenticate() принимает в качестве аргумента незаполненный объект Authentication, 
+        например только с логином и паролем, полученными в форме логина на сайте. 
+        Затем с помощью UserDetailsService метод идёт в БД и ищет такого пользователя. 
+    ➢ Если такой пользователь есть в БД, AuthenticationProvider получает его из базы в виде объекта UserDetails. 
+        Объект Authentication заполняется данными из UserDetails - в него включаются Authorities, 
+        а в Principal записывается сам объект UserDetails, содержащий пользователя. 
+    ➢ Затем этот метод возвращает заполненный объект Authentication (прошли аутентификацию). 
+        Вызывается AuthenticationSuccessHandler. 
+    ➢ Если логин либо пароль неверные, то выбрасывается исключение. 
+        Вызывается AuthenticationFailureHandler. 
+❖ Затем этот объект Authentication передается в AccessDecisionManager 
+    и получаем решение на получение доступа к запрашиваемой странице (проходим авторизацию).
+
+
+PasswordEncoder - интерфейс для шифрования/расшифровывания паролей. 
+Одна из популярных реализаций - BCryptPasswordEncoder. 
+В случае, если нам необходимо добавить логику при успешной/неудачной аутентификации, мы можем создать класс 
+и имплементировать интерфейсы AuthenticationSuccessHandler и AuthenticationFailureHandler соответственно, 
+переопределив их методы.
+
+
+Процесс аутентификации: 
+1. UsernamePasswordAuthenticationFilter получают имя пользователя и пароль и создает экземпляр 
+класса UsernamePasswordAuthenticationToken (экземпляр интерфейса Authentication). 
+2. Токен передается экземпляру AuthenticationManager для проверки. 
+3. AuthenticationManager возвращает полностью заполненный экземпляр Authentication в случае успешной аутентификации. 
+4. Устанавливается контекст безопасности путем вызова SecurityContextHolder.getContext().setAuthentication(...), 
+куда передается вернувшийся экземпляр Authentication. 
+5. При успешной аутентификации можно использовать successHandler
 ```
 ---
 </details>
