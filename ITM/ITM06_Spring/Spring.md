@@ -3216,16 +3216,16 @@ PasswordEncoder - интерфейс для шифрования/расшифр�
 ### 🧬 Mermaid диаграмма: Автоконфигурация Spring Boot
 
 ```mermaid
-graph TD;
-A[Старт приложения: @SpringBootApplication] --> B[Включает @EnableAutoConfiguration]
-B --> C[Импорт EnableAutoConfigurationImportSelector]
-C --> D[Чтение META-INF spring.factories]
-D --> E[Импорт AutoConfiguration-классов]
-E --> F[Аннотации @Conditional проверяют условия]
-F --> G[Создание только нужных бинов]
-G --> H[Формируется ApplicationContext]
-H --> I[Встраивается Embedded Server, Tomcat и др.]
-I --> J[Приложение готово! 🥳]
+graph TD
+    A[Старт приложения: @SpringBootApplication] --> B[Включает @EnableAutoConfiguration]
+    B --> C[Импорт EnableAutoConfigurationImportSelector]
+    C --> D[Чтение META-INF/spring.factories]
+    D --> E[Импорт AutoConfiguration-классов]
+    E --> F[Аннотации @Conditional проверяют условия]
+    F --> G[Создание только нужных бинов]
+    G --> H[Формируется ApplicationContext]
+    H --> I[Встраивается Embedded Server: Tomcat и др.]
+    I --> J[Приложение готово]
 ```
 
 ### 🧭 Диаграмма архитектуры Spring Boot-приложения
