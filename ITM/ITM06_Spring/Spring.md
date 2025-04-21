@@ -2417,7 +2417,7 @@ graph TD
     E --> F{REST или обычный запрос?}
     F -- Да --> G[Dispatcher возвращает JSON или XML]
     F -- Нет --> H[ViewResolver выбирает View]
-    H --> I[View (например Thymeleaf или JSP) возвращает HTML]
+    H --> I[View например Thymeleaf или JSP возвращает HTML]
     I --> J[Dispatcher отправляет ответ клиенту]
 ```
 
