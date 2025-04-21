@@ -2415,9 +2415,9 @@ graph TD
     C --> D[HandlerAdapter вызывает метод контроллера]
     D --> E[Контроллер возвращает имя View и Model]
     E --> F{REST или обычный запрос?}
-    F -- Да --> G[Dispatcher возвращает JSON/XML]
+    F -- Да --> G[Dispatcher возвращает JSON или XML]
     F -- Нет --> H[ViewResolver выбирает View]
-    H --> I[View (Thymeleaf, JSP и т.д.) возвращает HTML]
+    H --> I[View (например Thymeleaf или JSP) возвращает HTML]
     I --> J[Dispatcher отправляет ответ клиенту]
 ```
 
