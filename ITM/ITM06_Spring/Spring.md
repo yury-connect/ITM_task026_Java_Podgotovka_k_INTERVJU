@@ -3216,20 +3216,21 @@ PasswordEncoder - интерфейс для шифрования/расшифр�
 ### 🧬 Mermaid диаграмма: Автоконфигурация Spring Boot
 
 ```mermaid
-graph TD
-    A[Start - Spring Boot App] --> B[Enable Auto Configuration]
-    B --> C[Import Config Selector]
-    C --> D[Read spring.factories]
-    D --> E[Load Config Classes]
-    E --> F[Check Conditions]
-    F --> G[Create Beans]
-    G --> H[Build App Context]
-    H --> I[Start Web Server]
-    I --> J[App is Ready]
+flowchart TD
+    A["Start - Spring Boot App"] --> B["Enable Auto Configuration"]
+    B --> C["Import Config Selector"]
+    C --> D["Read spring.factories"]
+    D --> E["Load Config Classes"]
+    E --> F["Check Conditions"]
+    F --> G["Create Beans"]
+    G --> H["Build App Context"]
+    H --> I["Start Web Server"]
+    I --> J["App is Ready"]
 ```
 
 ---
 ### 🧭 Диаграмма архитектуры Spring Boot-приложения
+
 ```mermaid
 graph TD
     A[Клиент] --> B[Контроллер — Presentation Layer]
