@@ -220,7 +220,7 @@ ApplicationContext загружает все бины при запуске, а 
 
 
 <details>
-        <summary>4	Расскажите про аннотацию @Bean?</summary>
+        <summary>4	_ @Bean?</summary>
 
 ## Расскажите про аннотацию @Bean?
 
@@ -283,7 +283,7 @@ Prototype
 
 
 <details>
-        <summary>5	Расскажите про аннотацию @Component?</summary>
+        <summary>5	_ @Component?</summary>
 
 ## Расскажите про аннотацию @Component?
 
@@ -336,7 +336,7 @@ public class AppConfig {}
 
 
 <details>
-        <summary>6	Чем отличаются аннотации @Bean и @Component?</summary>
+        <summary>6	_отличия @Bean и @Component?</summary>
 
 ## Чем отличаются аннотации `@Bean` и `@Component`?
 
@@ -917,7 +917,7 @@ public class GreetingServiceImpl implements GreetingService {
 
 
 <details>
-        <summary>14	Как заинжектить примитив?</summary>
+        <summary>14	Как заинжектить ПРИМИТИВ?</summary>
 
 ## Как заинжектить примитив?
 
@@ -977,7 +977,7 @@ public String stringWithDefaultValue;
 
 
 <details>
-        <summary>15	Как заинжектить коллекцию?</summary>
+        <summary>15	Как заинжектить КОЛЛЕКЦИЮ?</summary>
 
 ## Как заинжектить коллекцию?
 
@@ -1135,7 +1135,7 @@ AnyNestedCondition, AllNestedConditions и NoneNestedConditions.
 
 
 <details>
-        <summary>17	Расскажите про аннотацию @Profile</summary>
+        <summary>17	_ @Profile</summary>
 
 ## Расскажите про аннотацию `@Profile`
 
