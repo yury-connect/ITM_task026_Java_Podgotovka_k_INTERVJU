@@ -3,7 +3,10 @@
 ---
 
 <details>
-        <summary>📝 Пример 🔽</summary>
+        <summary>📝 пример: 🔽</summary>
+
+---
+#### описание
 
 ```java
 
@@ -17,9 +20,8 @@
 <details>
         <summary>📝 Материал из методички 🔽</summary>
 
----
-</details>
 
+</details>
 
 ---
 
