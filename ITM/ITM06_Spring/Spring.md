@@ -3207,6 +3207,8 @@ public String getFoos(@RequestParam List<String> id){...}
 
 ## Как работает Spring Security? Как сконфигурировать? Какие интерфейсы используются?
 
+[spring_security](/ITM/ITM06_Spring/by_questions/spring_security.md)
+
 **Кратко**:  
 `Spring Security` строится вокруг цепочки фильтров (`SecurityFilterChain`), 
 которая перехватывает все HTTP‑запросы и проводит их через модули аутентификации и авторизации.  
