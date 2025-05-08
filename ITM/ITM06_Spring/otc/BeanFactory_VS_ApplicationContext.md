@@ -50,6 +50,8 @@ graph LR
 
 * **Импорт конфигураций**  
 Возможность объединять конфиги через `@Import`.
+
+---
 </details>
 
 
@@ -63,6 +65,8 @@ graph LR
 
 * **Автоматический вызов `@PostConstruct` и `@PreDestroy`**  
 В `BeanFactory` эти аннотации не обрабатываются без дополнительной настройки.
+
+---
 </details>
 
 
@@ -72,6 +76,8 @@ graph LR
 
 * **Автоматическое создание AOP-прокси**  
 Для `@Transactional`, `@Cacheable` и других аспектов.
+
+---
 </details>
 
 
@@ -94,6 +100,7 @@ Resource resource = context.getResource("classpath:config.properties");
 String msg = context.getMessage("greeting", null, Locale.ENGLISH);
 ```
 
+---
 </details>
 
 
@@ -113,6 +120,7 @@ context.publishEvent(new MyCustomEvent());
 public void handleEvent(MyCustomEvent event) { ... }
 ```
 
+---
 </details>
 
 
@@ -129,6 +137,7 @@ public void handleEvent(MyCustomEvent event) { ... }
 
   * Загрузки ресурсов через `/WEB-INF`
 
+---
 </details>
 
 
@@ -152,6 +161,7 @@ public class ProdService { ... }
 String dbUrl = context.getEnvironment().getProperty("db.url");
 ```
 
+---
 </details>
 
 
@@ -189,6 +199,9 @@ MyBean bean = factory.getBean(MyBean.class);
 ```
 
 ---
+</details>
+
+---
 `ApplicationContext` — это "продвинутая" версия `BeanFactory`, которая добавляет:
 * **Удобные способы конфигурации** (аннотации, Java Config).
 * **Enterprise-функции** (AOP, события, i18n).
@@ -216,31 +229,6 @@ graph TD
     class F abstract;
     class G,H,I impl;
 ```
-
-
-<details>
-        <summary>📝 пример: 🔽</summary>
-
----
-#### описание
-
-```java
-
-``` 
-
----
-</details>
-
-
-
-<details>
-        <summary>📝 Материал из методички 🔽</summary>
-
-
-</details>
-
----
-###### __
 
 ---
 
