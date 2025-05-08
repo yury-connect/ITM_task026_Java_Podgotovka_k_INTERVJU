@@ -37,13 +37,13 @@ graph LR
 ## Полная иерархия интерфейсов `ApplicationContext`
 ```mermaid
 graph TD
-    A[BeanFactory] --> B[ListableBeanFactory]
-    B --> C[HierarchicalBeanFactory]
-    C --> D[ApplicationContext]
-    D --> E[ConfigurableApplicationContext]
-    E --> F[AbstractApplicationContext]
-    F --> G[AnnotationConfigApplicationContext]
-    F --> H[ClassPathXmlApplicationContext]
+    A[BeanFactory<br>📜 - базовый интерфейс] --> B[ListableBeanFactory<br>🔍 - поиск/перечисление]
+    B --> C[HierarchicalBeanFactory<br>🌳 - иерархия]
+    C --> D[ApplicationContext<br>🚀 - основной контекст]
+    D --> E[ConfigurableApplicationContext<br>⚙️ - конфигурация]
+    E --> F[AbstractApplicationContext<br>📦 - абстракция]
+    F --> G[AnnotationConfigApplicationContext<br>🖋️ - аннотации]
+    F --> H[ClassPathXmlApplicationContext<br>📄 - XML]
     F --> I[GenericWebApplicationContext<br>🌐 - веб]
     
     classDef interface fill:#FFD6E0,stroke:#FF85A2;
