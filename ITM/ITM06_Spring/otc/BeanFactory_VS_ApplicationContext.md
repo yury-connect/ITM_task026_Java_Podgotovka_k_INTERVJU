@@ -29,8 +29,8 @@ graph TD
 graph LR
     Интерфейсы --> Абстрактные --> Реализации
     style Интерфейсы fill:#FFD6E0
-    style Абстрактные<md>классы fill:#E0F9FF
-    style Реализации<md>в коде fill:#D0F0C0
+    style Абстрактные классы fill:#E0F9FF
+    style Реализации в коде fill:#D0F0C0
 ```
 
 
