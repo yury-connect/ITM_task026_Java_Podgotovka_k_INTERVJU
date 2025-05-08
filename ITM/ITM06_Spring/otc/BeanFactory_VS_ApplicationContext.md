@@ -6,9 +6,9 @@
 ## 🌈 Визуальная иерархия интерфейсов `ApplicationContext`
 ```mermaid
 graph TD
-    A[📦 BeanFactory] --> B[🔍 Listable]
+    A[📦 <b>BeanFactory</b>] --> B[🔍 Listable]
     B --> C[🌳 Hierarchical]
-    C --> D[🚀 ApplicationContext]
+    C --> D[🚀 <b>ApplicationContext</b>]
     D --> E[⚙️ Configurable]
     E --> F[📝 Abstract]
     F --> G[🖋️ Annotation]
