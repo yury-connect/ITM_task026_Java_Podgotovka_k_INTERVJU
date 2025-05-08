@@ -88,8 +88,8 @@ graph LR
         <summary>4. Доступ к ресурсам и интернационализация 🔽</summary>
 
 ---
-* Унифицированный API для ресурсов  
-Методы `getResource()` для работы с файлами, URL, classpath:
+* **Унифицированный API для ресурсов**  
+Методы `getResource()` для работы с _файлами, URL, classpath_:
 
 ```java
 Resource resource = context.getResource("classpath:config.properties");
@@ -220,9 +220,9 @@ MyBean bean = factory.getBean(MyBean.class);
 ## Полная иерархия интерфейсов `ApplicationContext`
 ```mermaid
 graph TD
-    A[BeanFactory<br>📜 - базовый интерфейс] --> B[ListableBeanFactory<br>🔍 - поиск/перечисление]
+    A[<b>BeanFactory</b><br>📜 - базовый интерфейс] --> B[ListableBeanFactory<br>🔍 - поиск/перечисление]
     B --> C[HierarchicalBeanFactory<br>🌳 - иерархия]
-    C --> D[ApplicationContext<br>🚀 - основной контекст]
+    C --> D[<b>ApplicationContext</b><br>🚀 - основной контекст]
     D --> E[ConfigurableApplicationContext<br>⚙️ - конфигурация]
     E --> F[AbstractApplicationContext<br>📦 - абстракция]
     F --> G[AnnotationConfigApplicationContext<br>🖋️ - аннотации]
