@@ -24,6 +24,15 @@ graph TD
     class G,H,I impl;
 ```
 
+т.е. в кратце выглядит так:
+```mermaid
+graph LR
+    Интерфейсы --> Абстрактные --> Реализации
+    style Интерфейсы fill:#FFD6E0
+    style Абстрактные<md>классы fill:#E0F9FF
+    style Реализации<md>в коде fill:#D0F0C0
+```
+
 ## Полная иерархия интерфейсов `ApplicationContext`
 ```mermaid
 graph TD
