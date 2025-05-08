@@ -44,11 +44,11 @@ graph TD
     E --> F[AbstractApplicationContext]
     F --> G[AnnotationConfigApplicationContext]
     F --> H[ClassPathXmlApplicationContext]
-    F --> I[GenericWebApplicationContext]
+    F --> I[GenericWebApplicationContext<br>🌐 - веб]
     
-    classDef interface fill:#f9f,stroke:#333;
-    classDef abstract fill:#ccc,stroke:#333;
-    classDef impl fill:#9f9,stroke:#333;
+    classDef interface fill:#FFD6E0,stroke:#FF85A2;
+    classDef abstract fill:#E0F9FF,stroke:#85D4FF;
+    classDef impl fill:#D0F0C0,stroke:#7ABA7A;
     
     class A,B,C,D,E interface;
     class F abstract;
