@@ -1409,9 +1409,9 @@ Spring также предоставляет способ установить �
 
 
 <details>
-        <summary>18	_ жизненный цикл бина, _ @PostConstruct и @PreDestroy()</summary>
+        <summary>18	_ жизненный цикл БИНА, _ @PostConstruct и @PreDestroy()</summary>
 
-## Расскажите про жизненный цикл бина, аннотации @PostConstruct и @PreDestroy()
+## [Расскажите про жизненный цикл бина, аннотации @PostConstruct и @PreDestroy()](/ITM/ITM06_Spring/by_questions/spring_bean_life_cycle.md)
 
 ### 💖 ЖИЗНЕННЫЙ ЦИКЛ БИНА В SPRING [_//видео_](https://youtu.be/5lmmB1yb0ZQ?si=TSJHmjUgi2K-MLF1&t=1085)
 
