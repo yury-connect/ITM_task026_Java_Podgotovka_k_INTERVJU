@@ -174,7 +174,7 @@ Dependency Injection — является одним из способов ре�
 <details>
         <summary>3	_ApplicationContext и BeanFactory _отличия? _что стоит использовать?</summary>
 
-## [Расскажите про `ApplicationContext` и `BeanFactory`, чем отличаются? <br>В каких случаях что стоит использовать?](/ITM/ITM06_Spring/by_questions/BeanFactory_vs_ApplicationContext.md)
+## [Расскажите про `ApplicationContext` и `BeanFactory`, чем отличаются? <br>В каких случаях что стоит использовать?](/ITM/ITM06_Spring/by_questions/BeanFactory_VS_ApplicationContext.md)
 
 ### 🔍 `ApplicationContext` vs `BeanFactory`
 
