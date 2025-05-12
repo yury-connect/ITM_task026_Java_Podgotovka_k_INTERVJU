@@ -3308,18 +3308,18 @@ public String getFoos(@RequestParam List<String> id){...}
 ---
 ### 🔐 Основные компоненты и интерфейсы
 
-| Интерфейс / класс	                     | Роль	                                                    |                                                                       Источник                                                                         |
-|:---------------------------------------|:---------------------------------------------------------|:------------------------------------------------------------------------------------------------------------------------------------------------------:|
-| `SecurityFilterChain`                  | 	Цепочка фильтров безопасности, перехватывает запросы    |                   [`Home`](https://docs.spring.io/spring-security/reference/servlet/configuration/java.html?utm_source=chatgpt.com)                    |
-| `SecurityContextHolder`                | 	Хранит `SecurityContext` с текущим `Authentication`     |                   [`Home`](https://docs.spring.io/spring-security/reference/servlet/configuration/java.html?utm_source=chatgpt.com)                    |
-| `AuthenticationManager`                | 	Точка входа аутентификации (`authenticate()`)           |         [`Medium`](https://medium.com/%40iamssrofficial/demystifying-spring-security-and-its-architecture-25e537e4d53b?utm_source=chatgpt.com)         |
-| `ProviderManager`                      | 	Стандартная реализация `AuthenticationManager`          |         [`Medium`](https://medium.com/%40iamssrofficial/demystifying-spring-security-and-its-architecture-25e537e4d53b?utm_source=chatgpt.com)         |
-| `AuthenticationProvider`               | 	Выполняет аутентификацию конкретным способом            | [`Stack Overflow`](https://stackoverflow.com/questions/2323377/spring-security-authenticationmanager-vs-authenticationprovider?utm_source=chatgpt.com) |
-| `UserDetailsService`                   | 	Загружает `UserDetails` по username                     | [`GeeksforGeeks`](https://stackoverflow.com/questions/2323377/spring-security-authenticationmanager-vs-authenticationprovider?utm_source=chatgpt.com)  |
-| `UserDetails`                          | 	Хранит данные пользователя (_пароль, роли_)             |        [`GeeksforGeeks`](https://www.geeksforgeeks.org/spring-security-userdetailsservice-and-userdetails-with-example/?utm_source=chatgpt.com)        |
-| `PasswordEncoder`                      | 	Кодирует и сверяет пароли                               |            [`Home`](https://www.geeksforgeeks.org/spring-security-userdetailsservice-and-userdetails-with-example/?utm_source=chatgpt.com)             |
-| `UsernamePasswordAuthenticationFilter` | 	Формирует `UsernamePasswordAuthenticationToken`         | [`Medium`](https://medium.com/%40sallu-salman/understanding-the-key-components-in-spring-security-authentication-245297a40b93?utm_source=chatgpt.com)  |
-| `AccessDecisionManager`                | 	Принимает решение об авторизации доступа                | [`Medium`](https://medium.com/%40sallu-salman/understanding-the-key-components-in-spring-security-authentication-245297a40b93?utm_source=chatgpt.com)  |
+| Интерфейс / класс	                     | Роль	                                                   |                                                                                                         Источник                                       |
+|:---------------------------------------|:--------------------------------------------------------|:------------------------------------------------------------------------------------------------------------------------------------------------------:|
+| `SecurityFilterChain`                  | 	Цепочка фильтров безопасности, перехватывает запросы   |                   [`Home`](https://docs.spring.io/spring-security/reference/servlet/configuration/java.html?utm_source=chatgpt.com)                    |
+| `SecurityContextHolder`                | 	Хранит `SecurityContext` с текущим `Authentication`    |                   [`Home`](https://docs.spring.io/spring-security/reference/servlet/configuration/java.html?utm_source=chatgpt.com)                    |
+| `AuthenticationManager`                | 	Точка входа аутентификации (`authenticate()`)          |         [`Medium`](https://medium.com/%40iamssrofficial/demystifying-spring-security-and-its-architecture-25e537e4d53b?utm_source=chatgpt.com)         |
+| `ProviderManager`                      | 	Стандартная реализация `AuthenticationManager`         |         [`Medium`](https://medium.com/%40iamssrofficial/demystifying-spring-security-and-its-architecture-25e537e4d53b?utm_source=chatgpt.com)         |
+| `AuthenticationProvider`               | 	Выполняет аутентификацию конкретным способом           | [`Stack Overflow`](https://stackoverflow.com/questions/2323377/spring-security-authenticationmanager-vs-authenticationprovider?utm_source=chatgpt.com) |
+| `UserDetailsService`                   | 	Загружает `UserDetails` по username                    | [`GeeksforGeeks`](https://stackoverflow.com/questions/2323377/spring-security-authenticationmanager-vs-authenticationprovider?utm_source=chatgpt.com)  |
+| `UserDetails`                          | 	Хранит данные пользователя (_пароль, роли_)            |        [`GeeksforGeeks`](https://www.geeksforgeeks.org/spring-security-userdetailsservice-and-userdetails-with-example/?utm_source=chatgpt.com)        |
+| `PasswordEncoder`                      | 	Кодирует и сверяет пароли                              |            [`Home`](https://www.geeksforgeeks.org/spring-security-userdetailsservice-and-userdetails-with-example/?utm_source=chatgpt.com)             |
+| `UsernamePasswordAuthenticationFilter` | 	Формирует `UsernamePasswordAuthenticationToken`        | [`Medium`](https://medium.com/%40sallu-salman/understanding-the-key-components-in-spring-security-authentication-245297a40b93?utm_source=chatgpt.com)  |
+| `AccessDecisionManager`                | 	Принимает решение об авторизации доступа               | [`Medium`](https://medium.com/%40sallu-salman/understanding-the-key-components-in-spring-security-authentication-245297a40b93?utm_source=chatgpt.com)  |
 
 ---
 ### 🔄 Порядок обработки запроса
@@ -3520,7 +3520,7 @@ PasswordEncoder - интерфейс для шифрования/расшифр�
 <details>
         <summary>31	_ SpringBoot? _его преимущества? Как конфигурируется? Подробно.</summary>
 
-## Что такое SpringBoot? Какие у него преимущества? Как конфигурируется? Подробно.
+## Что такое SpringBoot? Какие у него преимущества? [Как конфигурируется?](/ITM/ITM06_Spring/by_questions/Spring_Boot_Autoconfiguration_Explained.md) Подробно.
 
 ### 🌱 Что такое Spring Boot?
 **Spring Boot** — это расширение _Spring Framework_, созданное для **быстрой разработки** 
