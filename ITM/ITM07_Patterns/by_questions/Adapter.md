@@ -69,13 +69,13 @@ public class AdapterJavaToDatabase implements Database {
 
 * Хотите **реиспользовать класс** в другом контексте.
 
-### 7. Пример из вашего кода
+### 7. Пример кода
 ```java
-   // Адаптер (классовый)
-   public class AdapterJavaToDatabase extends JavaApplication implements Database {
+// Адаптер (классовый)
+public class AdapterJavaToDatabase extends JavaApplication implements Database {
    @Override public void insert() { saveObject(); }  // Преобразование saveObject() → insert()
    @Override public void update() { updateObject(); }
-   }
+}
 
 // Использование:
 Database db = new AdapterJavaToDatabase();
