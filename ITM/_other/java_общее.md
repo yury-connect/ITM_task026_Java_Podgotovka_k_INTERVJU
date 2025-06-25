@@ -40,7 +40,7 @@
 ---
 </details>
 
-
+---
 
 <details>
         <summary>Head</summary>
@@ -51,70 +51,5 @@
 ---
 </details>
 
-
-
-<details>
-        <summary>Head</summary>
-
-```text
-***** из методички *****
-```
----
-</details>
-
-
-
-<details>
-        <summary>Head</summary>
-
-```text
-***** из методички *****
-```
----
-</details>
-
-
-
-<details>
-        <summary>Head</summary>
-
-```text
-***** из методички *****
-```
----
-</details>
-
-
-
-<details>
-        <summary>Head</summary>
-
-```text
-***** из методички *****
-```
----
-</details>
-
-
-
-<details>
-        <summary>Head</summary>
-
-```text
-***** из методички *****
-```
----
-</details>
-
-
-
-<details>
-        <summary>Head</summary>
-
-```text
-***** из методички *****
-```
----
-</details>
 
 
