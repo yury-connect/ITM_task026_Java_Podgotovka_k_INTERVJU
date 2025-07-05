@@ -1,32 +1,32 @@
 
 ## ООП
-1. Что такое ООП
-2. Какие преимущества у ООП?
-3. Какие недостатки у ООП?
-4. Назовите основные принципы ООП
-5. Что такое инкапсуляция? (С примером)"
-6. Что такое наследование? (С примером)"
-7. Что такое полиморфизм? (С примером)
-8. Что такое ассоциация
-9. Что такое композиция?
-10. Что такое агрегация?
-11. Расскажите про раннее и позднее связывание.
-12. SOLID
+1. [Что такое ООП?](/ITM/itm01_Core-1/solutions01_oop/itm1001_What_is_OOP.md)
+2. [Какие преимущества у ООП?](/ITM/itm01_Core-1/solutions01_oop/itm1002_advantages_OOP.md)
+3. [Какие недостатки у ООП?](/ITM/itm01_Core-1/solutions01_oop/itm1003_disadvantages_OOP.md)
+4. [Назовите основные принципы ООП](/ITM/itm01_Core-1/solutions01_oop/itm1004_principles_OOP.md)
+5. [Что такое инкапсуляция?](/ITM/itm01_Core-1/solutions01_oop/itm1005_encapsulation.md) (С примером)
+6. [Что такое наследование?](/ITM/itm01_Core-1/solutions01_oop/itm1006_inheritance.md) (С примером)
+7. [Что такое полиморфизм?](/ITM/itm01_Core-1/solutions01_oop/itm1007_polymorphism.md) (С примером)
+8. [Что такое ассоциация?](/ITM/itm01_Core-1/solutions01_oop/itm1008_association.md)
+9. [Что такое композиция?](/ITM/itm01_Core-1/solutions01_oop/itm1009_composition.md)
+10. [Что такое агрегация?](/ITM/itm01_Core-1/solutions01_oop/itm1010_aggregation.md)
+11. [Расскажите про раннее и позднее связывание.](/ITM/itm01_Core-1/solutions01_oop/itm1011_early_and_late_bonding.md)
+12. [SOLID](/ITM/itm01_Core-1/solutions01_oop/itm1012_SOLID.md)
 
 ## Java
-13. Какая основная идея языка?
-14. За счет чего обеспечивается кроссплатформенность?
-15. Какие преимущества у java?
-16. Какие недостатки у java?
-17. Что такое JDK? Что в него входит?
-18. Что такое JRE? Что в него входит?
-19. Что такое JVM?
-20. Что такое byte code?
-21. Что такое загрузчик классов (classloader)?
-22. Что такое JIT ?
-23. Что такое сборщик мусора? (Garbage collector)
-24. Виды ссылок в Java
-25. Stack и Heap
+13. [Какая основная идея языка?](/ITM/itm01_Core-1/solutions02_java/itm1013_idea_of_java.md)
+14. [За счет чего обеспечивается кроссплатформенность?](/ITM/itm01_Core-1/solutions02_java/itm1014_cross-platform_of_java.md)
+15. [Какие преимущества у java?](/ITM/itm01_Core-1/solutions02_java/itm1014_cross-platform_of_java.md)
+16. [Какие недостатки у java?](/ITM/itm01_Core-1/solutions02_java/itm1015_advantages_of_java.md)
+17. [Что такое JDK? Что в него входит?](/ITM/itm01_Core-1/solutions02_java/itm1017_JDK.md)
+18. [Что такое JRE? Что в него входит?](/ITM/itm01_Core-1/solutions02_java/itm1018_JRE.md)
+19. [Что такое JVM?](/ITM/itm01_Core-1/solutions02_java/itm1019_JVM.md)
+20. [Что такое byte code?](/ITM/itm01_Core-1/solutions02_java/itm1020_byte_code.md)
+21. [Что такое загрузчик классов (classloader)?](/ITM/itm01_Core-1/solutions02_java/itm1021_classloader.md)
+22. [Что такое JIT?](/ITM/itm01_Core-1/solutions02_java/itm1022_JIT.md)
+23. [Что такое сборщик мусора? (Garbage collector)](/ITM/itm01_Core-1/solutions02_java/itm1023_GC.md)
+24. [Виды ссылок в Java](/ITM/itm01_Core-1/solutions02_java/itm1024_Types_of_links.md)
+25. [Stack и Heap](/ITM/itm01_Core-1/solutions02_java/itm1025_Stack_Heap.md)
 
 ## Процедурная Java
 26. Какие примитивные типы данных есть в Java?
