@@ -17,6 +17,6 @@
 ---
 кратко про **Резюме**
 
-![плохое](/_ITM_old_version_FOR_DELETE/_other/imgs/2025-04-02_21-23-06.png)
+![плохое](/Documentes/tools/tmp/resume_bad.png)
 
-![хорошее](/_ITM_old_version_FOR_DELETE/_other/imgs/photo_2025-03-31_13-56-56.jpg)
+![хорошее](/Documentes/tools/tmp/resume_good.jpg)
