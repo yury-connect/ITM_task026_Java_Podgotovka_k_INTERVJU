@@ -1,0 +1,37 @@
+# Игнорируемые файлы и папки:
+
+# Исключить временные файлы Obsidian
+.trash/
+*.tmp
+
+# Исключить папки, синхронизируемые через Яндекс.Диск (если нужно)
+.obsidian/
+.git/
+.idea
+Attachments/
+Daily Notes/
+
+# Игнорируйте служебные файлы Obsidian:
+.trash/
+.obsidian/workspace
+.obsidian/plugins/
+*.tmp
+
+#############################################
+target/
+!.mvn/wrapper/maven-wrapper.jar
+!**/src/main/**/target/
+!**/src/test/**/target/
+
+### IntelliJ IDEA ###
+.idea/modules.xml
+.idea/jarRepositories.xml
+.idea/compiler.xml
+.idea/libraries/
+*.iws
+*.iml
+*.ipr
+
+
+### VS Code ###
+.vscode/
