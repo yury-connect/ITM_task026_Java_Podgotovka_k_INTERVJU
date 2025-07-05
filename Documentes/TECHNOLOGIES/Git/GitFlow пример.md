@@ -76,4 +76,4 @@ hotfix/123-критическая-ошибка
 - **test** — добавление или обновление тестов,    
 - **chore** — технические изменения, не влияющие на бизнес-логику.   
 
-
+[ссылка](https://www.atlassian.com/ru/git/tutorials/comparing-workflows/gitflow-workflow) на оригинал статьи *(atlassian.com)*
