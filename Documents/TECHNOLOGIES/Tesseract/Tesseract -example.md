@@ -1,4 +1,6 @@
-
+---
+tags:
+  - TECHNOLOGIES/Tesseract
 ---
 
 ## 🔍 Что такое **Tesseract**?

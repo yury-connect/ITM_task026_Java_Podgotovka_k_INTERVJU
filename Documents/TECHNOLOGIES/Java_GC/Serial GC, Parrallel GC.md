@@ -1,3 +1,7 @@
+---
+tags:
+  - TECHNOLOGIES/Tesseract
+---
 # Алгоритм работы Serial GC, Parrallel GC. Часть 1.
 Dec 23, 2015
 Рассмотрим двух ветеранов по сборке мусора в *HotSpot JVM* и их особенности.

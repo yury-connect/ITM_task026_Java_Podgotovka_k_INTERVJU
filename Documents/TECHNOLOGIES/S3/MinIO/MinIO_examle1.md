@@ -1,3 +1,7 @@
+---
+tags:
+  - TECHNOLOGIES/DataBase/S3/MinIO
+---
 # Пример использования MinIO S3 в Java
 Вот подробный пример работы с MinIO (S3-совместимое хранилище) на Java с использованием официального MinIO Java SDK.
 
