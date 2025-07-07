@@ -1,5 +1,7 @@
 ---
+Сложность: easy
 tags:
+  - coding
   - Tasks/Core
 ---
 # Java задачи: Анализ и результаты
