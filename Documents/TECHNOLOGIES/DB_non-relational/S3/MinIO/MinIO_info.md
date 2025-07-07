@@ -140,3 +140,7 @@ MinIO сохраняет:
 |Metadata|MIME, ETag, версия, кастомные поля|
 
 ---
+[Ссылка](https://github.com/yury-connect/ITM_task028_examples_MinIO) на мой пример реализации проекта с использованием MinIO 
+(объектное хранилище, полностью совместимое с Amazon S3 API)
+
+
