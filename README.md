@@ -1,6 +1,6 @@
 ## Материалы для подготовке к интервью ...
 
-2025-07-05 начал реконструкцию репозитория.
+###### 2025-07-05 начал реконструкцию репозитория.
 
 - Старая версия находится в ветке [by_questions](https://github.com/yury-connect/ITM_task026_Java_Podgotovka_k_INTERVJU/tree/by_questions/ITM)
 
