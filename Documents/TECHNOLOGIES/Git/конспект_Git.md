@@ -1,3 +1,7 @@
+---
+tags:
+  - TECHNOLOGIES/VCS/Git
+---
 # Краткий [конспект](https://suchkov.tech/%d0%be%d1%81%d0%bd%d0%be%d0%b2%d0%bd%d1%8b%d0%b5-%d0%ba%d0%be%d0%bc%d0%b0%d0%bd%d0%b4%d1%8b-git/) от [suchkov tech](https://www.youtube.com/@suchkov-tech) // [blog](https://suchkov.tech/blog/):
 Основные команды Git
 

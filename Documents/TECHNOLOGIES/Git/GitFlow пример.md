@@ -1,4 +1,6 @@
-
+---
+tags:
+  - TECHNOLOGIES/VCS/Git
 ---
 ## Общая схема веточного Git Flow
 

@@ -1,3 +1,7 @@
+---
+tags:
+  - TECHNOLOGIES/DataBase/ElasticSearch
+---
 # Краткий [конспект](https://suchkov.tech/elasticsearch-quick-start/) от [suchkov tech](https://www.youtube.com/@suchkov-tech) // [blog](https://suchkov.tech/blog/):
 
 Elasticsearch – быстрый старт

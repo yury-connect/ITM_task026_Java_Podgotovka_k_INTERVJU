@@ -1,3 +1,7 @@
+---
+tags:
+  - TECHNOLOGIES/Docker
+---
 # Краткий [конспект](https://suchkov.tech/%d0%bc%d0%bd%d0%be%d0%b3%d0%be%d1%81%d1%82%d1%83%d0%bf%d0%b5%d0%bd%d1%87%d0%b0%d1%82%d0%b0%d1%8f-%d1%81%d0%b1%d0%be%d1%80%d0%ba%d0%b0-docker/) от [suchkov tech](https://www.youtube.com/@suchkov-tech) // [blog](https://suchkov.tech/blog/):
 Многоступенчатая сборка Docker
 

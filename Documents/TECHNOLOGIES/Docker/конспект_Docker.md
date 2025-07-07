@@ -1,3 +1,7 @@
+---
+tags:
+  - TECHNOLOGIES/Docker
+---
 # Краткий [конспект](https://suchkov.tech/docker-%d0%b1%d1%8b%d1%81%d1%82%d1%80%d1%8b%d0%b9-%d1%81%d1%82%d0%b0%d1%80%d1%82/) от [suchkov tech](https://www.youtube.com/@suchkov-tech) // [blog](https://suchkov.tech/blog/):
 Docker – быстрый старт
 

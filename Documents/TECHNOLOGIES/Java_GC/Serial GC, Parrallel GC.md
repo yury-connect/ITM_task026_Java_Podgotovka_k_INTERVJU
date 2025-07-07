@@ -1,6 +1,9 @@
 ---
 tags:
-  - TECHNOLOGIES/Tesseract
+  - TECHNOLOGIES/Java/Ggarbage_Collector
+  - GC
+  - Serial GC
+  - Parrallel GC
 ---
 # Алгоритм работы Serial GC, Parrallel GC. Часть 1.
 Dec 23, 2015

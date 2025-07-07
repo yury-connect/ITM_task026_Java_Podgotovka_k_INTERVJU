@@ -1,4 +1,7 @@
-
+---
+tags:
+  - TECHNOLOGIES/DataBase/ElasticSearch
+---
 Отличное видео на YouYube: "`ElasticSearch: Всё, что нужно знать за 30 минут`", 
 - [Видео](https://youtu.be/vxE1aGTEnbE?si=1USLgHFHNov9szRQ) 
 - [Краткий конспект](https://suchkov.tech/elasticsearch-quick-start/)

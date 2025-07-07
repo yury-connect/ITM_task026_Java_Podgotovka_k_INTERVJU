@@ -1,7 +1,7 @@
 ---
 tags:
-  - Брокеры/Kafka
-  - Брокеры/RabbitMQ
+  - TECHNOLOGIES/Брокеры/Kafka
+  - TECHNOLOGIES/Брокеры/RabbitMQ
 ---
 # 1. Основные концепции брокеров сообщений
 

@@ -1,3 +1,7 @@
+---
+tags:
+  - TECHNOLOGIES/DataBase/MongoDB
+---
 # Краткий [конспект](https://suchkov.tech/%D0%BE%D1%81%D0%BD%D0%BE%D0%B2%D1%8B-mongodb/) от [suchkov tech](https://www.youtube.com/@suchkov-tech) // [blog](https://suchkov.tech/blog/):
 Основы MongoDB
 
