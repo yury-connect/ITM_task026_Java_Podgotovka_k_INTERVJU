@@ -142,13 +142,13 @@ public record UserDTO(Long id, String username, String email) { }
 ```java
 @RestControllerAdvice
 public class GlobalExceptionHandler {
-
+	
     @ExceptionHandler(EntityNotFoundException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
     public ErrorResponse handleNotFound(EntityNotFoundException ex) {
         return new ErrorResponse("NOT_FOUND", ex.getMessage());
     }
-
+	
     // другие обработчики исключений...
 }
 ```
@@ -165,13 +165,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
-            .cors().and()           // включаем CORS (см. ниже)
-            .csrf().disable()           // обычно CSRF отключается для JWT (stateless)
+            .cors().and()       // включаем CORS (см. ниже)
+            .csrf().disable()   // обычно CSRF отключается для JWT (stateless)
             .authorizeRequests()
                 .antMatchers("/api/auth/**").permitAll()
                 .anyRequest().authenticated()
             .and()
-            .oauth2Login();             // включаем OAuth2/Social Login (Google, GitHub и т.д.)
+            .oauth2Login();     // включаем OAuth2/Social Login (Google, GitHub и т.д.)
         
         http.addFilterBefore(jwtAuthFilter(), UsernamePasswordAuthenticationFilter.class);
     }
