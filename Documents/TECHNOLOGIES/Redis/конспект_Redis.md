@@ -1,3 +1,7 @@
+---
+tags:
+  - TECHNOLOGIES/Redis
+---
 # Краткий [конспект](https://suchkov.tech/%d1%87%d1%82%d0%be-%d1%82%d0%b0%d0%ba%d0%be%d0%b5-redis-%d0%b8-%d0%b4%d0%bb%d1%8f-%d1%87%d0%b5%d0%b3%d0%be-%d0%be%d0%bd-%d0%bd%d1%83%d0%b6%d0%b5%d0%bd/) от [suchkov tech](https://www.youtube.com/@suchkov-tech) // [blog](https://suchkov.tech/blog/):
 Что такое Redis и для чего он нужен?
 
