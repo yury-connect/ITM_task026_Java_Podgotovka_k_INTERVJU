@@ -44,7 +44,7 @@ public class MicroserviceTemplateApplication {
 }
 ```
 
-### Пример контроллера (`controller/ExampleController.java`)
+### Пример **контроллера** (`controller/ExampleController.java`)
 ```java
 package com.example.microservicetemplate.controller;
 
@@ -75,7 +75,7 @@ public class ExampleController {
 }
 ```
 
-### Пример сервиса (`service/ExampleService.java`)
+### Пример **сервиса** (`service/ExampleService.java`)
 ```java
 package com.example.microservicetemplate.service;
 
