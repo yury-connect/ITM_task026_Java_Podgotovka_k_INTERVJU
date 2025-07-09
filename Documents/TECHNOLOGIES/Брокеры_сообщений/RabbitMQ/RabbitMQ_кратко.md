@@ -1,3 +1,7 @@
+---
+tags:
+  - TECHNOLOGIES/Брокеры/RabbitMQ
+---
 # 🐇 **Что такое RabbitMQ?**
 
 **RabbitMQ** — это **брокер сообщений** (message broker), то есть система, которая **передаёт сообщения между различными частями приложения**, по принципу **"отправитель → посредник → получатель"**.
@@ -156,122 +160,92 @@ channel.basicNack(deliveryTag, false, true); // повторная достав�
 ## 2. **Dead-Letter Queue (DLQ) — очередь мёртвых сообщений ☠️**
 
 Если сообщение **не удалось обработать**, его можно **отправить в другую очередь**, чтобы:
-- не потерять
-    
-- потом анализировать
-    
-- повторно обрабатывать
-    
+- не потерять    
+- потом анализировать    
+- повторно обрабатывать    
 
 📦 **Как создать DLQ?**
+```java
+Map<String, Object> args = new HashMap<>();
+args.put("x-dead-letter-exchange", "dlx.exchange"); // обменник, куда пойдёт "трупик"
+args.put("x-dead-letter-routing-key", "dlx.key");
 
-java
-
-КопироватьРедактировать
-
-`Map<String, Object> args = new HashMap<>(); args.put("x-dead-letter-exchange", "dlx.exchange"); // обменник, куда пойдёт "трупик" args.put("x-dead-letter-routing-key", "dlx.key");  channel.queueDeclare("main.queue", true, false, false, args); channel.exchangeDeclare("dlx.exchange", "direct"); channel.queueDeclare("dlx.queue", true, false, false, null); channel.queueBind("dlx.queue", "dlx.exchange", "dlx.key");`
-
+channel.queueDeclare("main.queue", true, false, false, args);
+channel.exchangeDeclare("dlx.exchange", "direct");
+channel.queueDeclare("dlx.queue", true, false, false, null);
+channel.queueBind("dlx.queue", "dlx.exchange", "dlx.key");
+```
 Теперь, если ты отправляешь **basicNack(...) с requeue = false**, сообщение уйдёт в `dlx.queue`.
 
 ---
-
 # 🔁 **Retry-механика (повторная попытка)**
 
 RabbitMQ **не делает retry сам по себе**, но ты можешь настроить его так:
-
 ### ✅ Способ 1: Через TTL + DLQ + delay
+1. **Создай delay-очередь** с TTL:    
+```java
+Map<String, Object> retryArgs = new HashMap<>();
+retryArgs.put("x-message-ttl", 5000); // 5 секунд задержки
+retryArgs.put("x-dead-letter-exchange", "main.exchange"); // вернётся назад
 
-1. **Создай delay-очередь** с TTL:
-    
+channel.queueDeclare("retry.queue", true, false, false, retryArgs);
+```
 
-java
-
-КопироватьРедактировать
-
-`Map<String, Object> retryArgs = new HashMap<>(); retryArgs.put("x-message-ttl", 5000); // 5 секунд задержки retryArgs.put("x-dead-letter-exchange", "main.exchange"); // вернётся назад  channel.queueDeclare("retry.queue", true, false, false, retryArgs);`
-
-2. Если потребитель **не справился** — отправляй в эту очередь (она "подержит" сообщение и перекинет обратно).
-    
+2. Если потребитель **не справился** — отправляй в эту очередь (она "подержит" сообщение и перекинет обратно).    
 
 ---
-
 # 🔀 **Exchange’ы (обменники)** — углублённо
 
 ### 1. **direct**
-
 — классика. Один в один по ключу.
-
 ### 2. **fanout**
-
 — рассылает всем очередям. Идеально для **рассылок и уведомлений**.
-
 ### 3. **topic**
-
 — маршрутизация по шаблону:
+```java
+channel.exchangeDeclare("topic_logs", "topic");
+channel.queueBind("queue1", "topic_logs", "user.*");
+channel.queueBind("queue2", "topic_logs", "user.#");
+```
 
-java
-
-КопироватьРедактировать
-
-`channel.exchangeDeclare("topic_logs", "topic"); channel.queueBind("queue1", "topic_logs", "user.*"); channel.queueBind("queue2", "topic_logs", "user.#");`
-
-|Маршрут|Попадёт куда|
-|---|---|
-|`user.login`|`user.*`, `user.#`|
-|`user.login.success`|`user.#`|
-|`user`|`user.*`, `user.#`|
-
+| Маршрут              | Попадёт куда       |
+| -------------------- | ------------------ |
+| `user.login`         | `user.*`, `user.#` |
+| `user.login.success` | `user.#`           |
+| `user`               | `user.*`, `user.#` |
 ### 4. **headers**
 
 Маршрутизация по **заголовкам**, а не по ключу. Используется редко, но мощно для сложной логики.
 
 ---
-
 # 💣 Pro-фишки
-
 ### ✨ Prefetch
-
 Лимит сообщений, которые можно доставить потребителю, пока он не подтвердил предыдущее.
-
-java
-
-КопироватьРедактировать
-
-`channel.basicQos(1); // по одному сообщению за раз`
-
+```java
+channel.basicQos(1); // по одному сообщению за раз
+```
 ### ✨ Priority queues
-
 Можно задать приоритеты сообщениям — чем выше, тем раньше будет обработано.
-
-java
-
-КопироватьРедактировать
-
-`Map<String, Object> args = new HashMap<>(); args.put("x-max-priority", 10); channel.queueDeclare("priority.queue", true, false, false, args);`
+```java
+Map<String, Object> args = new HashMap<>();
+args.put("x-max-priority", 10);
+channel.queueDeclare("priority.queue", true, false, false, args);
+```
 
 ---
-
 ## 🔐 Безопасность и HA
-
-- Поддерживает **авторизацию**, SSL
-    
-- **Зеркалирование очередей** (high availability)
-    
-- **Clustering** и **Federation** между серверами
-    
+- Поддерживает **авторизацию**, SSL    
+- **Зеркалирование очередей** (high availability)    
+- **Clustering** и **Federation** между серверами    
 
 ---
-
 # 🔧 Monitoring и админка
-
 👉 Включи **RabbitMQ Management Plugin**:
-
-bash
-
-КопироватьРедактировать
-
-`rabbitmq-plugins enable rabbitmq_management`
-
+```bash
+rabbitmq-plugins enable rabbitmq_management
+```
 Затем зайди в браузере:  
 [http://localhost:15672](http://localhost:15672)  
 (логин: `guest` / пароль: `guest`)
+
+
