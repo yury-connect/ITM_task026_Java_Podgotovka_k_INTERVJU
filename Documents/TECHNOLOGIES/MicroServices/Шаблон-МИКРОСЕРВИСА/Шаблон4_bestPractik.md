@@ -29,15 +29,62 @@ docker-compose.yml         # Поднятие сервиса + БД (PostgreSQL)
 ## Контроллеры
 
 Контроллеры помечаются `@RestController` и обычно содержат аннотации маршрутизации (`@GetMapping`, `@PostMapping` и т.д.). Они не выполняют бизнес-логику, а лишь делегируют её в сервисный слой[javaguides.net](https://www.javaguides.net/2025/03/spring-boot-architecture.html#:~:text=%E2%9C%94%20Receives%20client%20requests%20%28,Returns%20the%20appropriate%20HTTP%20response)[javaguides.net](https://www.javaguides.net/2025/03/spring-boot-architecture.html#:~:text=public%20ProductController%28ProductService%20productService%29%20,productService%3B). Пример контроллера:
+```java
+@RestController
+@RequestMapping("/api/users")
+public class UserController {
+    private final UserService userService;
 
-`@RestController @RequestMapping("/api/users") public class UserController {     private final UserService userService;      public UserController(UserService userService) {         this.userService = userService;     }      @GetMapping("/{id}")     public ResponseEntity<UserDTO> getUser(@PathVariable Long id) {         return userService.getUserById(id)             .map(ResponseEntity::ok)             .orElse(ResponseEntity.notFound().build());     }      @PostMapping     @ResponseStatus(HttpStatus.CREATED)     public UserDTO createUser(@RequestBody UserDTO userDto) {         return userService.createUser(userDto);     }     // другие endpoints... }`
+    public UserController(UserService userService) {
+        this.userService = userService;
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<UserDTO> getUser(@PathVariable Long id) {
+        return userService.getUserById(id)
+            .map(ResponseEntity::ok)
+            .orElse(ResponseEntity.notFound().build());
+    }
+
+    @PostMapping
+    @ResponseStatus(HttpStatus.CREATED)
+    public UserDTO createUser(@RequestBody UserDTO userDto) {
+        return userService.createUser(userDto);
+    }
+    // другие endpoints...
+}
+```
 
 Этот контроллер принимает HTTP-запросы, вызывает методы сервисов и возвращает готовые DTO. Логика преобразования `User <-> UserDTO` и проверки находятся в сервисе или маппере. Контроллер сам по себе не должен содержать «тяжёлой» логики – он лишь «направляет» запрос дальше[javaguides.net](https://www.javaguides.net/2025/03/spring-boot-architecture.html#:~:text=2%EF%B8%8F%E2%83%A3%20Controller%20Layer%20,Requests%20%26%20Responses)[javaguides.net](https://www.javaguides.net/2025/03/spring-boot-architecture.html#:~:text=3%EF%B8%8F%E2%83%A3%20Service%20Layer%20,Processing).
 
 ## Сервисный слой
-
 Сервисные классы помечены `@Service` и реализуют бизнес-логику приложения. Они взаимодействуют с репозиториями, выполняют необходимые вычисления и формируют модели/DTO. В сервисах удобно использовать `@Transactional` для группировки нескольких операций БД в одну транзакцию (атомарно)[javaguides.net](https://www.javaguides.net/2025/03/spring-boot-architecture.html#:~:text=3%EF%B8%8F%E2%83%A3%20Service%20Layer%20,Processing). Пример сервиса:
+```java
+@Service
+public class UserService {
+    private final UserRepository userRepository;
+    private final UserMapper userMapper; // конвертер Entity <-> DTO
 
+    public UserService(UserRepository userRepository, UserMapper userMapper) {
+        this.userRepository = userRepository;
+        this.userMapper = userMapper;
+    }
+
+    @Transactional(readOnly = true)
+    public Optional<UserDTO> getUserById(Long id) {
+        return userRepository.findById(id)
+            .map(userMapper::toDto);
+    }
+
+    @Transactional
+    public UserDTO createUser(UserDTO dto) {
+        User user = userMapper.toEntity(dto);
+        User saved = userRepository.save(user);
+        return userMapper.toDto(saved);
+    }
+    // другие методы...
+}
+```
 `@Service public class UserService {     private final UserRepository userRepository;     private final UserMapper userMapper; // конвертер Entity <-> DTO      public UserService(UserRepository userRepository, UserMapper userMapper) {         this.userRepository = userRepository;         this.userMapper = userMapper;     }      @Transactional(readOnly = true)     public Optional<UserDTO> getUserById(Long id) {         return userRepository.findById(id)             .map(userMapper::toDto);     }      @Transactional     public UserDTO createUser(UserDTO dto) {         User user = userMapper.toEntity(dto);         User saved = userRepository.save(user);         return userMapper.toDto(saved);     }     // другие методы... }`
 
 Сервисный слой **отделяет контроллеры от репозиториев** и содержит бизнес-правила (например, проверку уникальности email, хеширование пароля и т.д.). Все операции с БД через `userRepository` обёрнуты в транзакцию Spring (`@Transactional`) для обеспечения консистентности (при ошибке транзакция откатится). Сам интерфейс репозитория прост: он наследуется от `JpaRepository` и автоматически получает набор CRUD-методов[javaguides.net](https://www.javaguides.net/2025/03/spring-boot-architecture.html#:~:text=Spring%20Data%20JPA%20reduces%20the,etc).
