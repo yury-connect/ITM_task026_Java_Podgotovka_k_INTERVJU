@@ -4,7 +4,9 @@ tags:
   - Рабочие_процессы/Gitflow
   - Рабочие_процессы/TBD
   - Рабочие_процессы/Trunk-Based-Development
-
+links:
+  - https://university.ylab.io/articles/tpost/coolr7uy91-vi-vsyo-eschyo-polzuetes-gitflow-obzor-t
+  - https://www.atlassian.com/ru/git/tutorials/comparing-workflows/gitflow-workflow
 ---
 # Вы всё ещё пользуетесь Gitflow? Обзор TBD
 
