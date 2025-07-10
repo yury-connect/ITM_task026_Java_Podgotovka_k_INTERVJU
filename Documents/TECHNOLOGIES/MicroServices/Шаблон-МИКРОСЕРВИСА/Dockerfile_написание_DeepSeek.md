@@ -1,7 +1,7 @@
 ## Написание Dockerfile (пояснение от *DeepSeek*)
 
 ---
-# Подробное объяснение Dockerfile на примере.
+# Подробное объяснение **Dockerfile** на примере.
 
 #### Краткое описание:
 **Dockerfile** — это инструкция для сборки Docker-образа. Он описывает:
@@ -207,7 +207,7 @@ docker run -d -p 8080:8080 --name my-container my-service:1.0
     - При остановке: SIGTERM → SIGKILL (через 10 сек)        
 
 ---
-### Рекомендации для Spring Boot:
+# Рекомендации для **Spring Boot**:
 
 1. **Используйте `Spring Boot layerization`:**
 ```dockerfile
