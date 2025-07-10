@@ -1,7 +1,7 @@
-## Написание Dockerfile (пояснение от DeepSeek)
+## Написание Dockerfile (пояснение от *DeepSeek*)
 
 ---
-### Подробное объяснение Dockerfile на примере вашего файла
+# Подробное объяснение Dockerfile на примере.
 
 #### Краткое описание:
 **Dockerfile** — это инструкция для сборки Docker-образа. Он описывает:
@@ -10,28 +10,37 @@
 3. Копирование файлов приложения    
 4. Параметры запуска контейнера    
 
-Ваш Dockerfile делает следующее:
+#### Пример для рассмотрения:
+```dockerfile
+FROM eclipse-temurin:17-jdk-jammy
+WORKDIR /app
+COPY user-service-src/target/user-service-src-0.0.1-SNAPSHOT.jar app.jar
+EXPOSE 8080
+ENTRYPOINT ["java", "-jar", "app.jar"]
+```
+
+Ваш **Dockerfile** делает следующее:
 1. Берет образ с Java 17    
 2. Создает рабочую директорию `/app`    
 3. Копирует JAR-файл приложения    
 4. Открывает порт 8080    
 5. Задает команду запуска приложения    
-#### Детальный разбор каждой инструкции:
 
 ---
+# Детальный разбор каждой инструкции:
+
 **1. `FROM eclipse-temurin:17-jdk-jammy`**
 ```dockerfile
 # Базовый образ с предустановленной Java 17
 FROM eclipse-temurin:17-jdk-jammy
 ```
-
 - **Что делает:** Задает основу для образа    
 - **Детали:**    
     - `eclipse-temurin` — официальный образ OpenJDK от Eclipse Adoptium        
     - `17-jdk-jammy` — тег, указывающий версию:        
-        - `17`: Версия Java            
-        - `jdk`: Тип пакета (JDK вместо JRE)            
-        - `jammy`: Базовая ОС Ubuntu 22.04 LTS
+        - `17`: Версия Java **17**           
+        - `jdk`: Тип пакета (**JDK** вместо JRE)            
+        - `jammy`: Базовая ОС **Ubuntu 22.04 LTS**
     
 - **Альтернативы:**    
     - `eclipse-temurin:17-jre-jammy` — для production (меньший размер)        
@@ -43,7 +52,6 @@ FROM eclipse-temurin:17-jdk-jammy
 # Устанавливает рабочую директорию внутри контейнера
 WORKDIR /app
 ```
-
 - **Что делает:** Создает директорию и делает ее текущей    
 - **Детали:**    
     - Все последующие команды выполняются относительно `/app`        
@@ -78,15 +86,13 @@ COPY user-service-src/target/user-service-src-0.0.1-SNAPSHOT.jar app.jar
 # Декларирует порт, который слушает приложение
 EXPOSE 8080
 ```
-
 - **Что делает:** Указывает на какой порт контейнер принимает подключения    
 - **Детали:**    
     - Не открывает порт автоматически — это метаданные для `docker run`        
     - Фактическое открытие порта происходит при запуске:
-```bash
-docker run -p 8080:8080 ...
-```
-
+	```bash
+	docker run -p 8080:8080 ...
+	```
     - Рекомендуется указывать протокол: `EXPOSE 8080/tcp`
 
 ---
@@ -107,7 +113,7 @@ ENTRYPOINT ["java", "-jar", "app.jar"]
     - Часто используется в комбинации с `CMD`        
 
 ---
-### Полный улучшенный пример с комментариями:
+# Полный улучшенный пример с комментариями:
 ```dockerfile
 # Базовый образ с Java 17 (оптимизированный для production)
 FROM eclipse-temurin:17-jre-jammy
@@ -133,7 +139,7 @@ ENTRYPOINT ["sh", "-c", "java $JAVA_OPTS -jar app.jar ${0} ${@}"]
 ```
 
 ---
-### Ключевые принципы написания Dockerfile:
+# Ключевые принципы написания **Dockerfile**:
 
 1. **Минимизация слоев:**    
     - Объединяйте команды `RUN`:
@@ -177,25 +183,25 @@ COPY --from=build /target/*.jar app.jar
 ```
   
 ---
-### Процесс работы Docker:
+# Процесс работы **Docker**:
 
 1. **Сборка образа:**
-```bash
+   ```bash
 docker build -t my-service:1.0 .
-```
+   ```
     - Читает Dockerfile        
     - Выполняет инструкции последовательно        
     - Создает слои для каждой инструкции        
     - Формирует финальный образ
-        
+    
 2. **Запуск контейнера:**
-```bash
+   ```bash
 docker run -d -p 8080:8080 --name my-container my-service:1.0
-```
+   ```
     - Создает контейнер из образа        
     - Выполняет команду из `ENTRYPOINT`        
     - Пробрасывает порт 8080 хоста на порт 8080 контейнера
-        
+    
 3. **Жизненный цикл:**    
     - При старте: `ENTRYPOINT` → `CMD`        
     - При остановке: SIGTERM → SIGKILL (через 10 сек)        
@@ -203,46 +209,36 @@ docker run -d -p 8080:8080 --name my-container my-service:1.0
 ---
 ### Рекомендации для Spring Boot:
 
-1. **Используйте Spring Boot layerization:**
+1. **Используйте `Spring Boot layerization`:**
 ```dockerfile
-
+COPY target/*.jar app.jar
+ENTRYPOINT ["java", "-Djarmode=layertools", "-jar", "app.jar", "extract"]
 ```
     
+2. **Добавьте `health-check`:**
+```dockerfile
+HEALTHCHECK --interval=30s CMD curl -f http://localhost:8080/actuator/health || exit 1
+```
     
-    COPY target/*.jar app.jar
-    ENTRYPOINT ["java", "-Djarmode=layertools", "-jar", "app.jar", "extract"]
+3. **Оптимизируйте `JVM` для контейнеров:**
+```dockerfile
+ENV JAVA_OPTS="-XX:+UseContainerSupport -XX:MaxRAMPercentage=75"
+```
     
-2. **Добавьте health-check:**
-    
-    dockerfile
-    
-    HEALTHCHECK --interval=30s CMD curl -f http://localhost:8080/actuator/health || exit 1
-    
-3. **Оптимизируйте JVM для контейнеров:**
-    
-    dockerfile
-    
-    ENV JAVA_OPTS="-XX:+UseContainerSupport -XX:MaxRAMPercentage=75"
-    
-4. **Используйте .dockerignore:**
-    
-    text
-    
-    .git
-    .mvn
-    target
-    *.iml
-    Dockerfile
-    
+4. **Используйте `.dockerignore`:**
+```text
+.git
+.mvn
+target
+*.iml
+Dockerfile
+```
 
-Такой Dockerfile обеспечивает:
-
-- Минимальный размер образа
-    
-- Безопасную работу без root-прав
-    
-- Оптимальные настройки JVM
-    
-- Легкое масштабирование в Kubernetes
-    
+Такой **Dockerfile** обеспечивает:
+- Минимальный размер образа    
+- Безопасную работу без root-прав    
+- Оптимальные настройки JVM    
+- Легкое масштабирование в Kubernetes    
 - Понятную структуру для сопровождения
+
+
