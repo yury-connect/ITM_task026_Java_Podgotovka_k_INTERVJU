@@ -29,23 +29,23 @@ System.out.println(concat.apply("Hello", "World")); // "Hello World"
 ```java
 List<Integer> numbers = Arrays.asList(1, 2, 3, 4);
 BinaryOperator<Integer> multiply = (a, b) -> a * b;
-
+	
 int product = numbers.stream()
     .reduce(1, multiply); // 1 * 1 * 2 * 3 * 4
-
+	
 System.out.println(product); // 24
 ```
 
 ## **5. Объединение мап с заменой значений**
 ```java
 BinaryOperator<String> resolveConflict = (oldVal, newVal) -> newVal + " (updated)";
-
+	
 Map<String, String> map1 = Map.of("A", "Apple", "B", "Banana");
 Map<String, String> map2 = Map.of("A", "Apricot", "C", "Cherry");
-
+	
 Map<String, String> merged = new HashMap<>(map1);
 map2.forEach((k, v) -> merged.merge(k, v, resolveConflict));
-
+	
 System.out.println(merged); 
 // {A=Apricot (updated), B=Banana, C=Cherry}
 ```
@@ -54,12 +54,12 @@ System.out.println(merged);
 ```java
 BinaryOperator<String> longestString = (s1, s2) -> 
     s1.length() > s2.length() ? s1 : s2;
-
+	
 List<String> words = Arrays.asList("Java", "Python", "C++", "Go");
 String longest = words.stream()
     .reduce(longestString)
     .orElse("");
-
+	
 System.out.println(longest); // "Python"
 ```
 
@@ -102,8 +102,9 @@ System.out.println(sumAndSquare.apply(2, 3)); // 25 ( (2+3)² )
 - **Слияния коллекций** (`Map.merge`).    
 
 **Пример с `Stream.reduce`:**
-
-java
-
+```java
 List<Integer> nums = List.of(1, 2, 3, 4);
 int sum = nums.stream().reduce(0, Integer::sum); // 10
+```
+
+---
