@@ -33,22 +33,8 @@ Predicate<Integer> isNegativeOrOdd = isPositive.negate().or(isEven.negate());
 System.out.println(isNegativeOrOdd.test(-3)); // true
 ```
 
-
-Predicate<Integer> isPositive = num -> num > 0;
-Predicate<Integer> isEven = num -> num % 2 == 0;
-
-// "Положительное И чётное"
-Predicate<Integer> isPositiveAndEven = isPositive.and(isEven);
-System.out.println(isPositiveAndEven.test(6)); // true
-
-// "Отрицательное ИЛИ нечётное"
-Predicate<Integer> isNegativeOrOdd = isPositive.negate().or(isEven.negate());
-System.out.println(isNegativeOrOdd.test(-3)); // true
-
 #### **4. Проверка объекта (например, возраст > 18)**
-
-java
-
+```java
 class Person {
     String name;
     int age;
@@ -59,19 +45,17 @@ Predicate<Person> isAdult = p -> p.getAge() >= 18;
 
 Person alice = new Person("Alice", 20);
 System.out.println(isAdult.test(alice)); // true
+```
 
 #### **5. Удаление элементов из коллекции (`Collection.removeIf`)**
-
-java
-
+```java
 List<Integer> numbers = new ArrayList<>(Arrays.asList(1, 2, 3, 4, 5));
 numbers.removeIf(num -> num % 2 == 0); // Удалить чётные
 System.out.println(numbers); // [1, 3, 5]
+```
 
 #### **6. Проверка на `null` (комбинация с `Objects.nonNull`)**
-
-java
-
+```java
 Predicate<String> isNotNull = Objects::nonNull;
 Predicate<String> isEmpty = String::isEmpty;
 
@@ -80,6 +64,7 @@ Predicate<String> isValid = isNotNull.and(isEmpty.negate());
 
 System.out.println(isValid.test("Hello")); // true
 System.out.println(isValid.test(""));     // false
+```
 
 ### **Ключевые моменты:**
 
@@ -95,3 +80,5 @@ System.out.println(isValid.test(""));     // false
 - Для сложных условий выносите `Predicate` в отдельные переменные.
     
 - Используйте **метод-референсы** (`String::isEmpty`, `Objects::nonNull`), где это упрощает код.
+
+---
