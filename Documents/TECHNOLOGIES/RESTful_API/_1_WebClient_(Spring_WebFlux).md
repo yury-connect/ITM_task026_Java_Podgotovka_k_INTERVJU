@@ -35,6 +35,13 @@ Mono<User> userMono = webClient.get()
 userMono.subscribe(user -> System.out.println(user));
 ```
 
+✅ **Плюсы:**
+- Поддерживается Spring *(в отличие от `RestTemplate`)*.    
+- Может работать как **синхронно**, так и **асинхронно**.    
+- Легко **масштабируется**, если приложение станет сложнее.    
+
+❌ **Минусы:**
+- Чуть сложнее в настройке, чем `RestTemplate`.
 ---
 ## **Примеры с `WebClient` <br>(асинхронный, реактивный клиент)**
 
@@ -73,6 +80,23 @@ public class UserController {
                 .uri("/users/" + id)
                 .retrieve()
                 .bodyToMono(User.class); // Асинхронный запрос (возвращает Mono)
+    }
+}
+```
+
+или
+```java
+@RestController
+public class UserController {
+    private final WebClient webClient = WebClient.create("https://jsonplaceholder.typicode.com");
+
+    @GetMapping("/user/{id}")
+    public User getUser(@PathVariable Long id) {
+        return webClient.get()
+                .uri("/users/" + id)
+                .retrieve()
+                .bodyToMono(User.class)
+                .block(); // Синхронный вызов (если не нужна реактивность)
     }
 }
 ```
