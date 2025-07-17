@@ -1,5 +1,6 @@
-**  
-Пакет:** `java.net.http` (встроен в Java 11+)  
+## **1. HttpClient (Java 11+)**
+
+**Пакет:** `java.net.http` (встроен в Java 11+)
 **Тип:** Синхронный и асинхронный (на основе `CompletableFuture`)  
 **Плюсы:**  
 ✔ Встроен в JDK, не требует зависимостей.  
@@ -9,9 +10,7 @@
 ❌ Менее удобен, чем Spring-клиенты (нет автоматической сериализации JSON).
 
 ### Пример (синхронный GET):
-
-java
-
+```java
 import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
@@ -28,12 +27,15 @@ public class JavaHttpClientExample {
         System.out.println(response.body());
     }
 }
+```
 
 ### Пример (асинхронный GET):
-
-java
-
+```java
 client.sendAsync(request, HttpResponse.BodyHandlers.ofString())
       .thenApply(HttpResponse::body)
       .thenAccept(System.out::println)
       .join(); // или без join() для настоящей асинхронности
+```
+
+---
+
