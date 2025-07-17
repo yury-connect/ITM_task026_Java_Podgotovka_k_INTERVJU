@@ -54,11 +54,12 @@ public class AppConfig {
 public class UserController {
     @Autowired
     private RestTemplate restTemplate;
-
+		
     @GetMapping("/user/{id}")
     public User getUser(@PathVariable Long id) {
         String url = "https://jsonplaceholder.typicode.com/users/" + id;
-        return restTemplate.getForObject(url, User.class); // GET + автоматическая десериализация в объект
+        return restTemplate.getForObject(url, User.class); 
+	        // GET + автоматическая десериализация в объект
     }
 }
 ```
@@ -78,7 +79,8 @@ public List<User> getUsers() {
 @PostMapping("/create")
 public User createUser(@RequestBody User user) {
     String url = "https://jsonplaceholder.typicode.com/users";
-    return restTemplate.postForObject(url, user, User.class); // POST + автоматическая сериализация
+    return restTemplate.postForObject(url, user, User.class); 
+	    // POST + автоматическая сериализация
 }
 ```
 

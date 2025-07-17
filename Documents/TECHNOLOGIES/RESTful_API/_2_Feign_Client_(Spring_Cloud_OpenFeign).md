@@ -45,7 +45,7 @@ public interface UserClient {
 public class UserController {
     @Autowired
     private UserClient userClient;
-
+	
     @GetMapping("/user/{id}")
     public User getUser(@PathVariable Long id) {
         return userClient.getUser(id);

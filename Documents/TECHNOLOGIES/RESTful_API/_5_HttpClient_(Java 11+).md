@@ -34,7 +34,7 @@ public class JavaHttpClientExample {
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create("https://jsonplaceholder.typicode.com/users/1"))
                 .build();
-
+			
         HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
         System.out.println(response.body());
     }
