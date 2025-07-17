@@ -1,3 +1,14 @@
+### **4. Retrofit (Square)**
+**Популярность:** 🔥 **#1 для Android и чистого Java**  
+**Почему:**
+- Лаконичный API.    
+- Поддержка RxJava, Coroutines.    
+
+**Где использовать:**
+- Android-приложения.    
+- Не-Spring проекты.
+
+---
 ## **3. Retrofit (от Square)**
 
 **Пакет:** `com.squareup.retrofit2:retrofit`  
@@ -22,7 +33,7 @@ public class RetrofitExample {
                 .baseUrl("https://jsonplaceholder.typicode.com/")
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
-
+				
         UserApi api = retrofit.create(UserApi.class);
         Call<User> call = api.getUser(1L);
         Response<User> response = call.execute(); // Синхронный вызов
