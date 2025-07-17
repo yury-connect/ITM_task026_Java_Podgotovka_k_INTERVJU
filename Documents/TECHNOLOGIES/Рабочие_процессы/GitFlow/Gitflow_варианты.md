@@ -5,30 +5,23 @@ tags:
   - Рабочие_процессы/TBD
   - Рабочие_процессы/Trunk-Based-Development
 ---
+## Прорисовал графически:
+---
+### Gitflow: **Полный**
+![Полный](./_attachments_Gitflow_варианты/Gitflow_full.png)
+
+![Полный|600](./_attachments_Gitflow_варианты/Gitflow_full_.png)
 
 ---
-### Gitflow **ПОЛНЫЙ**
+### Gitflow: **Сокращенный**
+![Сокращенный](./_attachments_Gitflow_варианты/Gitflow_simple.png)
 
-![|1024x449](./_attachments_Gitflow_варианты/Gitflow_full_.png)
-
----
-### Gitflow **Сокращенный**
-
-![|676x427](./_attachments_Gitflow_варианты/Gitflow_simple.png)
-
-![|1024x409](./_attachments_Gitflow_варианты/Gitflow_simple_.png)
+![Сокращенный|600](./_attachments_Gitflow_варианты/Gitflow_simple_.png)
 
 ---
-### Gitflow **Сокращенный-упрощенный**
-
-![|681x489](./_attachments_Gitflow_варианты/Gitflow_full.png)
-
-![|703x393](./_attachments_Gitflow_варианты/Gitflow_simple_lite.png)
+### Gitflow: **Сокращенный-упрощенный**
+![Сокращенный-упрощенный](./_attachments_Gitflow_варианты/Gitflow_simple_lite.png)
 
 ---
-
-
-
-
 
 
