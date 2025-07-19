@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Book Details</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        .book-details-card {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        .status-badge {
+            font-size: 1rem;
+            padding: 0.5em 0.75em;
+        }
+    </style>
+</head>
+<body>
+<div class="container mt-4">
+    <div th:if="${book}">
+        <div class="card book-details-card">
+            <div class="card-header bg-light">
+                <h2 class="mb-0" th:text="${book.title}"></h2>
+            </div>
+            <div class="card-body">
+                <div class="row mb-3">
+                    <div class="col-sm-4 fw-bold">ID:</div>
+                    <div class="col-sm-8" th:text="${book.id}"></div>
+                </div>
+
+                <div class="row mb-3">
+                    <div class="col-sm-4 fw-bold">Price:</div>
+                    <div class="col-sm-8" th:text="${'$' + #numbers.formatDecimal(book.price, 1, 2)}"></div>
+                </div>
+
+                <div class="row mb-3">
+                    <div class="col-sm-4 fw-bold">Status:</div>
+                    <div class="col-sm-8">
+                        <span class="status-badge badge rounded-pill"
+                              th:class="${book.status == 'AVAILABLE'} ? 'bg-success' :
+                                        (${book.status == 'RESERVED'} ? 'bg-warning' : 'bg-danger')"
+                              th:text="${book.status}"></span>
+                    </div>
+                </div>
+
+                <div class="row mb-3">
+                    <div class="col-sm-4 fw-bold">Created Date:</div>
+                    <div class="col-sm-8" th:text="${#temporals.format(book.createdAt, 'yyyy-MM-dd HH:mm')}"></div>
+                </div>
+
+                <div class="row mb-3">
+                    <div class="col-sm-4 fw-bold">Last Updated:</div>
+                    <div class="col-sm-8">
+                        <span th:if="${book.updatedAt != null}"
+                              th:text="${#temporals.format(book.updatedAt, 'yyyy-MM-dd HH:mm')}"></span>
+                        <span th:unless="${book.updatedAt != null}">Never</span>
+                    </div>
+                </div>
+            </div>
+            <div class="card-footer">
+                <a href="/mvc/books" class="btn btn-primary">Back to List</a>
+            </div>
+        </div>
+    </div>
+
+    <div th:unless="${book}" class="alert alert-warning mt-4">
+        Book not found!
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

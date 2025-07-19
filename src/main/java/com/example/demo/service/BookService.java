@@ -1,24 +1,25 @@
 package com.example.demo.service;
 
+import com.example.demo.exception.BookNotFoundException;
 import com.example.demo.model.Book;
-import com.example.demo.repository.BookRepository;
-import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.UUID;
 
 
 @Service
-@RequiredArgsConstructor
-public class BookService {
+public interface BookService {
 
-    private final BookRepository bookRepository;
+    public List<Book> findAll();
 
-    public List<Book> findAllBooks() {
-        return bookRepository.findAll();
-    }
+    public Book findById(UUID uuid) throws BookNotFoundException;
 
-    public Book saveBook(Book book) {
-        return bookRepository.save(book);
-    }
+    public List<Book> findById(List<UUID> uuidList);
+
+    public Book save(Book book);
+
+    public List<Book> save(List<Book> books);
+
+    public void delete(UUID uuid);
 }
