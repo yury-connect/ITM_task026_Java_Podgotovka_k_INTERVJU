@@ -31,7 +31,7 @@
 	</scm>
 	<properties>
 		<java.version>17</java.version>
-		<lombok.version>1.18.30</lombok.version> <!-- Добавляем версию Lombok -->
+		<lombok.version>1.18.30</lombok.version>
 	</properties>
 
 
@@ -52,12 +52,6 @@
 			<optional>true</optional>
 		</dependency>
 
-<!--		<dependency>-->
-<!--			<groupId>org.projectlombok</groupId>-->
-<!--			<artifactId>lombok</artifactId>-->
-<!--			<optional>true</optional>-->
-<!--		</dependency>-->
-		<!-- Lombok (укажем версию) -->
 		<dependency>
 			<groupId>org.projectlombok</groupId>
 			<artifactId>lombok</artifactId>
@@ -81,7 +75,6 @@
 			<groupId>com.h2database</groupId>
 			<artifactId>h2</artifactId>
 			<scope>runtime</scope>
-<!--			<version>2.2.224</version> &lt;!&ndash; Актуальная версия &ndash;&gt;-->
 		</dependency>
 
 		<!-- Jakarta Bean Validation API -->
