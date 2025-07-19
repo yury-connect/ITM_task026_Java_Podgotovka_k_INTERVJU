@@ -1,7 +1,7 @@
-package com.example.demo.service;
+package com.example.demo.bookManagement.service;
 
-import com.example.demo.exception.BookNotFoundException;
-import com.example.demo.model.Book;
+import com.example.demo.bookManagement.exception.BookNotFoundException;
+import com.example.demo.bookManagement.model.Book;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

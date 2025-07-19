@@ -1,9 +1,11 @@
-package com.example.demo.controller.mvc;
+package com.example.demo.bookManagement.controller.mvc;
 
-import com.example.demo.exception.BookNotFoundException;
-import com.example.demo.model.Book;
-import com.example.demo.service.BookService;
+import com.example.demo.bookManagement.exception.BookNotFoundException;
+import com.example.demo.bookManagement.model.Book;
+import com.example.demo.bookManagement.service.BookService;
 import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -16,13 +18,11 @@ import java.util.UUID;
 
 @Controller
 @RequestMapping("/mvc/books")
+@RequiredArgsConstructor
+@Slf4j
 public class MvcBookController {
 
     private final BookService bookService;
-
-    public MvcBookController(BookService bookService) {
-        this.bookService = bookService;
-    }
 
     @GetMapping
     public String showBooks(Model model) {

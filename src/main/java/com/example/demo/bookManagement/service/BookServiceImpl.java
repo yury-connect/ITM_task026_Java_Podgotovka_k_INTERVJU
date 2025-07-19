@@ -1,8 +1,8 @@
-package com.example.demo.service;
+package com.example.demo.bookManagement.service;
 
-import com.example.demo.exception.BookNotFoundException;
-import com.example.demo.model.Book;
-import com.example.demo.repository.BookRepository;
+import com.example.demo.bookManagement.exception.BookNotFoundException;
+import com.example.demo.bookManagement.model.Book;
+import com.example.demo.bookManagement.repository.BookRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -16,7 +16,6 @@ import java.util.UUID;
 @Service
 @RequiredArgsConstructor
 @Slf4j
-
 public class BookServiceImpl implements BookService {
 
     private final BookRepository repository;

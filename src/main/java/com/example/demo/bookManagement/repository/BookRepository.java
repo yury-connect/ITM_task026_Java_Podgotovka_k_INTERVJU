@@ -1,6 +1,6 @@
-package com.example.demo.repository;
+package com.example.demo.bookManagement.repository;
 
-import com.example.demo.model.Book;
+import com.example.demo.bookManagement.model.Book;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.UUID;

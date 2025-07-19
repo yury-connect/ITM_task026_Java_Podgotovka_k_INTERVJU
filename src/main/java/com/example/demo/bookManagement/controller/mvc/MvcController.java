@@ -1,4 +1,4 @@
-package com.example.demo.controller.mvc;
+package com.example.demo.bookManagement.controller.mvc;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;

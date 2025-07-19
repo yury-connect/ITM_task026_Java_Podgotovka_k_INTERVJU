@@ -1,4 +1,4 @@
-package com.example.demo.exception;
+package com.example.demo.bookManagement.exception;
 
 import org.springframework.http.HttpStatus;
 
