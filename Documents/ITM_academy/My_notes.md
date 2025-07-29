@@ -15,8 +15,4 @@
 11. [Ревью №`11`. “**Микросервисная система**”](https://docs.google.com/document/d/16Yc2ekhx5f0c4cvXxFDmUTuw-H_3Np6_cot7mTNmnII/edit?usp=sharing)
 
 ---
-кратко про **Резюме**
 
-![плохое](/Documentes/tools/tmp/resume_bad.png)
-
-![хорошее](/Documentes/tools/tmp/resume_good.jpg)
