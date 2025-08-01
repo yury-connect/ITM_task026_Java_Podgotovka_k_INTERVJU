@@ -53,7 +53,7 @@ public class RedisConfig {
 }
 ```
 
-**Как использовать** (в сервисе или контроллере):
+**Как использовать** (*в сервисе или контроллере*):
 ```java
 @Service
 public class RedisService {
@@ -149,7 +149,7 @@ public void cacheUser(User user) {
 - **`RedisTemplate`** — для ручного управления ключами.    
 - **`@Cacheable`** — для автоматического кеширования методов.    
 
-> **Совет**: Используйте **TTL (время жизни ключей)**, чтобы Redis не переполнялся.
+> **Совет**: Используйте **TTL (*время жизни ключей*)**, чтобы `Redis` не переполнялся.
 ```java
 redisTemplate.opsForValue().set("tempData", data, Duration.ofMinutes(10));  // Автоудаление через 10 мин
 ```
