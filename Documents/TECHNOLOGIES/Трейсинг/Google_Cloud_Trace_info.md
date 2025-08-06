@@ -29,14 +29,7 @@ _(Полное руководство с техническими деталям
 
 ### **2. Архитектура**
 
-```graph TD
-A[Ваше приложение] -->|Cloud Trace API| B[Cloud Trace Service]
-B --> C[Cloud Monitoring]
-B --> D[Cloud Logging]
-B --> E[Trace Viewer]
-```
-
-```Diagram
+```mermaid
 graph TD
 A[Ваше приложение] -->|Cloud Trace API| B[Cloud Trace Service]
 B --> C[Cloud Monitoring]

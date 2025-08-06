@@ -27,10 +27,14 @@ _(Глубокий анализ с примерами и сравнениями)
 |**Сегментация**|Разбивка времени выполнения по: AWS-сервисам, БД, внешним HTTP-вызовам|
 
 ### **2. Архитектура**
-
-Diagram
-
-Code
+```mermaid
+graph LR
+A[Ваше приложение] -->|X-Ray SDK| B[X-Ray Daemon]
+B --> C[X-Ray Service]
+C --> D[Service Map]
+C --> E[Трейсы]
+C --> F[Аналитика]
+```
 
 **Компоненты:**
 - **X-Ray SDK** (для Python, Node.js, Java, .NET, Go)    
@@ -125,7 +129,8 @@ def lambda_handler(event, context):
 **⚠️ Альтернативы:**
 - Гибридные системы → **OpenTelemetry + Jaeger**    
 - GCP → **Google Cloud Trace**    
-- Глубокая аналитика → **Datadog APM**
-    
+- Глубокая аналитика → **Datadog APM**    
 
 **AWS X-Ray — это "волшебная таблетка" для трейсинга внутри AWS, но не универсальное решение.**
+
+---
