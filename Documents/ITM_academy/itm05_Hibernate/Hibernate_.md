@@ -18,28 +18,28 @@
 18. [Какие два типа fetch стратегии в JPA вы знаете?](solutions/18_2типа_fetch.md)
 19. [Какие четыре статуса жизненного цикла Entity объекта (Entity Instance’s Life Cycle) вы можете перечислить?](solutions/19_4статуса_ж_ц_Entity.md)
 20. [Как влияет операция persist на Entity объекты каждого из четырех статусов?](solutions/20_вл_persist_на_Entity_каждого_из4.md)
-21. [Как влияет операция remove на Entity объекты каждого из четырех статусов?](solutions/20_вл_remove_на_Entity_каждого_из4.md)
+21. [Как влияет операция remove на Entity объекты каждого из четырех статусов?](solutions/21_вл_remove_на_Entity_каждого_из4.md)
 22. [Как влияет операция merge на Entity объекты каждого из четырех статусов?](solutions/22_вл_merge_на_Entity_каждого_из4.md)
-23. Как влияет операция refresh на Entity объекты каждого из четырех статусов?
-24. Как влияет операция detach на Entity объекты каждого из четырех статусов?
-25. Для чего нужна аннотация Basic?
-26. Для чего нужна аннотация Column?
-27. Для чего нужна аннотация Access?
-28. Для чего нужна аннотация @Cacheable?
-29. Для чего нужна аннотация @Cache?
-30. Для чего нужны аннотации @Embedded и @Embeddable?
-31. Как смапить составной ключ?
-32. Для чего нужна аннотация ID? Какие @GeneratedValue вы знаете?
-33. Расскажите про аннотации @JoinColumn и @JoinTable? Где и для чего они используются?
-34. Для чего нужны аннотации @OrderBy и @OrderColumn, чем они отличаются?
-35. Для чего нужна аннотация Transient?
-36. Какие шесть видов блокировок (lock) описаны в спецификации JPA (или какие есть значения у enum LockModeType в JPA)?
-37. Какие два вида кэшей (cache) вы знаете в JPA и для чего они нужны?
-38. Как работать с кешем 2 уровня?
-39. Что такое JPQL/HQL и чем он отличается от SQL?
-40. Что такое Criteria API и для чего он используется?
-41. Расскажите про проблему N+1 Select и путях ее решения.
-42. Что такое Entity Graph
+23. [Как влияет операция refresh на Entity объекты каждого из четырех статусов?](solutions/23_вл_refresh_на_Entity_каждого_из4.md)
+24. [Как влияет операция detach на Entity объекты каждого из четырех статусов?](solutions/24_вл_detach_на_Entity_каждого_из4.md)
+25. [Для чего нужна аннотация Basic?](solutions/25_аннотация_Basic.md)
+26. [Для чего нужна аннотация Column?](solutions/26_аннотация_Column.md)
+27. [Для чего нужна аннотация Access?](solutions/27_аннотация_Access.md)
+28. [Для чего нужна аннотация @Cacheable?](solutions/28_аннотация_Cacheable.md)
+29. [Для чего нужна аннотация @Cache?](solutions/29_аннотация_Cache.md)
+30. [Для чего нужны аннотации @Embedded и @Embeddable?](solutions/30_аннотации_Embedded_и_Embeddable.md)
+31. [Как смапить составной ключ?](solutions/31_смапить_составной_ключ.md)
+32. [Для чего нужна аннотация ID? Какие @GeneratedValue вы знаете?](solutions/32_аннотация_ID_GeneratedValue.md)
+33. [Расскажите про аннотации @JoinColumn и @JoinTable? Где и для чего они используются?](solutions/33_аннотации_JoinColumn_JoinTable.md)
+34. [Для чего нужны аннотации @OrderBy и @OrderColumn, чем они отличаются?](solutions/34_аннотации_OrderBy_OrderColumn.md)
+35. [Для чего нужна аннотация Transient?](solutions/35_аннотация_Transient.md)
+36. [Какие шесть видов блокировок (lock) описаны в спецификации JPA (или какие есть значения у enum LockModeType в JPA)?](solutions/36_6видов_блокировок_lock_JPA.md)
+37. [Какие два вида кэшей (cache) вы знаете в JPA и для чего они нужны?](solutions/37_2вида_кэшей_JPA.md)
+38. [Как работать с кешем 2 уровня?](solutions/38_кеш_2_уровня.md)
+39. [Что такое JPQL/HQL и чем он отличается от SQL?](solutions/39_JPQL_HQL_отлич_от_SQL.md)
+40. [Что такое Criteria API и для чего он используется?](solutions/40_Criteria_API.md)
+41. [Расскажите про проблему N+1 Select и путях ее решения.](solutions/41_N+1Select.md)
+42. [Что такое Entity Graph](solutions/42_Entity_Graph.md)
 Вопрос 48. В чем разница в требованиях к Entity в Hibernate, от требований к Entity, указанных в спецификации JPA?
 Что означает полиморфизм (polymorphism) в запросах JPQL (Java Persistence query language) и как его «выключить»?
 
