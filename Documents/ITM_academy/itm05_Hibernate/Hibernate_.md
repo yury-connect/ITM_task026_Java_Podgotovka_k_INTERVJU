@@ -1,10 +1,10 @@
 1. [Что такое ORM? Что такое JPA? Что такое Hibernate?](solutions/01_ORM_JPA_Hibernate.md)
 2. [Что такое EntityManager?](solutions/02_EntityManager.md)
-3. Каким условиям должен удовлетворять класс чтобы являться Entity?
-4. Может ли абстрактный класс быть Entity?
-5. Может ли Entity класс наследоваться от не Entity классов (non-entity classes)?
-6. Может ли Entity класс наследоваться от других Entity классов?
-7. Может ли не Entity класс наследоваться от Entity класса?
+3. [Каким условиям должен удовлетворять класс чтобы являться Entity?](solutions/03_Условия_Entity.md)
+4. [Может ли абстрактный класс быть Entity?](solutions/04_абстрактный_кл_Entity.md)
+5. [Может ли Entity класс наследоваться от не Entity классов (non-entity classes)?](solutions/05_Entity_наслед_от_не_Entity.md)
+6. [Может ли Entity класс наследоваться от других Entity классов?](solutions/06_Entity_наслед_от_др_Entity.md)
+7. 
 8. Что такое встраиваемый (Embeddable) класс? _требования JPA_?
 9. Что такое Mapped Superclass?
 10. Какие три типа стратегий наследования мапинга в JPA?
