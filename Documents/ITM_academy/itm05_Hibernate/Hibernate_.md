@@ -1,3 +1,4 @@
+# Вопросы по теме **Hibernate**:
 1. [Что такое ORM? Что такое JPA? Что такое Hibernate?](solutions/01_ORM_JPA_Hibernate.md)
 2. [Что такое EntityManager?](solutions/02_EntityManager.md)
 3. [Каким условиям должен удовлетворять класс чтобы являться Entity?](solutions/03_Условия_Entity.md)
@@ -44,8 +45,7 @@
 44. _доп2._ [Что означает полиморфизм (polymorphism) в запросах JPQL (Java Persistence query language) и как его «выключить»?](solutions/44_полиморфизм_в_запросах_JPQL_выкл.md)
 
 ---
-
-> **Базовый список вопросов:**
+## **Базовый список вопросов:**
 > 1. Что такое ORM? Что такое JPA? Что такое Hibernate?
 > 2. Что такое EntityManager?
 > 3. Каким условиям должен удовлетворять класс чтобы являться Entity?
@@ -91,4 +91,4 @@
 > 43. Вопрос 48. В чем разница в требованиях к Entity в Hibernate, от требований к Entity, указанных в спецификации JPA?
 > 44. Что означает полиморфизм (polymorphism) в запросах JPQL (Java Persistence query language) и как его «выключить»?
 
-
+---
