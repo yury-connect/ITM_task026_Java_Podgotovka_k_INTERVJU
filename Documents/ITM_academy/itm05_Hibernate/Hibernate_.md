@@ -40,8 +40,8 @@
 40. [Что такое Criteria API и для чего он используется?](solutions/40_Criteria_API.md)
 41. [Расскажите про проблему N+1 Select и путях ее решения.](solutions/41_N+1Select.md)
 42. [Что такое Entity Graph](solutions/42_Entity_Graph.md)
-Вопрос 48. В чем разница в требованиях к Entity в Hibernate, от требований к Entity, указанных в спецификации JPA?
-Что означает полиморфизм (polymorphism) в запросах JPQL (Java Persistence query language) и как его «выключить»?
+43. _доп1._ [В чем разница в требованиях к Entity в Hibernate, от требований к Entity, указанных в спецификации JPA?](solutions/43_треб_к_Entity_Hibernate_Entity_JPA.md)
+44. _доп2._ [Что означает полиморфизм (polymorphism) в запросах JPQL (Java Persistence query language) и как его «выключить»?](solutions/44_полиморфизм_в_запросах_JPQL_выкл.md)
 
 ---
 
