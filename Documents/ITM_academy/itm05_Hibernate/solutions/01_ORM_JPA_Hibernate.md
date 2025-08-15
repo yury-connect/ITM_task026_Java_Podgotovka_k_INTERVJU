@@ -6,12 +6,13 @@
 - 📌 **JPA** (_Java Persistence API_) – спецификация ORM в _Java_, определяющая стандарты работы с БД, но не содержащая собственной реализации.  
   Реализация JPA возможна через **провайдеры**, такие как `Hibernate`, `EclipseLink`.
 - 📌 **Hibernate** – популярная ORM-библиотека, реализующая JPA и предоставляющая удобные API для работы с БД.
-![ORM|645x175](https://github.com/yury-connect/ITM_task026_Java_Podgotovka_k_INTERVJU/raw/by_questions/ITM/ITM05_Hibernate/imgs/2025-04-04_15-15-35.png)
+![ORM](./_Attachments_01_ORM_JPA_Hibernate/image.png)
 
 ---
 ### 🔹 JDBC (_Java DataBase Connectivity_)
 🔗 **JDBC** – низкоуровневый API для взаимодействия с реляционными БД, входящий в стандартную библиотеку Java (_java.sql_).  
 Позволяет выполнять _SQL_-запросы и обновлять данные.
+
 ![_Java DataBase Connectivity_](JDBC.png)
 [![JDBC](https://github.com/yury-connect/ITM_task026_Java_Podgotovka_k_INTERVJU/raw/by_questions/ITM/ITM05_Hibernate/imgs/2025-04-04_15-41-41.png)](https://github.com/yury-connect/ITM_task026_Java_Podgotovka_k_INTERVJU/blob/by_questions/ITM/ITM05_Hibernate/imgs/2025-04-04_15-41-41.png)
 
