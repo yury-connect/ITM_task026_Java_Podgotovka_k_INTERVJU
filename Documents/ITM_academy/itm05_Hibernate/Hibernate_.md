@@ -1,5 +1,5 @@
 1. [Что такое ORM? Что такое JPA? Что такое Hibernate?](solutions/01_ORM_JPA_Hibernate.md)
-2. Что такое EntityManager?[[]]
+2. [Что такое EntityManager?](solutions/02_EntityManager.md)
 3. Каким условиям должен удовлетворять класс чтобы являться Entity?
 4. Может ли абстрактный класс быть Entity?
 5. Может ли Entity класс наследоваться от не Entity классов (non-entity classes)?
