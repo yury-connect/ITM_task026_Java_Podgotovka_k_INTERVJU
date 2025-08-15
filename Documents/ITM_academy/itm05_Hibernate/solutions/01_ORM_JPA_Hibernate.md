@@ -6,7 +6,7 @@
 - 📌 **JPA** (_Java Persistence API_) – спецификация ORM в _Java_, определяющая стандарты работы с БД, но не содержащая собственной реализации.  
   Реализация JPA возможна через **провайдеры**, такие как `Hibernate`, `EclipseLink`.
 - 📌 **Hibernate** – популярная ORM-библиотека, реализующая JPA и предоставляющая удобные API для работы с БД.
-![ORM](./_Attachments_01_ORM_JPA_Hibernate/image.png)
+![ORM](_Attachments_01_ORM_JPA_Hibernate/orm.png)
 
 ---
 ### 🔹 JDBC (_Java DataBase Connectivity_)
@@ -27,8 +27,7 @@
 3. **ResultSet** – содержит результаты запроса в виде таблицы.
 
 ---
-
-Архитектура hibernate _(сжато)_
+## Архитектура **Hibernate** _(сжато)_
 ![Архитектура_hibernate](_Attachments_01_ORM_JPA_Hibernate/Архитектура_hibernate.png)
 
 ### 🔹 Основные интерфейсы Hibernate
@@ -38,20 +37,14 @@
 ✔ **Transaction** – управление атомарными операциями, **абстрагирует** приложение от JDBC или JTA-транзакций.  
 ✔ **Query** – интерфейс для выполнения `HQL`/`SQL`-запросов.  
 ✔ **ConnectionProvider** – Абстракция для получения JDBC-соединений, позволяющая Hibernate взаимодействовать с различными источниками данных.
-
-[![Основные интерфейсы Hibernate](https://github.com/yury-connect/ITM_task026_Java_Podgotovka_k_INTERVJU/raw/by_questions/ITM/ITM05_Hibernate/imgs/2025-04-04_15-44-50_(2).png)](https://github.com/yury-connect/ITM_task026_Java_Podgotovka_k_INTERVJU/blob/by_questions/ITM/ITM05_Hibernate/imgs/2025-04-04_15-44-50_\(2\).png) [src](https://www.decodejava.com/hibernate-architecture.htm)
+![интерфейсы_Hibernate](_Attachments_01_ORM_JPA_Hibernate/интерфейсы_Hibernate.png)
 
 ---
-
 ### 🔹 Вывод:
-
-[](https://github.com/yury-connect/ITM_task026_Java_Podgotovka_k_INTERVJU/blob/by_questions/ITM/ITM05_Hibernate/Hibernate.md#-%D0%B2%D1%8B%D0%B2%D0%BE%D0%B4)
-
 `Hibernate` упрощает работу с БД, предоставляя удобный **ORM-инструмент**, а  
 `JPA` **стандартизирует** этот процесс.  
 `JDBC` же является **низкоуровневым API**, требующим написания SQL-кода вручную.
-
-[![ORM регулирует SQL запросы.](https://github.com/yury-connect/ITM_task026_Java_Podgotovka_k_INTERVJU/raw/by_questions/ITM/ITM05_Hibernate/imgs/2025-04-04_15-38-59.png)](https://github.com/yury-connect/ITM_task026_Java_Podgotovka_k_INTERVJU/blob/by_questions/ITM/ITM05_Hibernate/imgs/2025-04-04_15-38-59.png)
+![ORM_qsl](_Attachments_01_ORM_JPA_Hibernate/ORM_qsl.png)
 
 ---
 
