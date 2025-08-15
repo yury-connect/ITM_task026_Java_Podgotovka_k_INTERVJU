@@ -1,0 +1,3 @@
+# Что такое Mapped Superclass?
+
+---
