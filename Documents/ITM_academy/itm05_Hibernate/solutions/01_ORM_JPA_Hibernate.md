@@ -12,44 +12,26 @@
 ### 🔹 JDBC (_Java DataBase Connectivity_)
 🔗 **JDBC** – низкоуровневый API для взаимодействия с реляционными БД, входящий в стандартную библиотеку Java (_java.sql_).  
 Позволяет выполнять _SQL_-запросы и обновлять данные.
-
-![_Java DataBase Connectivity_](JDBC.png)
-[![JDBC](https://github.com/yury-connect/ITM_task026_Java_Podgotovka_k_INTERVJU/raw/by_questions/ITM/ITM05_Hibernate/imgs/2025-04-04_15-41-41.png)](https://github.com/yury-connect/ITM_task026_Java_Podgotovka_k_INTERVJU/blob/by_questions/ITM/ITM05_Hibernate/imgs/2025-04-04_15-41-41.png)
-
+![JDBC](_Attachments_01_ORM_JPA_Hibernate/JDBC.png)
 ### Основные сущности JDBC
 
-[](https://github.com/yury-connect/ITM_task026_Java_Podgotovka_k_INTERVJU/blob/by_questions/ITM/ITM05_Hibernate/Hibernate.md#%D0%BE%D1%81%D0%BD%D0%BE%D0%B2%D0%BD%D1%8B%D0%B5-%D1%81%D1%83%D1%89%D0%BD%D0%BE%D1%81%D1%82%D0%B8-jdbc)
-
-#### 🔗 Наш код → JDBC → Драйвер БД → База данных → Ответ от БД
-
-[](https://github.com/yury-connect/ITM_task026_Java_Podgotovka_k_INTERVJU/blob/by_questions/ITM/ITM05_Hibernate/Hibernate.md#-%D0%BD%D0%B0%D1%88-%D0%BA%D0%BE%D0%B4--jdbc--%D0%B4%D1%80%D0%B0%D0%B9%D0%B2%D0%B5%D1%80-%D0%B1%D0%B4--%D0%B1%D0%B0%D0%B7%D0%B0-%D0%B4%D0%B0%D0%BD%D0%BD%D1%8B%D1%85--%D0%BE%D1%82%D0%B2%D0%B5%D1%82-%D0%BE%D1%82-%D0%B1%D0%B4)
+#### 🔗 `Наш код` → `JDBC` → `Драйвер БД` → `База данных` → `Ответ от БД`
 
 #### Три ключевых объекта JDBC:
-
-[](https://github.com/yury-connect/ITM_task026_Java_Podgotovka_k_INTERVJU/blob/by_questions/ITM/ITM05_Hibernate/Hibernate.md#%D1%82%D1%80%D0%B8-%D0%BA%D0%BB%D1%8E%D1%87%D0%B5%D0%B2%D1%8B%D1%85-%D0%BE%D0%B1%D1%8A%D0%B5%D0%BA%D1%82%D0%B0-jdbc)
-
-1. **Connection** – отвечает за соединение с базой данных и режим работы.
-    
-2. **Statement** – отправляет SQL-запросы на сервер.
-    
-
-- **Варианты использования:**
-    - `Statement` – обычный (`UPDATE`, `QUERY`).
-    - `PreparedStatement` – шаблон запроса с параметрами.
-    - `CallableStatement` – вызов хранимых процедур.
-
+1. **Connection** – отвечает за соединение с базой данных и режим работы.    
+2. **Statement** – отправляет SQL-запросы на сервер.   
+	>**Варианты использования:**
+    > - **`Statement`** – обычный (`UPDATE`, `QUERY`).
+    > - **`PreparedStatement`** – шаблон запроса с параметрами.
+    > - **`CallableStatement`** – вызов хранимых процедур.
 3. **ResultSet** – содержит результаты запроса в виде таблицы.
 
 ---
 
 Архитектура hibernate _(сжато)_
-
-[![hibernate architecture`](https://github.com/yury-connect/ITM_task026_Java_Podgotovka_k_INTERVJU/raw/by_questions/ITM/ITM05_Hibernate/imgs/2025-04-08_10-37-54.png)](https://github.com/yury-connect/ITM_task026_Java_Podgotovka_k_INTERVJU/blob/by_questions/ITM/ITM05_Hibernate/imgs/2025-04-08_10-37-54.png)
+![Архитектура_hibernate](_Attachments_01_ORM_JPA_Hibernate/Архитектура_hibernate.png)
 
 ### 🔹 Основные интерфейсы Hibernate
-
-[](https://github.com/yury-connect/ITM_task026_Java_Podgotovka_k_INTERVJU/blob/by_questions/ITM/ITM05_Hibernate/Hibernate.md#-%D0%BE%D1%81%D0%BD%D0%BE%D0%B2%D0%BD%D1%8B%D0%B5-%D0%B8%D0%BD%D1%82%D0%B5%D1%80%D1%84%D0%B5%D0%B9%D1%81%D1%8B-hibernate)
-
 ✔ **SessionFactory** – потокобезопасная фабрика `Session`, создается **один раз** при **запуске** приложения.  
 ✔ **Session** – обеспечивает соединение с БД, выполняет **DML**-операции, НЕ потокобезопасна, должна использоваться в пределах одного потока. [_docs.jboss.org_](https://docs.jboss.org/hibernate/orm/3.5/api/org/hibernate/Session.html?utm_source=chatgpt.com)  
 ✔ **TransactionFactory** – Создает объекты `Transaction`, определяя стратегию управления транзакциями.  
