@@ -1,4 +1,4 @@
-1. Что такое ORM? Что такое JPA? Что такое Hibernate?
+1. Что такое ORM? Что такое JPA? Что такое Hibernate?[[Documents/ITM_academy/itm05_Hibernate/solutions/01_ORM_JPA_Hibernate|01_ORM_JPA_Hibernate]]
 2. Что такое EntityManager?
 3. Каким условиям должен удовлетворять класс чтобы являться Entity?
 4. Может ли абстрактный класс быть Entity?
