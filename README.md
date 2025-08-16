@@ -1,10 +1,10 @@
 Контакт для связи [Telegram](https://t.me/Yury_connect)
-## Материалы по Java для подготовке к интервью
+# Материалы для подготовке к интервью по Java ❤️
 
 ---
 ###### 2025-07-05 начал реконструкцию репозитория.
 
-- Старая версия находится в ветке [by_questions](https://github.com/yury-connect/ITM_task026_Java_Podgotovka_k_INTERVJU/tree/by_questions/ITM)
+- Старая версия находится в ветке [**by_questions**](https://github.com/yury-connect/ITM_task026_Java_Podgotovka_k_INTERVJU/tree/by_questions/ITM)
 
 - Новая версия будет постепенно прорисовываться **тут**, по мене готовности.
 
