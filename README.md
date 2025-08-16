@@ -1,13 +1,16 @@
-Контакт для связи [Telegram](https://t.me/Yury_connect)
-# Материалы для подготовке к интервью по Java ❤️
+Контакт для связи: [Telegram](https://t.me/Yury_connect)
+
+# Материалы для подготовки к интервью по Java ❤️
+
+## а так-же *некоторые* ["около-джавные технологии"](https://github.com/yury-connect/ITM_task026_Java_Podgotovka_k_INTERVJU/tree/main/Documents/TECHNOLOGIES), которые необходимо изучить сразу после данного курса ([ITM](https://github.com/yury-connect/ITM_task026_Java_Podgotovka_k_INTERVJU/tree/main/Documents/ITM_academy) / либо [KATA](****))
 
 ---
-###### 2025-07-05 начал реконструкцию репозитория.
+###### 2025-07-05 начата реконструкция репозитория.
 
-- Старая версия находится в ветке [**by_questions**](https://github.com/yury-connect/ITM_task026_Java_Podgotovka_k_INTERVJU/tree/by_questions/ITM)
+- Старая версия находится в соседней ветке [***"by_questions"***](https://github.com/yury-connect/ITM_task026_Java_Podgotovka_k_INTERVJU/tree/by_questions/ITM)
 
-- Новая версия будет постепенно прорисовываться **тут**, по мене готовности.
+- Новая версия будет постепенно появляться [**тут**](https://github.com/yury-connect/ITM_task026_Java_Podgotovka_k_INTERVJU/tree/main), по мене готовности *(в текущей ветке)*.
 
-Все обновленные и расширенные материалы - только в этой ветке, **все иные - архивные**.
+Все обновленные и актуализированные на 2025г. материалы - <u>только в этой ветке</u>, **все иные - архивные**.
 
 ---
