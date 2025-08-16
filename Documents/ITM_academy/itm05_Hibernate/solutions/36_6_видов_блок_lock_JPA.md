@@ -1,23 +1,12 @@
 # Какие шесть видов блокировок (lock) описаны в спецификации JPA (или какие есть значения у enum LockModeType в JPA)?
 
 ---
-## Какие шесть видов блокировок (_lock_) описаны в спецификации JPA  
-(_или какие есть значения у enum LockModeType в JPA_)?
-
-[](https://github.com/yury-connect/ITM_task026_Java_Podgotovka_k_INTERVJU/blob/by_questions/ITM/ITM05_Hibernate/Hibernate.md#%D0%BA%D0%B0%D0%BA%D0%B8%D0%B5-%D1%88%D0%B5%D1%81%D1%82%D1%8C-%D0%B2%D0%B8%D0%B4%D0%BE%D0%B2-%D0%B1%D0%BB%D0%BE%D0%BA%D0%B8%D1%80%D0%BE%D0%B2%D0%BE%D0%BA-lock-%D0%BE%D0%BF%D0%B8%D1%81%D0%B0%D0%BD%D1%8B-%D0%B2-%D1%81%D0%BF%D0%B5%D1%86%D0%B8%D1%84%D0%B8%D0%BA%D0%B0%D1%86%D0%B8%D0%B8-jpa-%D0%B8%D0%BB%D0%B8-%D0%BA%D0%B0%D0%BA%D0%B8%D0%B5-%D0%B5%D1%81%D1%82%D1%8C-%D0%B7%D0%BD%D0%B0%D1%87%D0%B5%D0%BD%D0%B8%D1%8F-%D1%83-enum-lockmodetype-%D0%B2-jpa)
-
 ## 🔐 LockModeType в JPA — Режимы блокировки
-
-[](https://github.com/yury-connect/ITM_task026_Java_Podgotovka_k_INTERVJU/blob/by_questions/ITM/ITM05_Hibernate/Hibernate.md#-lockmodetype-%D0%B2-jpa--%D1%80%D0%B5%D0%B6%D0%B8%D0%BC%D1%8B-%D0%B1%D0%BB%D0%BE%D0%BA%D0%B8%D1%80%D0%BE%D0%B2%D0%BA%D0%B8)
-
 JPA предоставляет **6** уровней блокировок, определённых в `enum javax.persistence.LockModeType`.  
 Они различаются по надёжности, производительности и сценарию использования. отимистичные - предполагают, что конфликтов между транзакциями будет мало пессимистичные - что конфликтов возможно будет много и нужно обеспечить гарантию консистентности
 
 ---
-
 ### 📋 Таблица: режимы блокировки в JPA
-
-[](https://github.com/yury-connect/ITM_task026_Java_Podgotovka_k_INTERVJU/blob/by_questions/ITM/ITM05_Hibernate/Hibernate.md#-%D1%82%D0%B0%D0%B1%D0%BB%D0%B8%D1%86%D0%B0-%D1%80%D0%B5%D0%B6%D0%B8%D0%BC%D1%8B-%D0%B1%D0%BB%D0%BE%D0%BA%D0%B8%D1%80%D0%BE%D0%B2%D0%BA%D0%B8-%D0%B2-jpa)
 
 |**🔢**|**LockModeType**|**Тип блокировки**|**Описание**|
 |---|---|---|---|
@@ -31,11 +20,7 @@ JPA предоставляет **6** уровней блокировок, оп
 |8️⃣|`WRITE` (_устаревший_)|✏️ Синоним `OPTIMISTIC_FORCE_INCREMENT`.|_устаревший_  <br>Рекомендуется использовать `<br>OPTIMISTIC_FORCE_INCREMENT` в новых приложениях.|
 
 ---
-
 ### ⚙️ Использование блокировки
-
-[](https://github.com/yury-connect/ITM_task026_Java_Podgotovka_k_INTERVJU/blob/by_questions/ITM/ITM05_Hibernate/Hibernate.md#%EF%B8%8F-%D0%B8%D1%81%D0%BF%D0%BE%D0%BB%D1%8C%D0%B7%D0%BE%D0%B2%D0%B0%D0%BD%D0%B8%D0%B5-%D0%B1%D0%BB%D0%BE%D0%BA%D0%B8%D1%80%D0%BE%D0%B2%D0%BA%D0%B8)
-
 ```java
 EntityManager em = entityManagerFactory.createEntityManager();
 em.getTransaction().begin();
@@ -47,39 +32,25 @@ em.getTransaction().commit();
 ```
 
 ---
-
 ## 🧠 Оптимистичная блокировка (_Optimistic Lock_)
-
-[](https://github.com/yury-connect/ITM_task026_Java_Podgotovka_k_INTERVJU/blob/by_questions/ITM/ITM05_Hibernate/Hibernate.md#-%D0%BE%D0%BF%D1%82%D0%B8%D0%BC%D0%B8%D1%81%D1%82%D0%B8%D1%87%D0%BD%D0%B0%D1%8F-%D0%B1%D0%BB%D0%BE%D0%BA%D0%B8%D1%80%D0%BE%D0%B2%D0%BA%D0%B0-optimistic-lock)
-
 - Не блокирует ресурсы БД.
 - Проверяет поле `@Version` при коммите транзакции.
 - Идеальна для систем с **низким уровнем конфликта доступа**.
-
 ```java
 @Version
 private long version;
 ```
-
 🧪 При несовпадении версий — `OptimisticLockException`.
 
 ---
-
 ## 🧱 Пессимистичная блокировка (_Pessimistic Lock_)
-
-[](https://github.com/yury-connect/ITM_task026_Java_Podgotovka_k_INTERVJU/blob/by_questions/ITM/ITM05_Hibernate/Hibernate.md#-%D0%BF%D0%B5%D1%81%D1%81%D0%B8%D0%BC%D0%B8%D1%81%D1%82%D0%B8%D1%87%D0%BD%D0%B0%D1%8F-%D0%B1%D0%BB%D0%BE%D0%BA%D0%B8%D1%80%D0%BE%D0%B2%D0%BA%D0%B0-pessimistic-lock)
-
 - Активно блокирует данные в момент чтения или записи.
 - Гарантирует защиту от параллельных изменений.
 - Используется при **высокой конкуренции** и необходимости изоляции.
-
 📌 Требует поддержки БД.
 
 ---
-
-## 🆚 Сравнение: `Optimistic` vs `Pessimistic`
-
-[](https://github.com/yury-connect/ITM_task026_Java_Podgotovka_k_INTERVJU/blob/by_questions/ITM/ITM05_Hibernate/Hibernate.md#-%D1%81%D1%80%D0%B0%D0%B2%D0%BD%D0%B5%D0%BD%D0%B8%D0%B5-optimistic-vs-pessimistic)
+## 🆚 Сравнение: `Optimistic` vs `Pessimistic
 
 |**Критерий**|`Optimistic`|`Pessimistic`|
 |---|---|---|
@@ -88,7 +59,6 @@ private long version;
 |Конфликты|Обнаруживаются при коммите|Предотвращаются заранее|
 |Риск исключений|`OptimisticLockException`|`PessimisticLockException`, deadlock|
 |Подходит для|Чтение-ориентированных систем|Высококонкурентных систем|
-
 > **💡 Рекомендация: по умолчанию используй `OPTIMISTIC`,  
 > а `PESSIMISTIC` — только при необходимости _строгой изоляции транзакций_.**
 
@@ -140,3 +110,5 @@ private long version;
 EntityManager em = entityManagerFactory.createEntityManager();
 em.lock(company1, LockModeType.OPTIMISTIC);
 ```
+
+---
