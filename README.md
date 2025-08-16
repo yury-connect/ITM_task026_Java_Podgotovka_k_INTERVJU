@@ -2,7 +2,7 @@
 
 # Материалы для подготовки к интервью по Java ❤️
 
-## а так-же *некоторые* ["около-джавные технологии"](https://github.com/yury-connect/ITM_task026_Java_Podgotovka_k_INTERVJU/tree/main/Documents/TECHNOLOGIES), которые необходимо изучить сразу после данного курса ([ITM](https://github.com/yury-connect/ITM_task026_Java_Podgotovka_k_INTERVJU/tree/main/Documents/ITM_academy) / либо [KATA](****))
+## а так-же *некоторые* ["около-джавные технологии"](https://github.com/yury-connect/ITM_task026_Java_Podgotovka_k_INTERVJU/tree/main/Documents/TECHNOLOGIES), которые необходимо изучить <u>сразу</u> после изучения данного курса ([ITM](https://github.com/yury-connect/ITM_task026_Java_Podgotovka_k_INTERVJU/tree/main/Documents/ITM_academy) / либо [KATA](****))
 
 ---
 ###### 2025-07-05 начата реконструкция репозитория.
