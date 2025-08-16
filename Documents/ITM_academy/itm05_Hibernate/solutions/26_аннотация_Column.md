@@ -1,23 +1,13 @@
 # Для чего нужна аннотация Column?
 
 ---
-## Для чего нужна аннотация Column?
-
-[](https://github.com/yury-connect/ITM_task026_Java_Podgotovka_k_INTERVJU/blob/by_questions/ITM/ITM05_Hibernate/Hibernate.md#%D0%B4%D0%BB%D1%8F-%D1%87%D0%B5%D0%B3%D0%BE-%D0%BD%D1%83%D0%B6%D0%BD%D0%B0-%D0%B0%D0%BD%D0%BD%D0%BE%D1%82%D0%B0%D1%86%D0%B8%D1%8F-column)
-
-### 🧱 Для чего нужна аннотация `@Column` в JPA?
-
-[](https://github.com/yury-connect/ITM_task026_Java_Podgotovka_k_INTERVJU/blob/by_questions/ITM/ITM05_Hibernate/Hibernate.md#-%D0%B4%D0%BB%D1%8F-%D1%87%D0%B5%D0%B3%D0%BE-%D0%BD%D1%83%D0%B6%D0%BD%D0%B0-%D0%B0%D0%BD%D0%BD%D0%BE%D1%82%D0%B0%D1%86%D0%B8%D1%8F-column-%D0%B2-jpa)
-
+## 🧱 Для чего нужна аннотация `@Column` в JPA?
 Аннотация `@Column` используется для **сопоставления поля класса со столбцом таблицы БД** и настройки поведения этого столбца при генерации схемы базы данных.
 
 > 📌 Если `@Column` не указана, используются значения по умолчанию.
 
 ---
-
-### ⚙️ Основные параметры `@Column`
-
-[](https://github.com/yury-connect/ITM_task026_Java_Podgotovka_k_INTERVJU/blob/by_questions/ITM/ITM05_Hibernate/Hibernate.md#%EF%B8%8F-%D0%BE%D1%81%D0%BD%D0%BE%D0%B2%D0%BD%D1%8B%D0%B5-%D0%BF%D0%B0%D1%80%D0%B0%D0%BC%D0%B5%D1%82%D1%80%D1%8B-column)
+## ⚙️ Основные параметры `@Column`
 
 |**Атрибут**|**Тип / Значение по умолчанию**|**Назначение**|
 |---|---|---|
@@ -29,10 +19,7 @@
 |`updatable`|`true`|Участвует ли столбец при `UPDATE`|
 
 ---
-
-### 🔍 Сравнение `@Basic` vs `@Column`
-
-[](https://github.com/yury-connect/ITM_task026_Java_Podgotovka_k_INTERVJU/blob/by_questions/ITM/ITM05_Hibernate/Hibernate.md#-%D1%81%D1%80%D0%B0%D0%B2%D0%BD%D0%B5%D0%BD%D0%B8%D0%B5-basic-vs-column)
+## 🔍 Сравнение `@Basic` vs `@Column`
 
 |**Аспект**|`@Basic`|`@Column`|
 |---|---|---|
@@ -42,20 +29,12 @@
 |Настройки схемы|❌|✅ (_имя, длина, уникальность и др._)|
 
 ---
-
-### 🧠 Вывод:
-
-[](https://github.com/yury-connect/ITM_task026_Java_Podgotovka_k_INTERVJU/blob/by_questions/ITM/ITM05_Hibernate/Hibernate.md#-%D0%B2%D1%8B%D0%B2%D0%BE%D0%B4-5)
-
+## 🧠 Вывод:
 - `@Basic` — управляет **поведением данных в памяти** (fetch, optional).
 - `@Column` — управляет **структурой и ограничениями в БД** (name, nullable, length и пр.).
 
 ---
-
-### 💡 Пример:
-
-[](https://github.com/yury-connect/ITM_task026_Java_Podgotovka_k_INTERVJU/blob/by_questions/ITM/ITM05_Hibernate/Hibernate.md#-%D0%BF%D1%80%D0%B8%D0%BC%D0%B5%D1%80)
-
+## 💡 Пример:
 ```java
 @Column(name = "STUDENT_NAME", length = 50, nullable = false, unique = false)
 private String name;
@@ -79,3 +58,5 @@ private String name;
     @Column(name="STUDENT_NAME", length=50, nullable=false, unique=false)
     private String name;
 ```
+
+---

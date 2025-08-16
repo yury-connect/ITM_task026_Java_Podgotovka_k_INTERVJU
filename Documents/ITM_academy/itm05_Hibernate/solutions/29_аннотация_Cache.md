@@ -1,23 +1,13 @@
 # Для чего нужна аннотация @Cache?
 
 ---
-## Для чего нужна аннотация `@Cache`?
-
-[](https://github.com/yury-connect/ITM_task026_Java_Podgotovka_k_INTERVJU/blob/by_questions/ITM/ITM05_Hibernate/Hibernate.md#%D0%B4%D0%BB%D1%8F-%D1%87%D0%B5%D0%B3%D0%BE-%D0%BD%D1%83%D0%B6%D0%BD%D0%B0-%D0%B0%D0%BD%D0%BD%D0%BE%D1%82%D0%B0%D1%86%D0%B8%D1%8F-cache)
-
 ### 🧠 Hibernate: Аннотация `@Cache`
-
-[](https://github.com/yury-connect/ITM_task026_Java_Podgotovka_k_INTERVJU/blob/by_questions/ITM/ITM05_Hibernate/Hibernate.md#-hibernate-%D0%B0%D0%BD%D0%BD%D0%BE%D1%82%D0%B0%D1%86%D0%B8%D1%8F-cache)
-
 Аннотация `@Cache` используется в `Hibernate` для **гибкой настройки кэширования второго уровня (_L2 Cache_)**.
 
 > Работает только в связке с `@Cacheable`, которая включает сам механизм кэширования для сущности.
 
 ---
-
 ### ⚙️ Основные параметры
-
-[](https://github.com/yury-connect/ITM_task026_Java_Podgotovka_k_INTERVJU/blob/by_questions/ITM/ITM05_Hibernate/Hibernate.md#%EF%B8%8F-%D0%BE%D1%81%D0%BD%D0%BE%D0%B2%D0%BD%D1%8B%D0%B5-%D0%BF%D0%B0%D1%80%D0%B0%D0%BC%D0%B5%D1%82%D1%80%D1%8B)
 
 |**Параметр**|**Назначение**|
 |---|---|
@@ -26,10 +16,7 @@
 |`include`|Указывает, кэшировать ли ленивые поля (`lazy`) или только eagerly-загружаемые.|
 
 ---
-
 ### 🧩 Значения `usage` (_стратегия кэширования_)
-
-[](https://github.com/yury-connect/ITM_task026_Java_Podgotovka_k_INTERVJU/blob/by_questions/ITM/ITM05_Hibernate/Hibernate.md#-%D0%B7%D0%BD%D0%B0%D1%87%D0%B5%D0%BD%D0%B8%D1%8F-usage-%D1%81%D1%82%D1%80%D0%B0%D1%82%D0%B5%D0%B3%D0%B8%D1%8F-%D0%BA%D1%8D%D1%88%D0%B8%D1%80%D0%BE%D0%B2%D0%B0%D0%BD%D0%B8%D1%8F)
 
 |**Значение**|**Описание**|
 |---|---|
@@ -39,20 +26,13 @@
 |`TRANSACTIONAL`|Используется с JTA. Полная согласованность, подходит для продвинутых сценариев.|
 
 ---
-
 ### 🗂️ Использование `region`
-
-[](https://github.com/yury-connect/ITM_task026_Java_Podgotovka_k_INTERVJU/blob/by_questions/ITM/ITM05_Hibernate/Hibernate.md#%EF%B8%8F-%D0%B8%D1%81%D0%BF%D0%BE%D0%BB%D1%8C%D0%B7%D0%BE%D0%B2%D0%B0%D0%BD%D0%B8%D0%B5-region)
-
 - Позволяет логически **разделять кэш по регионам**, задавая разные настройки (_время жизни, объем, политику вытеснения и т.п._).
 - По умолчанию `Hibernate` создает регион с именем полного имени класса.
 - **Пример**: сущность `Foo` будет храниться в регионе `com.example.model.Foo`.
 
 ---
-
 ### 🚫 Параметр `include`
-
-[](https://github.com/yury-connect/ITM_task026_Java_Podgotovka_k_INTERVJU/blob/by_questions/ITM/ITM05_Hibernate/Hibernate.md#-%D0%BF%D0%B0%D1%80%D0%B0%D0%BC%D0%B5%D1%82%D1%80-include)
 
 |**Значение**|**Поведение**|
 |---|---|
@@ -60,10 +40,7 @@
 |`non-lazy`|Исключаются ленивые поля из кэширования. Полезно для избежания затрат на тяжелые ассоциации.|
 
 ---
-
 ### ✅ Пример использования
-
-[](https://github.com/yury-connect/ITM_task026_Java_Podgotovka_k_INTERVJU/blob/by_questions/ITM/ITM05_Hibernate/Hibernate.md#-%D0%BF%D1%80%D0%B8%D0%BC%D0%B5%D1%80-%D0%B8%D1%81%D0%BF%D0%BE%D0%BB%D1%8C%D0%B7%D0%BE%D0%B2%D0%B0%D0%BD%D0%B8%D1%8F)
 
 ```java
 @Entity
@@ -92,3 +69,5 @@ read-write
 nonstrict-read-write
 read-only
 ```
+
+---
