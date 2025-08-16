@@ -1,8 +1,8 @@
 ## Что такое **ORM**? Что такое **JPA**? Что такое **Hibernate**?
 
 ---
-## 🔹 Что такое `ORM`, `JPA` и `Hibernate`?
-- 📌 **ORM** (_Object Relational Mapping_) – концепция преобразования данных между **объектно-ориентированным языком** (_Java_) и **реляционной БД**.
+## 🔹 [Что такое `ORM`, `JPA` и `Hibernate`?](https://habr.com/ru/articles/265061/)
+- 📌 [**ORM**](https://javarush.com/quests/lectures/questhibernate.level09.lecture00) (_Object Relational Mapping_) – концепция преобразования данных между **объектно-ориентированным языком** (_Java_) и **реляционной БД**.
 - 📌 **JPA** (_Java Persistence API_) – спецификация ORM в _Java_, определяющая стандарты работы с БД, но не содержащая собственной реализации.  
   Реализация JPA возможна через **провайдеры**, такие как `Hibernate`, `EclipseLink`.
 - 📌 **Hibernate** – популярная ORM-библиотека, реализующая JPA и предоставляющая удобные API для работы с БД.
