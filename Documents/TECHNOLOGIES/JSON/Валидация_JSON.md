@@ -50,7 +50,7 @@ components:
 ---
 #### **2. Валидация через аннотации Jakarta Bean Validation (`javax.validation`)**
 
-Если не хочется описывать схему в YAML, можно использовать аннотации прямо в DTO:
+Если не хочется описывать схему в *YAML*, можно использовать аннотации в *DTO*:
 ```java
 public class UserRequest {
     @NotBlank
