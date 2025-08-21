@@ -296,22 +296,21 @@ USER (Browser / Mobile App)
 
 `Refresh Token` → `Frontend` → `Keycloak` → `new Access Token`
 
-- Обновление токена без повторного login.    
+- Обновление токена без повторного *login*.    
 - TTL Access Token 5–15 мин, Refresh Token ротация.    
 - При logout / session revoke → токены становятся недействительными.    
 
 ---
-
 ## **Лучшие практики на схеме**
 
-- PKCE для SPA/mobile.
-    
-- TLS everywhere.
-    
-- Short-lived JWT + rotating refresh.
-    
-- Roles / claims маппятся локально → no call to Keycloak per request.
-    
-- Gateway optional, но часто нужен для auditing & propagation of headers.
-    
+- PKCE для SPA/mobile.    
+- TLS everywhere.    
+- Short-lived JWT + rotating refresh.    
+- Roles / claims маппятся локально → no call to Keycloak per request.    
+- Gateway optional, но часто нужен для auditing & propagation of headers.    
 - Service-to-service → client credentials.
+
+---
+![визуализация](./_Attachments_07_Авторизация_через_Keycloack/image.png)
+
+---
