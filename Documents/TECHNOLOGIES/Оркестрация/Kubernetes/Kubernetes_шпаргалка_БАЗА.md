@@ -43,7 +43,7 @@ env:
 #### **3. Отличия от Docker Swarm**
 - **K8s сложнее**, но мощнее:    
     - Автомасштабирование (HPA), Canary-деплой.
-    - Больше инструментов (Helm, Operators, Service Mesh).    
+    - Больше инструментов ([Helm](Helm/Helm_info.md), Operators, Service Mesh).    
 - **Swarm проще**:    
     - `docker stack deploy` vs `helm install`.
     - Нет аналогов ConfigMap/Secrets (только через env-файлы).
@@ -53,7 +53,7 @@ env:
 **Шаблон ответа:**
 > *«Работал с k8s на уровне разработчика:> 
 > - Писал манифесты (Deployment/Service/ConfigMap),>     
-> - Делал деплой через `kubectl` / Helm,>     
+> - Делал деплой через `kubectl` / [Helm](Helm/Helm_info.md),>     
 > - Смотрел логи через `kubectl logs` и Lens,>     
 > - Настраивал Health Checks для Spring Boot.  
 >     Администрирование кластера (сети, ноды) не входило в мои задачи.»*

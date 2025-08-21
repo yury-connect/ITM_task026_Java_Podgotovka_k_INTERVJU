@@ -213,6 +213,6 @@ docker-compose -f docker-compose.yml -f docker-compose.prod.yml up -d
 ✅ **Идентичное окружение** на всех этапах (dev/test/staging)  
 ✅ **Быстрое прототипирование** микросервисов
 
-**👉 Next Step**: Для production-развертывания рассмотрите **Kubernetes** + **Helm**.
+**👉 Next Step**: Для production-развертывания рассмотрите **Kubernetes** + [**Helm**](../Kubernetes/Helm/Helm_info.md).
 
 ---

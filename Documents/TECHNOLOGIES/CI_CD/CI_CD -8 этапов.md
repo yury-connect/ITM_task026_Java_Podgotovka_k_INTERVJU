@@ -9,16 +9,16 @@
 
 таблица CI/CD этапов для **Java-backend разработки** с инструментами, ранжированными по популярности в экосистеме Java:
 
-| Этап            | Инструменты<br/>(от наиболее к менее популярным)                           | Обоснование для Java-backend                                                                  |
-| :-------------- | :------------------------------------------------------------------------- | :-------------------------------------------------------------------------------------------- |
-| **1. PLAN**     | **JIRA**, **Confluence**, <br/>Trello                                      | Стандарт для Agile-планирования в enterprise Java-проектах.                                   |
-| **2. CODE**     | **IntelliJ IDEA**, GitLab/GitHub, <br/>**Maven/Gradle**, Eclipse, Jenkins  | IntelliJ — лидер для Java-разработки; Maven/Gradle — стандарт сборки.                         |
-| **3. BUILD**    | **Maven/Gradle**, Docker, **Jenkins**, Bazel, BuildKite                    | Maven/Gradle — основа сборки Java; Jenkins — наиболее распространённый CI-сервер для Java.    |
-| **4. TEST**     | **JUnit**, **Mockito**, **TestNG**, Selenium, **JaCoCo**, **REST Assured** | JUnit + Mockito — стандарт unit-тестов; JaCoCo — покрытие кода; REST Assured — тесты API.     |
-| **5. DEPLOY**   | **Kubernetes**, **Docker**, **Helm**, Terraform, AWS Lambda                | Kubernetes + Docker — стандарт для контейнеризации Java-приложений; Helm — управление charts. |
-| **6. OPERATE**  | **Kubernetes**, **OpenShift**, **Ansible**, Docker Swarm, AWS ECS          | Оркестрация Java-сервисов через K8s/OpenShift; Ansible для конфигурации.                      |
-| **7. MONITOR**  | **Prometheus+Grafana**, **ELK Stack**, **Micrometer**, DataDog, Jaeger     | Micrometer интегрирует метрики Java с Prometheus; ELK — анализ логов Spring Boot.             |
-| **8. FEEDBACK** | **JIRA**, <br/>**Slack**, **Sentry**, PagerDuty, Opsgenie                  | JIRA для трекинга Java-багов; Sentry для отслеживания исключений в JVM.                       |
+| Этап            | Инструменты<br/>(от наиболее к менее популярным)                                                           | Обоснование для Java-backend                                                                                                                  |
+| :-------------- | :--------------------------------------------------------------------------------------------------------- | :-------------------------------------------------------------------------------------------------------------------------------------------- |
+| **1. PLAN**     | **JIRA**, **Confluence**, <br/>Trello                                                                      | Стандарт для Agile-планирования в enterprise Java-проектах.                                                                                   |
+| **2. CODE**     | **IntelliJ IDEA**, GitLab/GitHub, <br/>**Maven/Gradle**, Eclipse, Jenkins                                  | IntelliJ — лидер для Java-разработки; Maven/Gradle — стандарт сборки.                                                                         |
+| **3. BUILD**    | **Maven/Gradle**, Docker, **Jenkins**, Bazel, BuildKite                                                    | Maven/Gradle — основа сборки Java; Jenkins — наиболее распространённый CI-сервер для Java.                                                    |
+| **4. TEST**     | **JUnit**, **Mockito**, **TestNG**, Selenium, **JaCoCo**, **REST Assured**                                 | JUnit + Mockito — стандарт unit-тестов; JaCoCo — покрытие кода; REST Assured — тесты API.                                                     |
+| **5. DEPLOY**   | **Kubernetes**, **Docker**, [**Helm**](../Оркестрация/Kubernetes/Helm/Helm_info.md), Terraform, AWS Lambda | Kubernetes + Docker — стандарт для контейнеризации Java-приложений; [Helm](../Оркестрация/Kubernetes/Helm/Helm_info.md)] — управление charts. |
+| **6. OPERATE**  | **Kubernetes**, **OpenShift**, **Ansible**, Docker Swarm, AWS ECS                                          | Оркестрация Java-сервисов через K8s/OpenShift; Ansible для конфигурации.                                                                      |
+| **7. MONITOR**  | **Prometheus+Grafana**, **ELK Stack**, **Micrometer**, DataDog, Jaeger                                     | Micrometer интегрирует метрики Java с Prometheus; ELK — анализ логов Spring Boot.                                                             |
+| **8. FEEDBACK** | **JIRA**, <br/>**Slack**, **Sentry**, PagerDuty, Opsgenie                                                  | JIRA для трекинга Java-багов; Sentry для отслеживания исключений в JVM.                                                                       |
 
 ---
 детализация по каждому инструменту с акцентом на их применение в Java-экосистеме:
