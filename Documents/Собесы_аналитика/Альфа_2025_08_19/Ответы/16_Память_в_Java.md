@@ -120,15 +120,14 @@
     
 - **Soft** — *GC* может выбросить при нехватке памяти (*кэш*).
     
-- **Weak** — удаляется при первой же сборке (карты слабых ключей).
+- **Weak** — удаляется при первой же сборке (*карты слабых ключей*).
     
 - **Phantom** — для пост-mortem действий совместно с `ReferenceQueue`.
     
 - **Finalization** — **устарело**; используйте `Cleaner`/try-with-resources.    
 
 ---
-
-## 9) Частые OOME и их причины
+## 9) Частые **OOME** и их причины
 
 - `OutOfMemoryError: Java heap space` — утечки коллекций, кэш без лимита, циклические графы.
     
@@ -140,104 +139,66 @@
     
 - `Unable to create new native thread` — лимит потоков/памяти ОС.
     
-- `CodeCache is full` — много JIT-кода, включить `-XX:ReservedCodeCacheSize`.
-    
+- `CodeCache is full` — много JIT-кода, включить `-XX:ReservedCodeCacheSize`.    
 
 ---
+## 10) **Диагностика** и **профайлинг** (*must-know*)
 
-## 10) Диагностика и профайлинг (must-know)
-
-- **JFR (Java Flight Recorder)** + **Mission Control (JMC)** — низкий оверхед, события GC/аллоцирования.
-    
-- `jcmd` (`GC.heap_info`, `GC.run`, `VM.native_memory`, `JFR.start|dump`).
-    
-- `jmap -dump` — heap dump (анализ в **Eclipse MAT**, VisualVM).
-    
-- `jstat` — GC статистика.
-    
-- `jstack` — дампы потоков (поиск утечек через висящие треды).
-    
-- **JHSDB** (`clhsdb`) — низкоуровневый анализ.
-    
-- Логи GC: `-Xlog:gc*,safepoint:file=gc.log:time,uptime,level,tags` (JDK9+).
-    
+- **JFR (Java Flight Recorder)** + **Mission Control (JMC)** — низкий оверхед, события GC/аллоцирования.    
+- `jcmd` (`GC.heap_info`, `GC.run`, `VM.native_memory`, `JFR.start|dump`).    
+- `jmap -dump` — heap dump (анализ в **Eclipse MAT**, VisualVM).    
+- `jstat` — GC статистика.    
+- `jstack` — дампы потоков (поиск утечек через висящие треды).    
+- **JHSDB** (`clhsdb`) — низкоуровневый анализ.    
+- Логи GC: `-Xlog:gc*,safepoint:file=gc.log:time,uptime,level,tags` (JDK9+).    
 
 ---
+## 11) **Тюнинг** — что и когда крутить
 
-## 11) Тюнинг — что и когда крутить
+### **Базовые флаги**
+- Размеры heap: `-Xms / -Xmx` (делайте одинаковыми для стабильности).    
+- Metaspace: `-XX:MaxMetaspaceSize=` при нужде.    
+- Стек потока: `-Xss`.    
+- Выбор *GC*:    
+    - **G1 (*default*)**: `-XX:+UseG1GC`, целевая пауза `-XX:MaxGCPauseMillis=200` (*под задачу*).        
+    - **ZGC**: `-XX:+UseZGC` для низких пауз.    
+- Young/Survivor: `-XX:NewRatio`, `-XX:SurvivorRatio` (*реже нужно с G1/ZGC — работают эвристики*).    
+- G1 детали: `-XX:G1HeapRegionSize`, `-XX:+UseStringDeduplication`, `-XX:InitiatingHeapOccupancyPercent`.    
 
-### Базовые флаги
-
-- Размеры heap: `-Xms / -Xmx` (делайте одинаковыми для стабильности).
-    
-- Metaspace: `-XX:MaxMetaspaceSize=` при нужде.
-    
-- Стек потока: `-Xss`.
-    
-- Выбор GC:
-    
-    - **G1 (default)**: `-XX:+UseG1GC`, целевая пауза `-XX:MaxGCPauseMillis=200` (под задачу).
-        
-    - **ZGC**: `-XX:+UseZGC` для низких пауз.
-        
-- Young/Survivor: `-XX:NewRatio`, `-XX:SurvivorRatio` (реже нужно с G1/ZGC — работают эвристики).
-    
-- G1 детали: `-XX:G1HeapRegionSize`, `-XX:+UseStringDeduplication`, `-XX:InitiatingHeapOccupancyPercent`.
-    
-
-### Методика (важнее флагов)
-
-1. **Снимите факты**: JFR/GC-логи/метрики.
-    
-2. **Определите цель**: Throughput vs Latency.
-    
-3. **Маленькие изменения** и проверка.
-    
-4. **Индексы в БД/алгоритмы** часто дают больший эффект, чем «крутить GC».
-    
+### **Методика** (*важнее флагов*)
+1. **Снимите факты**: JFR/GC-логи/метрики.    
+2. **Определите цель**: Throughput vs Latency.    
+3. **Маленькие изменения** и проверка.    
+4. **Индексы в БД/алгоритмы** часто дают больший эффект, чем «крутить GC».    
 
 ---
-
-## 12) Типичные «утечки»
-
-- **Коллекции** (static/singletons/cache без TTL/LRU).
-    
-- **Listener/Callback** цепочки, неотписанные.
-    
-- **ThreadLocal** без `remove()` (особенно в пулах).
-    
-- **ClassLoader leaks** (сервлет-контейнеры, плагины).
-    
-- **Off-heap** (direct buffers, Netty/Zero-copy) — GC их не видит напрямую, ориентируйтесь на `-XX:MaxDirectMemorySize` и JFR.
-    
+## 12) **Типичные «*утечки*»**
+- **Коллекции** (static/singletons/cache без TTL/LRU).    
+- **Listener/Callback** цепочки, неотписанные.    
+- **ThreadLocal** без `remove()` (особенно в пулах).    
+- **ClassLoader leaks** (сервлет-контейнеры, плагины).    
+- **Off-heap** (direct buffers, Netty/Zero-copy) — GC их не видит напрямую, ориентируйтесь на `-XX:MaxDirectMemorySize` и JFR.    
 
 ---
-
-## 13) Взаимосвязь K8s/контейнеры ↔ JVM
+## 13) Взаимосвязь **`K8s`**/`контейнеры` ↔ `JVM`
 
 - Обязательно указывайте **лимиты** контейнера и включайте чтение cgroup: JDK 10+ делает это автоматически; для старых — `-XX:+UnlockExperimentalVMOptions -XX:+UseCGroupMemoryLimitForHeap`.
     
-- **Heap sizing**: берите часть от limit (например, 60–70%) + запас на Metaspace, CodeCache, native, direct.
-    
+- **Heap sizing**: берите часть от limit (например, 60–70%) + запас на Metaspace, CodeCache, native, direct.    
 
 ---
-
-## 14) Короткий «скелет» ответа для интервью (можно произнести)
+## 14) **Короткий «скелет» ответа для интервью** <br>(*можно произнести*)
 
 > «В JVM **один Heap**, где живут объекты; **много стеков** — по одному на поток; **Metaspace** хранит метаданные классов, а **Code Cache** — JIT-код. Размещение объектов идёт через **TLAB** в Eden; молодёжные сборки (**Minor GC**) копируют выживших в Survivor и далее в Old. Используем **G1** (или ZGC) — регионы, смешанные циклы, предсказуемые паузы. Метаданные классов в **Metaspace**, выгрузка — при сборке ClassLoader. Для диагностики — **JFR/JMC**, heap-dump через `jmap`, GC-логи. Тюнинг начинаю с `-Xms/-Xmx`, целевых пауз и анализа фактов, а не догадок.»
 
 ---
-
 ## 15) Мини-чеклист ✅
 
--  Структурируй логи и снимай JFR до тюнинга.
-    
--  Держи `-Xms` = `-Xmx` для стабильности.
-    
--  Следи за **Metaspace**/**Code Cache**/off-heap.
-    
--  Не злоупотребляй `ThreadLocal`.
-    
--  Для latencies < 50–100мс рассматривай **ZGC**.
-    
+-  Структурируй логи и снимай JFR до тюнинга.    
+-  Держи `-Xms` = `-Xmx` для стабильности.    
+-  Следи за **Metaspace**/**Code Cache**/off-heap.    
+-  Не злоупотребляй `ThreadLocal`.    
+-  Для latencies < 50–100мс рассматривай **ZGC**.    
 -  В контейнерах учитывай **cgroup limits**.
+
+---
