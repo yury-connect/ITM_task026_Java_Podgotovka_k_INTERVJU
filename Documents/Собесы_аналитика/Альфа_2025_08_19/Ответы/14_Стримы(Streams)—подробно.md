@@ -22,23 +22,27 @@
 
 - `map(Function<? super T,? extends R> mapper)`  
     → `Function<T,R>` — преобразует каждый элемент в другой.
-    
-    `list.stream().map(User::getName)`
+```java
+list.stream().map(User::getName)
+```
     
 - `flatMap(Function<? super T,? extends Stream<? extends R>> mapper)`  
     → `Function<T,Stream<R>>` — разворачивает вложенные стримы (полезно для коллекций внутри объектов).
-    
-    `people.stream().flatMap(p -> p.getPhones().stream())`
+```java
+people.stream().flatMap(p -> p.getPhones().stream())
+```
     
 - `filter(Predicate<? super T> predicate)`  
     → `Predicate<T>` — отбрасывает элементы, не прошедшие условие.
-    
-    `stream.filter(x -> x > 0)`
+```java
+stream.filter(x -> x > 0)
+```
     
 - `peek(Consumer<? super T> action)`  
     → `Consumer<T>` — побочный эффект/отладка; не гарантируется вызов для каждого элемента в параллельном/оптимизированном pipeline.
-    
-    `stream.peek(x -> log.debug(x));`
+```java
+stream.peek(x -> log.debug(x));
+```
     
 - `distinct()` — нет параметров — оставляет уникальные по `equals()` (stateful, использует Set).
     
@@ -49,18 +53,16 @@
     
 - `skip(long n)` — пропускает первые n (stateful-ish).
     
-- Преобразования в примитивные стримы:
-    
+- Преобразования в примитивные стримы:    
     - `mapToInt(ToIntFunction<? super T> mapper)` → `ToIntFunction<T>` → `IntStream`
         
     - `mapToLong(ToLongFunction<? super T>`), `mapToDouble(ToDoubleFunction<? super T>)`
         
     - `boxed()` — наоборот: примитивный Stream → `Stream<T>`.
-        
+    
 - `asLongStream()`, `mapToObj(IntFunction<R>)` и т.п. — для переходов между примитивными и объектными стримами.
     
 - `unordered()` — снимает гарантию порядка (может помочь при параллелизме).
-    
 
 ---
 # 👇 Таблица: терминальные операции (основные)
@@ -69,8 +71,9 @@
     
     - `collect(Collector<? super T,A,R> collector)`  
         → принимает `Collector` (см. раздел Collector ниже). Используется для накопления в коллекции/мэпе и т.д.
-        
-        `List<User> users = stream.collect(Collectors.toList());`
+```java
+List<User> users = stream.collect(Collectors.toList());
+```
         
     - `collect(Supplier<R> supplier, BiConsumer<R,? super T> accumulator, BiConsumer<R,R> combiner)`  
         → `Supplier`, `BiConsumer`, `BiConsumer` — низкоуровневая mutable-reduction.
@@ -130,36 +133,30 @@
     
 - `Collectors.reducing(...)` — необязательная reduce-форма.
     
-- `Collectors.mapping(mapper, downstreamCollector)` — комбинирование маппинга и дальнейшей агрегации.
-    
+- `Collectors.mapping(mapper, downstreamCollector)` — комбинирование маппинга и дальнейшей агрегации.    
 
 **Пример группировки:**
-`Map<Department, Long> countByDept = employees.stream()     .collect(Collectors.groupingBy(Employee::getDept, Collectors.counting()));`
+```java
+Map<Department, Long> countByDept = employees.stream()
+    .collect(Collectors.groupingBy(Employee::getDept, Collectors.counting()));
+```
 
 **Mutable reduction vs Immutable**
-
-- `collect(...)` с `Collector` — рекомендуется для mutable accumulation (List/Map).
-    
-- `reduce` — для immutable accumulation (более тяжёлый путь для коллекций).
-    
+- `collect(...)` с `Collector` — рекомендуется для mutable accumulation (List/Map).    
+- `reduce` — для immutable accumulation (более тяжёлый путь для коллекций).    
 
 ---
-
 # Примитивные стримы (IntStream/LongStream/DoubleStream)
 
 - Есть специализированные операции: `sum()`, `average()`, `summaryStatistics()` → возвращают `IntSummaryStatistics`.
     
-- Примитивные версии принимают специальные функциональные интерфейсы:
-    
-    - `ToIntFunction<T>` для `mapToInt`
-        
+- Примитивные версии принимают специальные функциональные интерфейсы:    
+    - `ToIntFunction<T>` для `mapToInt`        
     - `IntPredicate`, `IntUnaryOperator`, `IntConsumer`, `IntFunction<R>` и т.д.
-        
-- Преимущества: меньше авто-боксинга → лучше perf.
     
+- Преимущества: меньше авто-боксинга → лучше perf.    
 
 ---
-
 # Функциональные интерфейсы — краткий словарь (чаще встречающиеся)
 
 - `Function<T,R>` — используется в `map`.
@@ -174,11 +171,9 @@
     
 - `BinaryOperator<T>` — `reduce` (аккумулятор).
     
-- Примитивные версии: `IntFunction`, `ToIntFunction<T>`, `IntPredicate`, `IntUnaryOperator`, `IntBinaryOperator`, `IntConsumer`.
-    
+- Примитивные версии: `IntFunction`, `ToIntFunction<T>`, `IntPredicate`, `IntUnaryOperator`, `IntBinaryOperator`, `IntConsumer`.    
 
 ---
-
 # Поведение при параллелизме и порядок (important)
 
 - **Stateless intermediate ops** (map/filter) легко параллелить.
@@ -193,7 +188,6 @@
     
 
 ---
-
 # Common pitfalls и best practices
 
 - `orElse` vs `orElseGet` — не связано со стримами, но принцип ленивости важен (аналогично `orElseGet`).
@@ -208,7 +202,6 @@
     
 
 ---
-
 # Примеры (коротко, полезные шаблоны)
 
 1. Список имён старше 18, уникальные, отсортированные:
@@ -232,7 +225,6 @@
 `Map<String, Long> freq = words.stream()     .collect(Collectors.groupingBy(Function.identity(), Collectors.counting())); Optional<String> top = freq.entrySet().stream()     .max(Map.Entry.comparingByValue())     .map(Map.Entry::getKey);`
 
 ---
-
 # Короткая шпаргалка по методам (самые употребляемые)
 
 - **Intermediate**: `map`, `flatMap`, `filter`, `peek`, `distinct`, `sorted`, `limit`, `skip`, `mapToInt/Long/Double`, `boxed`
