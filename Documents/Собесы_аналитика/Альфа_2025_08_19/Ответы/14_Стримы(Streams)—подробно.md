@@ -184,8 +184,7 @@ Map<Department, Long> countByDept = employees.stream()
     
 - **Avoid shared mutable state**: не модифицируйте внешние коллекции из лямбд — либо используйте concurrent-коллекторы, либо `collect`.
     
-- **ordered vs unordered**: `forEachOrdered` и `findFirst` зависят от порядка; `findAny` быстрее в unordered/parallel.
-    
+- **ordered vs unordered**: `forEachOrdered` и `findFirst` зависят от порядка; `findAny` быстрее в unordered/parallel.    
 
 ---
 # Common pitfalls и best practices
@@ -198,38 +197,48 @@ Map<Department, Long> countByDept = employees.stream()
     
 - Для больших данных — используйте примитивные стримы или `LongStream.range...` вместо коллекций.
     
-- Для I/O-bound задач лучше использовать асинхронные/reactive подходы; parallel stream распараллеливает CPU-потоки (ForkJoinPool.commonPool()).
-    
+- Для I/O-bound задач лучше использовать асинхронные/reactive подходы; parallel stream распараллеливает CPU-потоки (ForkJoinPool.commonPool()).    
 
 ---
 # Примеры (коротко, полезные шаблоны)
 
 1. Список имён старше 18, уникальные, отсортированные:
-    
-
-`List<String> names = people.stream()     .filter(p -> p.getAge() >= 18)                    // Predicate<Person>     .map(Person::getName)                             // Function<Person,String>     .distinct()     .sorted()     .collect(Collectors.toList());`
+```java
+List<String> names = people.stream()
+    .filter(p -> p.getAge() >= 18)                    // Predicate<Person>
+    .map(Person::getName)                             // Function<Person,String>
+    .distinct()
+    .sorted()
+    .collect(Collectors.toList());
+```
 
 2. Группировка и суммирование:
-    
-
-`Map<Dept, Integer> sumSalary = employees.stream()     .collect(Collectors.groupingBy(Employee::getDept, Collectors.summingInt(Employee::getSalary)));`
+```java
+Map<Dept, Integer> sumSalary = employees.stream()
+    .collect(Collectors.groupingBy(Employee::getDept, Collectors.summingInt(Employee::getSalary)));
+```
 
 3. Параллельный подсчёт sum:
-    
-
-`int total = data.parallelStream()     .mapToInt(My::getValue)                           // ToIntFunction<My>     .sum();`
+```java
+int total = data.parallelStream()
+    .mapToInt(My::getValue)                           // ToIntFunction<My>
+    .sum();
+```
 
 4. Наиболее частое слово (Map + reduce):
-    
-
-`Map<String, Long> freq = words.stream()     .collect(Collectors.groupingBy(Function.identity(), Collectors.counting())); Optional<String> top = freq.entrySet().stream()     .max(Map.Entry.comparingByValue())     .map(Map.Entry::getKey);`
+```java
+Map<String, Long> freq = words.stream()
+    .collect(Collectors.groupingBy(Function.identity(), Collectors.counting()));
+Optional<String> top = freq.entrySet().stream()
+    .max(Map.Entry.comparingByValue())
+    .map(Map.Entry::getKey);
+```
 
 ---
 # Короткая шпаргалка по методам (самые употребляемые)
 
 - **Intermediate**: `map`, `flatMap`, `filter`, `peek`, `distinct`, `sorted`, `limit`, `skip`, `mapToInt/Long/Double`, `boxed`
     
-- **Terminal**: `collect`, `reduce`, `forEach`, `forEachOrdered`, `count`, `anyMatch/allMatch/noneMatch`, `findFirst/findAny`, `min/max`, `toArray`
-    
+- **Terminal**: `collect`, `reduce`, `forEach`, `forEachOrdered`, `count`, `anyMatch/allMatch/noneMatch`, `findFirst/findAny`, `min/max`, `toArray`    
 
 ---
