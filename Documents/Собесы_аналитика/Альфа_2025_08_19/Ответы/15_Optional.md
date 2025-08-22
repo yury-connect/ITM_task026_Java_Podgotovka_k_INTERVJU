@@ -1,11 +1,11 @@
-# Optional — зачем нужен и как применять (сначала просто, потом детально) ✅
+# **`Optional`** — зачем нужен и как применять (*сначала просто, потом детально*) ✅
 
 ---
-## Коротко — суть (одним предложением)
+## Коротко — суть (*одним предложением*)
 `Optional<T>` — контейнер, который явно обозначает «значение может быть или не быть» и помогает избежать `null`-чеков и `NullPointerException`, заменяя `null`-return безопасным API.
 
 ---
-## Когда применять (правило)
+## Когда применять (*правило*)
 
 - Использовать **как возвращаемый тип** из методов, когда результат может отсутствовать.
     
@@ -14,7 +14,7 @@
 - Отлично в комбинации со стримами и функциональными методами (`map`, `flatMap`, `filter`).    
 
 ---
-# Все основные методы `Optional` (с пояснениями и версиями JVM)
+# Все основные методы `Optional` (*с пояснениями и версиями JVM*)
 
 ### Статические фабрики
 - `static <T> Optional<T> empty()` — пустой Optional.    
@@ -54,7 +54,7 @@
 - `boolean equals(Object)` / `int hashCode()` / `String toString()` — стандартные.    
 
 ---
-# Психологические мемы / важные отличия (чтобы не ошибиться)
+# Психологические мемы / важные отличия (*чтобы не ошибиться*)
 
 - `orElse` **лениво? Нет** — выражение в `orElse` **вычисляется всегда**; если вычисление дорогостоящее, используйте `orElseGet`.
     
@@ -63,36 +63,61 @@
 - `get()` — почти всегда плохая идея без предварительной проверки `isPresent()` или `orElseThrow` — избегать в продакшене.
 
 ---
-# Примеры (чётко и практично)
+# Примеры (*чётко и практично*)
 
 ### 1) Базовое использование
-`Optional<User> findUser(String id) { ... }  findUser(id)   .ifPresent(user -> sendWelcomeEmail(user));`
+```java
+Optional<User> findUser(String id) { ... }
+
+findUser(id)
+  .ifPresent(user -> sendWelcomeEmail(user));
+```
 
 ### 2) Преобразование
-`Optional<User> userOpt = findUser(id); Optional<String> emailOpt = userOpt.map(User::getEmail); String email = emailOpt.orElse("no-reply@example.com");`
+```java
+Optional<User> userOpt = findUser(id);
+Optional<String> emailOpt = userOpt.map(User::getEmail);
+String email = emailOpt.orElse("no-reply@example.com");
+```
 
 ### 3) Ленивая альтернатива
-`String name = findUser(id)     .map(User::getName)     .orElseGet(() -> expensiveDefaultName()); // expensiveDefaultName вызовется только при пустом`
+```java
+String name = findUser(id)
+    .map(User::getName)
+    .orElseGet(() -> expensiveDefaultName()); // expensiveDefaultName вызовется только при пустом
+```
 
 ### 4) flatMap для вложенных/nullable полей
-
-`// user.getAddress() может быть null, address.getStreet() тоже Optional<String> street = findUser(id)     .flatMap(u -> Optional.ofNullable(u.getAddress()))     .map(Address::getStreet);`
+```java
+// user.getAddress() может быть null, address.getStreet() тоже
+Optional<String> street = findUser(id)
+    .flatMap(u -> Optional.ofNullable(u.getAddress()))
+    .map(Address::getStreet);
+```
 
 ### 5) Комбинировать два Optional
-
-`Optional<A> a = ... Optional<B> b = ... Optional<C> c = a.flatMap(av -> b.map(bv -> combine(av, bv)));`
+```java
+Optional<A> a = ...
+Optional<B> b = ...
+Optional<C> c = a.flatMap(av -> b.map(bv -> combine(av, bv)));
+```
 
 ### 6) Optional в Stream
-
-`List<String> names = users.stream()     .map(this::findUser)         // Stream<Optional<User>>     .flatMap(Optional::stream)   // Stream<User>     .map(User::getName)     .collect(Collectors.toList());`
+```java
+List<String> names = users.stream()
+    .map(this::findUser)         // Stream<Optional<User>>
+    .flatMap(Optional::stream)   // Stream<User>
+    .map(User::getName)
+    .collect(Collectors.toList());
+```
 
 ### 7) Альтернатива с exception
-
-`User user = findUser(id).orElseThrow(() -> new NotFoundException("user " + id));`
+```java
+User user = findUser(id).orElseThrow(() -> new NotFoundException("user " + id));
+```
 
 ---
-
-# Best practices / anti-patterns (что сказать на собеседовании)
+# Best practices / anti-patterns (*что сказать на собеседовании*)
 
 - ✅ **Return Optional** из методов, когда значение может отсутствовать.
     
@@ -104,23 +129,20 @@
     
 - ✅ В stream-пайплайнах использовать `flatMap(Optional::stream)` для чистоты.
     
-- ❗ Не превращайте Optional в `null` и обратно бессмысленно — цель — избавиться от `null`-семантики.
-    
+- ❗ Не превращайте Optional в `null` и обратно бессмысленно — цель — избавиться от `null`-семантики.    
 
 ---
-
-# Производительность и под капотом (коротко)
+# Производительность и под капотом (*коротко*)
 
 - `Optional` — тонкая оболочка: внутри хранит единственное поле `T value`. Небольшой объект, GC-friendly.
     
 - Частая критика: обёртка + лямбды (map/flatMap) могут создавать дополнительных аллокаций, но в большинстве приложений это не проблема. Для hot-path с миллионами вызовов перфом-тест — решает.
     
-- Важно: `orElse` вычисляет аргумент всегда → неожиданный overhead; `orElseGet` — ленивый.
-    
+- Важно: `orElse` вычисляет аргумент всегда → неожиданный overhead; `orElseGet` — ленивый.    
 
 ---
 
-# Полезная «шпаргалка» (мнемоника)
+# Полезная «**шпаргалка**» (*мнемоника*)
 
 - `of` — не null; `ofNullable` — может быть null.
     
@@ -134,7 +156,6 @@
     
 - `ifPresent` / `ifPresentOrElse` — побочные эффекты.
     
-- `stream()` — вписать Optional в Stream pipeline.
-    
+- `stream()` — вписать Optional в Stream pipeline.    
 
 ---
