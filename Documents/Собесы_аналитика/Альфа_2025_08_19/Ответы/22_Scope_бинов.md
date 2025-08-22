@@ -25,93 +25,73 @@ public class ReportBuilder { ... }
 - **Подводный камень:** если prototype внедрён в singleton напрямую, то singleton получит один экземпляр при создании. Для получения новых экземпляров внутри singleton используйте `ObjectProvider<ReportBuilder>` / `Provider` / `@Lookup` / `ApplicationContext.getBean(...)`.    
 
 ---
-
 ### 3) `request` (web)
-
-- **Что:** один бин на HTTP-запрос. Живёт только в контексте запроса.
-    
-- **Когда:** хранить данные конкретного запроса (например, `RequestContext`, parsed user info), которые нужны в разных слоях.
-    
+- **Что:** один бин на HTTP-запрос. Живёт только в контексте запроса.    
+- **Когда:** хранить данные конкретного запроса (например, `RequestContext`, parsed user info), которые нужны в разных слоях.    
 - **Пример:**
-    
+```java
+@Component
+@Scope(value = WebApplicationContext.SCOPE_REQUEST, proxyMode = ScopedProxyMode.TARGET_CLASS)
+public class RequestContext { ... }
+```
 
-`@Component @Scope(value = WebApplicationContext.SCOPE_REQUEST, proxyMode = ScopedProxyMode.TARGET_CLASS) public class RequestContext { ... }`
-
-- **Важно:** чаще всего требуется `proxyMode` (scoped proxy), потому что контроллеры/сервисы — singleton, и им нужно «вставлять» request-скоуп-бин.
-    
+- **Важно:** чаще всего требуется `proxyMode` (scoped proxy), потому что контроллеры/сервисы — singleton, и им нужно «вставлять» request-скоуп-бин.    
 
 ---
-
 ### 4) `session` (web)
-
-- **Что:** один бин на HTTP-сессию пользователя.
-    
-- **Когда:** корзина покупок, пользовательские настройки в рамках сессии.
-    
+- **Что:** один бин на HTTP-сессию пользователя.    
+- **Когда:** корзина покупок, пользовательские настройки в рамках сессии.    
 - **Пример:**
-    
-
-`@Component @Scope(value = WebApplicationContext.SCOPE_SESSION, proxyMode = ScopedProxyMode.TARGET_CLASS) public class ShoppingCart { ... }`
+ ```java
+@Component
+@Scope(value = WebApplicationContext.SCOPE_SESSION, proxyMode = ScopedProxyMode.TARGET_CLASS)
+public class ShoppingCart { ... }
+```
 
 ---
-
 ### 5) `application` (ServletContext)
-
-- **Что:** бин на весь веб-приложение (по сути: один на `ServletContext`).
-    
-- **Когда:** shared data на весь веб-приложение, редко используется.
-    
+- **Что:** бин на весь веб-приложение (по сути: один на `ServletContext`).    
+- **Когда:** shared data на весь веб-приложение, редко используется.    
 
 ---
-
 ### 6) `websocket`
-
-- **Что:** бин на WebSocket-сессию (при использовании spring-websocket).
-    
-- **Когда:** state per websocket connection.
-    
+- **Что:** бин на WebSocket-сессию (при использовании spring-websocket).    
+- **Когда:** state per websocket connection.    
 
 ---
-
 ### 7) Кастомные scope
-
-- **Что:** можно зарегистрировать собственный scope (`ConfigurableBeanFactory.registerScope("my", scopeImpl)`).
-    
-- **Когда:** специфичные lifecycle (например, per-tenant, per-correlationId).
-    
+- **Что:** можно зарегистрировать собственный scope (`ConfigurableBeanFactory.registerScope("my", scopeImpl)`).    
+- **Когда:** специфичные lifecycle (например, per-tenant, per-correlationId).    
 
 ---
-
 # Внедрение с разными scope-ами — важные техники
 
 ### Scoped proxy
-
-- `@Scope(..., proxyMode = ScopedProxyMode.TARGET_CLASS)` создаёт прокси, который внутри делегирует к реальному бину соответствующего scope. Нужен, когда singleton ожидает ссылку на request/session bean.
-    
+- `@Scope(..., proxyMode = ScopedProxyMode.TARGET_CLASS)` создаёт прокси, который внутри делегирует к реальному бину соответствующего scope. Нужен, когда singleton ожидает ссылку на request/session bean.    
 
 ### Получать prototype динамически
-
 - `ObjectProvider<T>` / `javax.inject.Provider<T>` / `ApplicationContext.getBean(...)` / `@Lookup` — способы получить свежий prototype внутри singleton.
     
 
 Пример с `ObjectProvider`:
+```java
+@Autowired
+private ObjectProvider<ReportBuilder> reportBuilderProvider;
 
-`@Autowired private ObjectProvider<ReportBuilder> reportBuilderProvider;  public void doJob() {    ReportBuilder rb = reportBuilderProvider.getObject();    ... }`
+public void doJob() {
+   ReportBuilder rb = reportBuilderProvider.getObject();
+   ...
+}
+```
 
 ### `@Lookup`
-
-- Аннотация для динамического получения бина (генерирует override-метод, возвращающий новый prototype).
-    
+- Аннотация для динамического получения бина (генерирует override-метод, возвращающий новый prototype).    
 
 ---
-
 # Жизненный цикл и destroy для prototype
-
-- **Prototype**: Spring **не вызывает** `@PreDestroy`/`DisposableBean` при завершении — ответственность потребителя. Для request/session контейнер вызывает destroy при завершении scope.
-    
+- **Prototype**: Spring **не вызывает** `@PreDestroy`/`DisposableBean` при завершении — ответственность потребителя. Для request/session контейнер вызывает destroy при завершении scope.    
 
 ---
-
 # Практические правила и рекомендации (как отвечать на собесе)
 
 1. **Всегда по умолчанию — `singleton`** для сервисов и репозиториев.
@@ -124,11 +104,9 @@ public class ReportBuilder { ... }
     
 5. **Не внедряй stateful prototype напрямую в singleton** — используй `ObjectProvider`/`@Lookup`.
     
-6. **Если нужна сложная политика жизни — делай кастомный scope или управляй вручную**.
-    
+6. **Если нужна сложная политика жизни — делай кастомный scope или управляй вручную**.    
 
 ---
-
 # Примеры из практики (коротко, кейсы)
 
 - **Singleton**: `UserService`, `PaymentService`, `Repository` — stateless, многопользовательские вызовы.
@@ -139,14 +117,11 @@ public class ReportBuilder { ... }
     
 - **Session scope**: `ShoppingCart` в e-commerce PoC (хранение id товаров, но без тяжёлых объектов — только ids).
     
-- **Custom scope**: делал per-tenant scope в мульти-тенантном приложении (регистрация scope на старте, бин держал tenant-specific cache).
-    
+- **Custom scope**: делал per-tenant scope в мульти-тенантном приложении (регистрация scope на старте, бин держал tenant-specific cache).    
 
 ---
+# Короткие фразы для интервью <br>(*1–2 предложения*)
 
-# Короткие фразы для интервью (1–2 предложения)
-
-- **«singleton — дефолт, prototype — новый экземпляр при каждом getBean, request/session — веб-скоупы; для внедрения request/session в singleton используют scoped proxy или ObjectProvider; prototype-дестройте сами»**.
-    
+- **«`singleton` — дефолт, prototype — новый экземпляр при каждом getBean, request/session — веб-скоупы; для внедрения request/session в singleton используют scoped proxy или ObjectProvider; prototype-дестройте сами»**.    
 
 ---
