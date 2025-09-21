@@ -118,110 +118,60 @@ RUN apt-get update && apt-get install -y curl \
 RUN groupadd -r appuser && useradd -r -g appuser appuser
 USER appuser
 ```
-
-
-RUN groupadd -r appuser && useradd -r -g appuser appuser
-USER appuser
-
 **Рекомендации:**
-
-- Не запускайте от root
-    
-- Создавайте непривилегированного пользователя
-    
-- Меняйте пользователя перед запуском приложения
-    
-
----
+- Не запускайте от `root`    
+- Создавайте <u>непривилегированного пользователя</u>    
+- Меняйте пользователя перед запуском приложения    
 
 ### 6. **EXPOSE** - документирование портов
-
-dockerfile
-
+```dockerfile
 EXPOSE 8080
 EXPOSE 8080/tcp
-
+```
 **Рекомендации:**
-
-- Указывайте протокол (tcp/udp)
-    
-- Это документация, а не открытие портов
-    
-
----
+- Указывайте протокол (`tcp`/`udp`)    
+- Это <u>документация</u>, а <u>не открытие портов</u>    
 
 ### 7. **ENV** - переменные окружения
-
-dockerfile
-
+```dockerfile
 ENV APP_HOME=/app \
     JAVA_OPTS="-Xmx512m"
-
+```
 **Рекомендации:**
-
-- Используйте для конфигурации
-    
-- Группируйте связанные переменные
-    
-- Не храните секреты в ENV
-    
-
----
+- Используйте <u>для конфигурации</u>    
+- Группируйте связанные переменные    
+- Не храните секреты в <u>ENV</u>    
 
 ### 8. **ENTRYPOINT** vs **CMD** - запуск приложения
-
-dockerfile
-
+```dockerfile
 ENTRYPOINT ["java", "-jar"]
 CMD ["app.jar"]
-
+```
 **Рекомендации:**
-
-- ENTRYPOINT для основной команды
-    
-- CMD для аргументов по умолчанию
-    
-- Используйте exec форму (["java", "-jar"])
-    
-
----
+- `ENTRYPOINT` для основной команды    
+- `CMD` для аргументов по умолчанию    
+- Используйте `exec` форму (["java", "-jar"])    
 
 ### 9. **HEALTHCHECK** - проверка здоровья
-
-dockerfile
-
+```dockerfile
 HEALTHCHECK --interval=30s --timeout=3s \
   CMD curl -f http://localhost:8080/health || exit 1
-
+```
 **Рекомендации:**
-
-- Добавляйте для production образов
-    
-- Настраивайте разумные интервалы
-    
-
----
+- Добавляйте для *production* образов
+- Настраивайте разумные интервалы    
 
 ### 10. **LABEL** - метаданные
-
-dockerfile
-
+```dockerfile
 LABEL maintainer="team@company.com"
 LABEL version="1.0"
-
+```
 **Рекомендации:**
+- Добавляйте метаданные для управления    
+- Используйте стандартные labels    
 
-- Добавляйте метаданные для управления
-    
-- Используйте стандартные labels
-    
-
----
-
-### Пример оптимизированного Dockerfile:
-
-dockerfile
-
+### Пример оптимизированного `Dockerfile`:
+```dockerfile
 FROM eclipse-temurin:17-jre-alpine
 
 WORKDIR /app
@@ -238,14 +188,12 @@ HEALTHCHECK --interval=30s --timeout=3s \
   CMD wget --no-verbose --tries=1 --spider http://localhost:8080/health || exit 1
 
 ENTRYPOINT ["java", "-jar", "app.jar"]
+```
 
 **Ключевые принципы:**
-
-- Минимальный размер образа
-    
-- Безопасность (non-root user)
-    
-- Повторяемость сборок
-    
+- Минимальный размер образа    
+- Безопасность (non-root user)    
+- Повторяемость сборок    
 - Читаемость и поддерживаемость
 
+---
