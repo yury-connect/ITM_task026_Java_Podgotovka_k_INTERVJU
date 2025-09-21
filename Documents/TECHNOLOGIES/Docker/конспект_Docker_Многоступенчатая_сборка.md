@@ -52,3 +52,4 @@ CMD ["./hello-go"]
 
 Подробнее в [видео на Youtube](https://youtu.be/9NqfyBcCyUs)
 
+---
