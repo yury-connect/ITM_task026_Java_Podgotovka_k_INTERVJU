@@ -197,3 +197,5 @@ ENTRYPOINT ["java", "-jar", "app.jar"]
 - Читаемость и поддерживаемость
 
 ---
+[пример](https://youtu.be/RlQn_ZWuNa0?si=sG1bJaENiAK5tGtW&t=574) написания `DockerFile`
+
