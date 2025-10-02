@@ -1,6 +1,6 @@
-
 ## Задача № 1:
 
+---
 Для следующего Java - класса
 ```java
 class Person {
@@ -13,6 +13,6 @@ class Person {
 
 ---
 Скрин оригинального задания:
-![|977x326](_Attachments_Task1/task1.png)
+![|977x326](_Attachments_Task1/task1_screen.png)
 
 ---
