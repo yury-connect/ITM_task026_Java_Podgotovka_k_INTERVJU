@@ -1,8 +1,5 @@
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.Iterator;
-import java.util.Map;
-import java.util.stream.Collectors;
 
 public class Task_2 {
 
@@ -28,19 +25,8 @@ public class Task_2 {
             if (obj instanceof String && ((String) obj).startsWith("aaa")) {
                 iterator.remove();
             }
-            // Для не-строк ничего не делаем - максимально быстро
+
+            // Для не-строк ничего не делаем - это будет максимально быстро
         }
-
-
-
-        Map<String, Integer> countMap = new HashMap<>();
-        for (String s : strings) {
-            String lower = s.toLowerCase();
-            countMap.put(lower, countMap.getOrDefault(lower, 0) + 1);
-        }
-
-        return strings.stream()
-                .filter(s -> countMap.get(s.toLowerCase()) > 1)
-                .collect(Collectors.toSet()); // или toList(), если нужны ду
     }
 }
