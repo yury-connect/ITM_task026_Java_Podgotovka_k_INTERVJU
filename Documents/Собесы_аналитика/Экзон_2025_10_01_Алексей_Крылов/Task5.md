@@ -1,7 +1,7 @@
-## Задача № 5:
+## Задача № **5**:
 
 ---
-Дан Java-класс
+Дан Java-класс:
 
 ```java
 public class RefEx {
@@ -95,32 +95,43 @@ public static void main(String[] args) {
     Tag tag5 = new Tag("Tag_5"); 
     Tag tag6 = new Tag("Tag_6");
     Tag tag7 = new Tag("Tag_7");
-
+	
     Book book1 = new Book("Book_1", List.of(tag1));
     Book book2 = new Book("Book_2", List.of(tag2, tag3));
     Book book3 = new Book("Book_3", List.of(tag4, tag5));
     Book book4 = new Book("Book_4", List.of(tag6, tag7));
-
+	
     Author author1 = new Author("Author_1", "Ivanov", List.of(book1, book2));
     Author author2 = new Author("Author_2", "Petrov", List.of(book3));
     Author author3 = new Author("Author_3", "Sidorov", List.of(book4));
-
+	
     List<Author> allAuthors = List.of(author1, author2, author3);
     List<Tag> allTags = List.of(tag1, tag2, tag3, tag4, tag5, tag6, tag7);
-
+	
     List<String> searchAuthorIds = List.of("Author_1", "Author_3");
-
+	
     List<Tag> tags = getTagsOfAuthorsBooks(allAuthors, searchAuthorIds);
 }
-
 ```
+
+**Комментарии к задачам**:
+- Версия Java – любая, на выбор кандидата    
+- Задача на СУБД – обычный ANSI SQL (но диалекты допустимы)    
+- Решение должно быть простым, рабочим и надёжным. Алгоритмические трюки нежелательны    
+- Приёмка – «на глазок», без компиляции и тестов. Запуск – только для удобства кандидата    
+- Обратить внимание на обработку ошибок    
+- Последовательность, стилистика – на усмотрение кандидата    
+- Подвохов типа грамматических ошибок в слове «void» в коде нет    
+- Дополнения и корректировки по ходу приёмки – допустимы
 
 ---
 Скрин оригинального задания:
-![|629x789](./_Attachments_Task5/image.png)
+![|629x789](_Attachments_Task5/task4_screen_part1.png)
 
-![|781x714](./_Attachments_Task5/image-1.png)
+![|781x714](_Attachments_Task5/task4_screen_part2.png)
 
-![|824x561](./_Attachments_Task5/image-2.png)
+![|824x561](_Attachments_Task5/task4_screen_part3.png)
+
+![|813x370](_Attachments_Task5/task4_screen_part4.png)
 
 ---
