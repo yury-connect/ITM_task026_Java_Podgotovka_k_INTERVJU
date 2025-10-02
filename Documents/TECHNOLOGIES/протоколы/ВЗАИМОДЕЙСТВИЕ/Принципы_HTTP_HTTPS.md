@@ -1,8 +1,7 @@
-# Принципы_взаимодействия_через_HTTP_HTTPS
+# Принципы взаимодействия через HTTP/HTTPS
 
-Давайте разберем принципы HTTP/HTTPS с примерами на Java.
-
-## Основы HTTP (HyperText Transfer Protocol)
+---
+## Основы **HTTP** (*HyperText Transfer Protocol*)
 
 ### Структура HTTP-запроса и ответа
 
@@ -16,6 +15,7 @@ User-Agent: Java-App
 
 {тело запроса}
 ```
+
 **HTTP-ответ:**
 ```text
 HTTP/1.1 200 OK
@@ -26,12 +26,10 @@ Server: Apache
 {тело ответа}
 ```
   
-
 ---
+## Работа с **HTTP** в Java
 
-## Работа с HTTP в Java
-
-### 1. Использование HttpURLConnection (базовый уровень)
+### 1. Использование `HttpURLConnection` <br>*(базовый уровень)*
 ```java
 package com.example.http;
 
@@ -103,7 +101,7 @@ public class BasicHttpExample {
 }
 ```
 
-### 2. Использование HttpClient (Java 11+)
+### 2. Использование `HttpClient` *(Java 11+)*
 ```java
 package com.example.http;
 
@@ -164,10 +162,10 @@ public class ModernHttpClientExample {
                 .header("Authorization", "Bearer my-token")
                 .POST(HttpRequest.BodyPublishers.ofString(json))
                 .build();
-        
+		        
         HttpResponse<String> response = httpClient.send(
                 request, HttpResponse.BodyHandlers.ofString());
-        
+		        
         return response.body();
     }
     
@@ -178,10 +176,10 @@ public class ModernHttpClientExample {
                 .header("Content-Type", "application/json")
                 .PUT(HttpRequest.BodyPublishers.ofString(json))
                 .build();
-        
+	        
         HttpResponse<String> response = httpClient.send(
                 request, HttpResponse.BodyHandlers.ofString());
-        
+	        
         return response.body();
     }
     
@@ -191,10 +189,10 @@ public class ModernHttpClientExample {
                 .uri(URI.create(url))
                 .DELETE()
                 .build();
-        
+	        
         HttpResponse<String> response = httpClient.send(
                 request, HttpResponse.BodyHandlers.ofString());
-        
+	        
         return response.body();
     }
 }
@@ -258,9 +256,7 @@ public class ContentTypeHandling {
 }
 ```
 
-
 ---
-
 ## Обработка HTTP статусов и ошибок
 ```java
 package com.example.http;
@@ -311,10 +307,7 @@ public class ErrorHandling {
 }
 ```
 
-  
-
 ---
-
 ## HTTPS и безопасность
 
 ### 1. Настройка SSL контекста
@@ -375,7 +368,6 @@ public class HttpsSecurityExample {
 ```
   
 ### 2. Аутентификация в HTTP запросах
-
 ```java
 package com.example.http;
 
@@ -415,7 +407,6 @@ public class AuthenticationExamples {
 ```
 
 ---
-
 ## Практический пример: HTTP клиент для REST API
 ```java
 package com.example.http;
@@ -545,42 +536,28 @@ public class RestApiClient {
 ---
 ## Ключевые принципы для Java-разработчика
 
-1. **Используйте HttpClient (Java 11+)**
-    
-    - Современный и эффективный
-        
-    - Поддержка HTTP/2
-        
+1. **Используйте HttpClient (Java 11+)**    
+    - Современный и эффективный        
+    - Поддержка HTTP/2        
     - Асинхронные операции
-        
-2. **Всегда обрабатывайте ошибки**
     
-    - Проверяйте статус-коды
-        
+2. **Всегда обрабатывайте ошибки**    
+    - Проверяйте статус-коды        
     - Используйте исключения для ошибок 4xx/5xx
-        
-3. **Настраивайте таймауты**
     
-    - Connect timeout
-        
+3. **Настраивайте таймауты**    
+    - Connect timeout        
     - Read timeout
-        
-4. **Используйте правильные заголовки**
     
-    - Content-Type для указания формата данных
-        
-    - Accept для ожидаемого формата ответа
-        
+4. **Используйте правильные заголовки**    
+    - Content-Type для указания формата данных        
+    - Accept для ожидаемого формата ответа        
     - Authorization для аутентификации
-        
-5. **Для HTTPS**
     
-    - Настраивайте SSLContext при необходимости
-        
-    - Используйте современные версии TLS
-        
+5. **Для HTTPS**    
+    - Настраивайте SSLContext при необходимости        
+    - Используйте современные версии TLS        
     - Валидируйте сертификаты
-        
 
 Этот фундамент поможет вам эффективно работать с веб-сервисами, REST API и любыми HTTP-взаимодействиями в Java-приложениях.
 

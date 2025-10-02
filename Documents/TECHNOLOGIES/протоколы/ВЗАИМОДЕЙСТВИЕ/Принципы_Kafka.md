@@ -1,26 +1,18 @@
-# Принципы_взаимодействия_через_Kafka
+# Принципы взаимодействия через **Kafka**
 
 Давайте разберем принципы взаимодействия через Apache Kafka с примерами на Java.
 
-## Основные концепции Kafka
+## Основные концепции **Kafka**
 
 ### Архитектура Kafka:
-
-- **Producer** → приложение, отправляющее сообщения
-    
-- **Consumer** → приложение, читающее сообщения
-    
-- **Broker** → сервер Kafka
-    
-- **Topic** → категория/поток сообщений
-    
-- **Partition** → часть топика для параллельной обработки
-    
-- **Consumer Group** → группа потребителей, совместно обрабатывающих сообщения
-    
+- **Producer** → приложение, отправляющее сообщения    
+- **Consumer** → приложение, читающее сообщения    
+- **Broker** → сервер Kafka    
+- **Topic** → категория/поток сообщений    
+- **Partition** → часть топика для параллельной обработки    
+- **Consumer Group** → группа потребителей, совместно обрабатывающих сообщения   
 
 ---
-
 ## Настройка зависимостей Maven
 ```xml
 <dependencies>
@@ -36,11 +28,11 @@
     </dependency>
 </dependencies>
 ```
+
 ---
+## Producer *(Отправитель сообщений)*
 
-## Producer (Отправитель сообщений)
-
-### 1. Базовый Producer
+### 1. Базовый **Producer**
 ```java
 package com.example.kafka;
 
@@ -106,7 +98,7 @@ public class BasicProducerExample {
 }
 ```
 
-### 2. Продвинутый Producer с кастомной сериализацией
+### 2. Продвинутый **Producer** с кастомной сериализацией
 ```java
 package com.example.kafka;
 
@@ -200,10 +192,9 @@ class JsonProducerExample {
 ```
 
 ---
+## **Consumer** *(Получатель сообщений)*
 
-## Consumer (Получатель сообщений)
-
-### 1. Базовый Consumer
+### 1. Базовый **Consumer**
 ```java
 package com.example.kafka;
 
@@ -275,7 +266,7 @@ public class BasicConsumerExample {
 }
 ```
 
-### 2. Продвинутый Consumer с обработкой по партициям
+### 2. Продвинутый **Consumer** с обработкой по партициям
 ```java
 package com.example.kafka;
 
@@ -373,10 +364,9 @@ public class AdvancedConsumerExample {
 ```
 
 ---
+## **Consumer Groups**
 
-## Consumer Groups
-
-### 3. Множественные Consumers в одной группе
+### 3. Множественные **Consumers** в одной группе
 ```java
 package com.example.kafka;
 
