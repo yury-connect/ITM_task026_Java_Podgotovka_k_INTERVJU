@@ -1,3 +1,5 @@
+package solutions;
+
 import java.util.Objects;
 
 // Вариация предыдущей задачи с расширенным функционалом :)

@@ -1,13 +1,12 @@
+package solutions;
+
 import java.util.*;
-import java.util.stream.Collectors;
+import static solutions.Task_5_1.Ex.Author;
+import static solutions.Task_5_1.Ex.Book;
+import static solutions.Task_5_1.Ex.Tag;
 
-//import static Task_5.Ex.Author;
-//import static Task_5.Ex.Book;
-//import static Task_5.Ex.Tag;
-import  Task_5.Ex.Tag;
-//import static Ex.Tag;
 
-public class Task_5 {
+public class Task_5_1 {
     public static List<Tag> getTagsOfAuthorsBooks(List<Author> authors, List<String> searchAuthorIds) {
         if (authors == null || searchAuthorIds == null) {
             return new ArrayList<>();
@@ -19,11 +18,15 @@ public class Task_5 {
         Set<String> searchIds = new HashSet<>(searchAuthorIds);
 
         for (Author author : authors) {
+
             // Проверяем, что автор есть в списке искомых ID
             if (author != null && searchIds.contains(author.id)) {
+
                 // Обрабатываем книги автора
                 if (author.books != null) {
+
                     for (Book book : author.books) {
+
                         // Добавляем теги книги в результат
                         if (book != null && book.tags != null) {
                             result.addAll(book.tags);
@@ -32,42 +35,44 @@ public class Task_5 {
                 }
             }
         }
-
         return result;
     }
 
 
 
     // *** Из условия : ***
-    public enum DocumentType {
-        XML, PDF, DOCX
+    public class RefEx {
+        public enum DocumentType {
+            XML, PDF, DOCX
+        }
+
+        public static class Document {
+            String id;
+            Task_5_1.RefEx.DocumentType type;
+            String content;
+        }
+
+        public static class DocumentService {
+
+            public void process(Task_5_1.RefEx.Document[] d) {
+                for (Task_5_1.RefEx.Document i : d) {
+                    // Общая логика обработки документа
+                    switch (i.type) {
+                        case PDF: {
+                            // Специфическая логика для обработки PDF
+                        } break;
+                        case DOCX: {
+                            // Специфическая логика для обработки Word
+                        } break;
+                        case XML: {
+                            // Специфическая логика для обработки XML
+                        } break;
+                    }
+                }
+            }
+        }
     }
 
-    public static class Document {
-        String id;
-        DocumentType type;
-        String content;
-    }
-
-    public static class DocumentService {
-
-//        public void process(Document[] d) {
-//            for (Document i : d) {
-//                // Общая логика обработки документа
-//                switch (i.type) {
-//                    case DocumentType.PDF: {
-//                        // Специфическая логика для обработки PDF
-//                    } break;
-//                    case DocumentType.DOCX: {
-//                        // Специфическая логика для обработки Word
-//                    } break;
-//                    case DocumentType.XML: {
-//                        // Специфическая логика для обработки XML
-//                    } break;
-//                }
-//            }
-//        }
-    }
 
 
 

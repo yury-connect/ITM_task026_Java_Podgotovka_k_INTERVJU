@@ -1,3 +1,5 @@
+package solutions;
+
 import java.util.Objects;
 
 public class Task_1_1 {

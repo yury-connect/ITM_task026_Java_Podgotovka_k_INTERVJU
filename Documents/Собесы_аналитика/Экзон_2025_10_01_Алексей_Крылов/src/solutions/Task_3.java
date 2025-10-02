@@ -1,3 +1,5 @@
+package solutions;
+
 public class Task_3 {
 
     /*
