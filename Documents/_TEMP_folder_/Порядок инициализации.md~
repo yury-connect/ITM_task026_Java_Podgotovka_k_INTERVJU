@@ -1,0 +1,96 @@
+---
+tags:
+  - Core/инициализация
+---
+### **Порядок инициализации классов в Java**
+
+### Иерархия классов:
+```text
+AbstractClass -> ClassB -> ClassC
+```
+
+### При создании ПЕРВОГО экземпляра ClassC:
+```text
+Static field AbstractClass
+Static block AbstractClass
+Static field ClassB initialized
+static block ClassB
+Static field ClassC
+static block ClassC
+non static field AbstractClass
+Non static block AbstractClass
+Constructor AbstractClass
+Non static field ClassB initialized
+Non static block ClassB
+Constructor ClassB
+Non static field ClassC
+Non static block ClassC
+Constructor ClassC
+```
+
+### При создании ВТОРОГО экземпляра ClassC:
+```text
+non static field AbstractClass
+Non static block AbstractClass
+Constructor AbstractClass
+Non static field ClassB initialized
+Non static block ClassB
+Constructor ClassB
+Non static field ClassC
+Non static block ClassC
+Constructor ClassC
+```
+
+
+---
+---
+---
+## Немного перефразировав *(другими словами)*:
+
+### **Порядок инициализации классов в Java**
+_(AbstractClass → ClassB → ClassC)_
+
+---
+#### 1. Создание **первого** экземпляра `ClassC`
+###### Статическая инициализация *(выполняется **один раз** при загрузке классов)*:
+1. `Static field AbstractClass`    
+2. `Static block AbstractClass`    
+3. `Static field ClassB initialized`    
+4. `Static block ClassB`    
+5. `Static field ClassC`    
+6. `Static block ClassC`    
+
+###### Нестатическая инициализация (**для каждого** нового объекта):  
+7. `Non-static field AbstractClass`  
+8. `Non-static block AbstractClass`  
+9. `Constructor AbstractClass`  
+10. `Non-static field ClassB initialized`  
+11. `Non-static block ClassB`  
+12. `Constructor ClassB`  
+13. `Non-static field ClassC`  
+14. `Non-static block ClassC`  
+15. `Constructor ClassC`
+
+---
+#### 2. Создание **второго** экземпляра `ClassC`
+_(Статическая часть пропускается, так как классы уже загружены)_
+1. `Non-static field AbstractClass`    
+2. `Non-static block AbstractClass`    
+3. `Constructor AbstractClass`    
+4. `Non-static field ClassB initialized`    
+5. `Non-static block ClassB`    
+6. `Constructor ClassB`    
+7. `Non-static field ClassC`    
+8. `Non-static block ClassC`    
+9. `Constructor ClassC`    
+
+---
+### **Ключевые выводы:**
+
+1. **Статические блоки и поля** выполняются единожды при первом обращении к классу 
+   (в порядке наследования: родитель → потомок).
+    
+2. **Нестатические блоки и поля** инициализируются при каждом создании объекта 
+   (также в порядке наследования).
+    
+3. **Конструкторы** вызываются после всех блоков инициализации своего класса.
