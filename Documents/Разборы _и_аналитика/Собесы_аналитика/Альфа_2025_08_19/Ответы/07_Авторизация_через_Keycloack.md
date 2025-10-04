@@ -311,6 +311,6 @@ USER (Browser / Mobile App)
 - Service-to-service → client credentials.
 
 ---
-![визуализация](./_Attachments_07_Авторизация_через_Keycloack/image.png)
+![визуализация](_Attachments_07_Авторизация_через_Keycloack/image.png)
 
 ---

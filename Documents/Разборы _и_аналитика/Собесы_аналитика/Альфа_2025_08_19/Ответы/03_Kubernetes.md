@@ -2,12 +2,12 @@
 
 ---
 # `Kubernetes` — моя вовлечённость
-**Уровень:** уверенный разработчик, умею деплоить через [Helm](../../../TECHNOLOGIES/Оркестрация/Kubernetes/Helm/Helm_info.md), читать манифесты (Deployment/Service/Ingress/ConfigMap/Secret), настраивать probes/ресурсы/HPA, делать rollback/rollout status, смотреть логи/ивенты. Работаю через Jenkins → Helm → k8s.
+**Уровень:** уверенный разработчик, умею деплоить через [Helm](../../../../TECHNOLOGIES/Оркестрация/Kubernetes/Helm/Helm_info.md), читать манифесты (Deployment/Service/Ingress/ConfigMap/Secret), настраивать probes/ресурсы/HPA, делать rollback/rollout status, смотреть логи/ивенты. Работаю через Jenkins → Helm → k8s.
 
 ---
 ## 1) Чем деплоилось в `Kubernetes`?
 
-- 🧰 **[Helm](../../../TECHNOLOGIES/Оркестрация/Kubernetes/Helm/Helm_info.md)**: собственный **Helm-chart** сервиса (*база от DevOps, я допиливал values, probes, ресурсы*).
+- 🧰 **[Helm](../../../../TECHNOLOGIES/Оркестрация/Kubernetes/Helm/Helm_info.md)**: собственный **Helm-chart** сервиса (*база от DevOps, я допиливал values, probes, ресурсы*).
     
 - 🧩 В чарте: `Deployment`, `Service (ClusterIP)`, `Ingress (nginx)`, `ConfigMap`, `Secret`, `HPA`, `ServiceAccount` + **Helm-hooks** для Liquibase job (pre-upgrade).
     
