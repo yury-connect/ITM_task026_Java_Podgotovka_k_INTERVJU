@@ -161,6 +161,10 @@ ssh -T bitbucket
 git clone gitlab:username/project.git
 ```
 
+```bash
+git@git.it-mentor.tech:itm-platform/staff.git
+```
+
 #### GitHub проект для Yury-developer:
 ```bash
 git clone github-yury-developer:username/project.git
