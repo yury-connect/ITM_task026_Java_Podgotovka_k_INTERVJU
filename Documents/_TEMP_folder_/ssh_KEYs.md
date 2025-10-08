@@ -132,8 +132,8 @@ cat ~/.ssh/github-yury-developer/id_ed25519.pub
 Создай файл `%USERPROFILE%\.gitconfig-bitbucket`:
 ```ini
 [user]
-    name = Your GitLab Name
-    email = your-gitlab-email@example.com
+    name = yury-connect
+    email = yury-connect-email@example.com
 ```
 
 
