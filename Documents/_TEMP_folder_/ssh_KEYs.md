@@ -136,50 +136,9 @@ cat ~/.ssh/github-yury-developer/id_ed25519.pub
     email = yury-connect-email@example.com
 ```
 
-
-[user]
-    name = Yury-developer
-    email = your-main-email@example.com
-
-[includeIf "gitdir:~/projects/github-yury-connect/"]
-    path = .gitconfig-yury-connect
-
-[includeIf "gitdir:~/projects/gitlab/"]
-    path = .gitconfig-gitlab
-
-[includeIf "gitdir:~/projects/bitbucket/"]
-    path = .gitconfig-bitbucket
-
-Создай файл `%USERPROFILE%\.gitconfig-yury-connect`:
-
-ini
-
-[user]
-    name = yury-connect
-    email = yury-connect-email@example.com
-
-Создай файл `%USERPROFILE%\.gitconfig-gitlab`:
-
-ini
-
-[user]
-    name = Your GitLab Name
-    email = your-gitlab-email@example.com
-
-Создай файл `%USERPROFILE%\.gitconfig-bitbucket`:
-
-ini
-
-[user]
-    name = yury-connect
-    email = yury-connect-email@example.com
-
 ### Шаг 6: Тестируем подключение
-
 Протестируй каждое подключение:
-
-bash
-
+```bash
 # GitHub Yury-developer
 ssh -T github-yury-developer
 
@@ -191,43 +150,35 @@ ssh -T gitlab
 
 # Bitbucket
 ssh -T bitbucket
-
+```
 Должны появиться сообщения об успешной аутентификации.
 
 ### Шаг 7: Клонируем проекты
-
 Теперь при клонировании используй соответствующие Host из config файла:
 
 #### GitLab проект:
-
-bash
-
+```bash
 git clone gitlab:username/project.git
+```
 
 #### GitHub проект для Yury-developer:
-
-bash
-
+```bash
 git clone github-yury-developer:username/project.git
+```
 
 #### GitHub проект для Yury-connect:
-
-bash
-
+```bash
 git clone github-yury-connect:username/project.git
+```
 
 #### Bitbucket проект:
-
-bash
-
+```bash
 git clone bitbucket:username/project.git
+```
 
 ### Шаг 8: Дополнительная настройка (опционально)
-
 Добавь в `~/.bashrc` или `~/.bash_profile` алиасы для удобства:
-
-bash
-
+```bash
 # SSH алиасы
 alias ssh-github-dev='ssh github-yury-developer'
 alias ssh-github-con='ssh github-yury-connect'
@@ -236,11 +187,10 @@ alias ssh-bitbucket='ssh bitbucket'
 
 # Проверка всех подключений
 alias ssh-test-all='ssh -T github-yury-developer && ssh -T github-yury-connect && ssh -T gitlab && ssh -T bitbucket'
+```
 
 ### 🎯 Итоговая структура папок:
-
-text
-
+```text
 %USERPROFILE%\.ssh\
 ├── config
 ├── github-yury-developer\
@@ -255,5 +205,8 @@ text
 └── bitbucket\
     ├── id_ed25519
     └── id_ed25519.pub
+```
 
 Теперь у тебя красивая организованная система SSH ключей! Каждый сервис и аккаунт имеет свой ключ, и всё логично разложено по папкам. 🚀
+
+---
