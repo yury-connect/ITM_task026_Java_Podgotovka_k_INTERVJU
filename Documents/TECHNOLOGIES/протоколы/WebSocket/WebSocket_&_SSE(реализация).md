@@ -6,7 +6,7 @@
 
 ---
 # 🔌 1. WebSocket в Spring Boot
-Используем STOMP поверх WebSocket *(production-ready вариант)*.
+Используем **STOMP** поверх **WebSocket** *(production-ready вариант)*.
 ### 📦 Зависимость
 ```xml
 <dependency>  
@@ -38,9 +38,8 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
 ```
 
 ---
-
 ### 🎯 Контроллер
-
+```java
 @Controller  
 public class ChatController {  
   
@@ -50,44 +49,34 @@ public class ChatController {
         return message;  
     }  
 }
+```
 
 ---
-
 ### 🔁 Поток
 
-Client → /app/chat  
-Server → /topic/messages  
-Subscribers получают сообщение
+**Client** → `/app/chat`  
+**Server** → `/topic/messages`  
+**Subscribers** получают сообщение
 
 ---
-
 ### 🧠 Важно (production)
-
-- Горизонтальное масштабирование → Redis/RabbitMQ broker
-    
-- Без брокера — только один инстанс
-    
-- Security: Spring Security + CSRF disable для ws
-    
+- Горизонтальное масштабирование → `Redis`/`RabbitMQ` broker    
+- Без брокера — только один инстанс    
+- Security: `Spring Security` + `CSRF` disable для ws    
 
 ---
-
 # 📡 2. SSE в Spring Boot
 
 Проще. Используем `SseEmitter`.
 
 ---
-
 ### 🎯 Контроллер
-
-@RestController  
-public class NotificationController {  
-  
+```java
     @GetMapping("/stream")  
     public SseEmitter stream() {  
-  
+		  
         SseEmitter emitter = new SseEmitter();  
-  
+		  
         Executors.newSingleThreadExecutor().execute(() -> {  
             try {  
                 for (int i = 0; i < 5; i++) {  
@@ -99,13 +88,16 @@ public class NotificationController {
                 emitter.completeWithError(e);  
             }  
         });  
-  
+		  
         return emitter;  
     }  
+@RestController  
+public class NotificationController {  
+  
 }
+```
 
 ---
-
 ### 🔁 Поток
 
 Client делает GET /stream  
@@ -113,43 +105,35 @@ Server держит соединение
 Периодически отправляет данные
 
 ---
-
 # ⚖️ Архитектурное сравнение в backend
 
-||WebSocket|SSE|
-|---|---|---|
-|Thread model|Event-driven|Обычно blocking|
-|Масштабирование|Через broker|Stateless|
-|Нагрузка|Лучше при high-frequency|Подходит для low-frequency|
-|Поддержка браузером|Через STOMP/SockJS|EventSource|
+|                     | WebSocket                | SSE                        |
+| ------------------- | ------------------------ | -------------------------- |
+| Thread model        | Event-driven             | Обычно blocking            |
+| Масштабирование     | Через broker             | Stateless                  |
+| Нагрузка            | Лучше при high-frequency | Подходит для low-frequency |
+| Поддержка браузером | Через STOMP/SockJS       | EventSource                |
 
 ---
-
 # 🧠 Как выбрать (практика middle/senior)
 
 Если:
-
-- Нужно real-time + bidirectional → WebSocket
-    
-- Только уведомления → SSE
-    
-- Высокая нагрузка → WebSocket + внешний broker
-    
-- Простой сервис статусов → SSE
-    
+- Нужно real-time + bidirectional → WebSocket    
+- Только уведомления → SSE    
+- Высокая нагрузка → WebSocket + внешний broker    
+- Простой сервис статусов → SSE    
 
 ---
-
 # 🏗 Production-архитектура (рекомендовано)
 
-**WebSocket:**
-
-Client → WS → App  
+#### **WebSocket:**
+`Client` → `WS` → `App`  
               ↓  
-           Redis Pub/Sub  
+           `Redis Pub/Sub`  
               ↓  
            Другие инстансы
 
-**SSE:**
+#### **SSE:**
+`Client` → `App` → `DB`/`Queue`
 
-Client → App → DB/Queue
+---
