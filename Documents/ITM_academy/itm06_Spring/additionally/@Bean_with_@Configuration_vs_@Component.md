@@ -61,15 +61,9 @@ public class AppConfig {
     - Это **не рекомендуется**, так как `@Component` предназначен для обычных бинов, а не для конфигурации.
 
 ---
-
 ## Пример: `@Bean` в `@Component` vs `@Configuration` 🎯
 
-[](https://github.com/yury-connect/ITM_task026_Java_Podgotovka_k_INTERVJU/blob/by_questions/ITM/ITM06_Spring/otc/@Bean_with_@Configuration_vs_@Component.md#%D0%BF%D1%80%D0%B8%D0%BC%D0%B5%D1%80-bean-%D0%B2-component-vs-configuration-)
-
 ### 1. `@Bean` в `@Configuration` (правильный подход)
-
-[](https://github.com/yury-connect/ITM_task026_Java_Podgotovka_k_INTERVJU/blob/by_questions/ITM/ITM06_Spring/otc/@Bean_with_@Configuration_vs_@Component.md#1-bean-%D0%B2-configuration-%D0%BF%D1%80%D0%B0%D0%B2%D0%B8%D0%BB%D1%8C%D0%BD%D1%8B%D0%B9-%D0%BF%D0%BE%D0%B4%D1%85%D0%BE%D0%B4)
-
 ```java
 @Configuration
 public class AppConfig {
@@ -92,15 +86,11 @@ MyDao dao = context.getBean(MyDao.class);
 ```
 
 **Что происходит**:
-
 - Spring использует CGLIB-прокси для `AppConfig`.
 - Вызов `myDao()` в `myService()` возвращает бин из контекста, а не новый объект.
 - Результат: один экземпляр `MyDao` (singleton).
 
 ### 2. `@Bean` в `@Component` (не рекомендуется)
-
-[](https://github.com/yury-connect/ITM_task026_Java_Podgotovka_k_INTERVJU/blob/by_questions/ITM/ITM06_Spring/otc/@Bean_with_@Configuration_vs_@Component.md#2-bean-%D0%B2-component-%D0%BD%D0%B5-%D1%80%D0%B5%D0%BA%D0%BE%D0%BC%D0%B5%D0%BD%D0%B4%D1%83%D0%B5%D1%82%D1%81%D1%8F)
-
 ```java
 @Component
 public class MyComponent {
@@ -108,7 +98,7 @@ public class MyComponent {
     public MyService myService() {
         return new MyService(myDao()); // Новый экземпляр MyDao
     }
-
+	
     @Bean
     public MyDao myDao() {
         return new MyDao();
@@ -123,16 +113,12 @@ MyDao dao = context.getBean(MyDao.class);
 ```
 
 **Что происходит**:
-
 - Spring регистрирует бины `MyService` и `MyDao`, но `MyComponent` — обычный бин, без CGLIB-прокси.
 - Вызов `myDao()` в `myService()` создаёт **новый** объект `MyDao`, а не использует бин из контекста.
 - Результат: нарушение singleton-поведения, два разных экземпляра `MyDao`.
 
 ---
-
 ## Почему `@Configuration` предпочтительнее? 🌟
-
-[](https://github.com/yury-connect/ITM_task026_Java_Podgotovka_k_INTERVJU/blob/by_questions/ITM/ITM06_Spring/otc/@Bean_with_@Configuration_vs_@Component.md#%D0%BF%D0%BE%D1%87%D0%B5%D0%BC%D1%83-configuration-%D0%BF%D1%80%D0%B5%D0%B4%D0%BF%D0%BE%D1%87%D1%82%D0%B8%D1%82%D0%B5%D0%BB%D1%8C%D0%BD%D0%B5%D0%B5-)
 
 |Аспект|`@Configuration`|`@Component`|
 |---|---|---|
@@ -142,23 +128,17 @@ MyDao dao = context.getBean(MyDao.class);
 |**Рекомендация**|Использовать для `@Bean`|Не использовать для `@Bean`|
 
 **Ключевой вывод**:
-
 - `@Configuration` обеспечивает правильное поведение `@Bean`, особенно при работе с зависимостями между бинами.
 - `@Component` с `@Bean` работает, но может привести к ошибкам, так как Spring не применяет специальную обработку.
 
 ---
-
 ## Когда можно использовать `@Bean` вне `@Configuration`? 🤷‍♂️
 
-[](https://github.com/yury-connect/ITM_task026_Java_Podgotovka_k_INTERVJU/blob/by_questions/ITM/ITM06_Spring/otc/@Bean_with_@Configuration_vs_@Component.md#%D0%BA%D0%BE%D0%B3%D0%B4%D0%B0-%D0%BC%D0%BE%D0%B6%D0%BD%D0%BE-%D0%B8%D1%81%D0%BF%D0%BE%D0%BB%D1%8C%D0%B7%D0%BE%D0%B2%D0%B0%D1%82%D1%8C-bean-%D0%B2%D0%BD%D0%B5-configuration-%E2%80%8D%EF%B8%8F)
-
 В редких случаях `@Bean` в `@Component` может быть оправдан, если:
-
 - Метод `@Bean` **не зависит** от других `@Bean`-методов в том же классе.
 - Вы уверены, что создание нового объекта не нарушит логику.
 
 **Пример допустимого случая**:
-
 ```java
 @Component
 public class SimpleComponent {
@@ -174,17 +154,13 @@ public class SimpleComponent {
 **Но**: Лучше избегать таких ситуаций и использовать `@Configuration` для ясности и предсказуемости.
 
 ---
-
 ## Как правильно организовать конфигурацию? ⚙️
 
-[](https://github.com/yury-connect/ITM_task026_Java_Podgotovka_k_INTERVJU/blob/by_questions/ITM/ITM06_Spring/otc/@Bean_with_@Configuration_vs_@Component.md#%D0%BA%D0%B0%D0%BA-%D0%BF%D1%80%D0%B0%D0%B2%D0%B8%D0%BB%D1%8C%D0%BD%D0%BE-%D0%BE%D1%80%D0%B3%D0%B0%D0%BD%D0%B8%D0%B7%D0%BE%D0%B2%D0%B0%D1%82%D1%8C-%D0%BA%D0%BE%D0%BD%D1%84%D0%B8%D0%B3%D1%83%D1%80%D0%B0%D1%86%D0%B8%D1%8E-%EF%B8%8F)
-
-1. **Используйте `@Configuration`**:
-    
+1. **Используйте `@Configuration`**:    
     - Помещайте все методы `@Bean` в классы с `@Configuration`.
     - Пример:
         
-        ```java
+```java
         @Configuration
         public class AppConfig {
             @Bean
@@ -192,50 +168,43 @@ public class SimpleComponent {
                 return new BasicDataSource();
             }
         }
-        ```
-        
-2. **Разделяйте конфигурацию и компоненты**:
+```
     
+2. **Разделяйте конфигурацию и компоненты**:    
     - `@Configuration` — для инфраструктурных бинов (DataSource, TransactionManager).
     - `@Component`/`@Service`/`@Repository` — для бизнес-логики и доступа к данным.
-3. **Включайте сканирование**:
-    
+      
+3. **Включайте сканирование**:    
     - Убедитесь, что `@ComponentScan` охватывает пакеты с `@Configuration` и `@Component`:
         
-        ```java
+```java
         @Configuration
         @ComponentScan("com.example")
         public class AppConfig {}
-        ```
-        
+```
 
 ---
-
 ## Подводные камни ⚠️
 
-[](https://github.com/yury-connect/ITM_task026_Java_Podgotovka_k_INTERVJU/blob/by_questions/ITM/ITM06_Spring/otc/@Bean_with_@Configuration_vs_@Component.md#%D0%BF%D0%BE%D0%B4%D0%B2%D0%BE%D0%B4%D0%BD%D1%8B%D0%B5-%D0%BA%D0%B0%D0%BC%D0%BD%D0%B8-%EF%B8%8F)
-
-1. **Дублирование бинов**:
-    
+1. **Дублирование бинов**:    
     - В `@Component` вызов `@Bean`-метода создаёт новый объект, а не использует бин из контекста.
     - Решение: Используйте `@Configuration`.
-2. **Неожиданное поведение**:
-    
+      
+2. **Неожиданное поведение**:    
     - Если в `@Component` несколько `@Bean`-методов зависят друг от друга, это может привести к сложным багам.
     - Решение: Перенесите методы в `@Configuration`.
-3. **Отсутствие прокси**:
-    
+      
+3. **Отсутствие прокси**:    
     - Без CGLIB-прокси Spring не может гарантировать правильное управление зависимостями.
     - Решение: Избегайте `@Bean` в `@Component`.
 
 ---
-
 ## Итоги 🎉
-
-[](https://github.com/yury-connect/ITM_task026_Java_Podgotovka_k_INTERVJU/blob/by_questions/ITM/ITM06_Spring/otc/@Bean_with_@Configuration_vs_@Component.md#%D0%B8%D1%82%D0%BE%D0%B3%D0%B8-)
 
 - **Утверждение «@Bean обнаружение происходит через @Configuration»** означает, что Spring ожидает методы `@Bean` в классах `@Configuration`, где они обрабатываются с помощью CGLIB-прокси для правильного управления бинами.
 - **Можно ли использовать `@Bean` в `@Component`?** Да, но это **не рекомендуется**, так как:
     - Вызовы `@Bean`-методов не перехватываются Spring, что может привести к созданию дублирующих объектов.
     - Нарушается singleton-поведение для зависимостей.
 - **Лучшая практика**: Используйте `@Configuration` для методов `@Bean`, а `@Component` — для обычных бинов (сервисов, репозиториев).
+
+---
