@@ -1,5 +1,6 @@
 # Расскажите про [ApplicationContext](Documents/ITM_academy/itm06_Spring/additionally/ApplicationContext) и [BeanFactory](Documents/ITM_academy/itm06_Spring/additionally/BeanFactory), чем отличаются? В каких случаях что стоит использовать?
 
+---
 ### 🔍 [`ApplicationContext`](Documents/ITM_academy/itm06_Spring/additionally/ApplicationContext) vs [`BeanFactory`](Documents/ITM_academy/itm06_Spring/additionally/BeanFactory)
 ![|1024x452](./_Attachments_03_ApplicationContext&BeanFactory/2025-04-22_16-24-14.png)
 
