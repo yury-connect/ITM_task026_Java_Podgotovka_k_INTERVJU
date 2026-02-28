@@ -5,7 +5,7 @@
 #### Актуальность: очень высокая
 - Stop-the-World паузы.    
 - Непредсказуемые latency-спайки.    
-- Тонкая настройка (G1, ZGC, Shenandoah).    
+- Тонкая настройка (G1, [ZGC](Documents/TECHNOLOGIES/Java_GC/ZGC_GC), [Shenandoah](Documents/TECHNOLOGIES/Java_GC/Shenandoah_GC)).    
 #### 📌 Критично для high-load, low-latency систем.
 
 ---
