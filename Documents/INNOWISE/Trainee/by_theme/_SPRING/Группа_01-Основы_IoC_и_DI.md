@@ -104,7 +104,7 @@ Web-скоупы (в `spring-web`):
 - **websocket** — один бин на WebSocket-сессию.    
 
 ---
-### 9. В чем разница между `@Component`, `@Service`, `@Repository`, `@Controller`?
+### 9. В чем разница между: <br>`@Component`, `@Service`, `@Repository`, `@Controller`?
 
 Все эти аннотации — специализации `@Component`. Spring обрабатывает их одинаково: сканирует и регистрирует бины.
 
@@ -113,7 +113,8 @@ Web-скоупы (в `spring-web`):
 - `@Service` — для сервисного слоя (бизнес-логика). Добавляет смысловую нагрузку.
 - `@Repository` — для слоя доступа к данным. Spring добавляет **перехват исключений** из БД (например, SQLException → DataAccessException). 
   Также может использоваться с `@EnableJpaRepositories`.
-- `@Controller` — для MVC-контроллеров. Обрабатывает HTTP-запросы. Spring сканирует его отдельно для поиска `@RequestMapping`.
+- `@Controller` — для MVC-контроллеров. Обрабатывает HTTP-запросы. 
+  Spring сканирует его отдельно для поиска `@RequestMapping`.
 
 `@RestController` — это `@Controller` + `@ResponseBody`.
 
@@ -144,7 +145,7 @@ Spring ищет подходящий бин и вставляет его в по
 
 **Циклическая зависимость** — когда бин A зависит от B, а бин B зависит от A (напрямую или косвенно).
 
-**Решение Spring (для синглтонов):**  
+#### Решение Spring (для синглтонов):  
 Используется **трехуровневый кеш** (кэш третьего уровня) внутри `DefaultSingletonBeanRegistry`:
 
 1. **`singletonObjects`** (1-й уровень) — полностью готовые синглтоны.
