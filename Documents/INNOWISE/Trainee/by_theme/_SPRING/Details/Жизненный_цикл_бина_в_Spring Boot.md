@@ -16,9 +16,7 @@
 ---
 
 ## 🧬 ПОЛНАЯ схема жизненного цикла (12 этапов)
-
-text
-
+```text
 [Начало: запуск Spring Boot]
        │
        ▼
@@ -71,7 +69,7 @@ text
 ┌─────────────────────────────────────────┐
 │ 6. ПРЕД-ИНИЦИАЛИЗАЦИЯ (BPP)             │
 │    - postProcessBeforeInitialization    │
-│    - Здесь работает @PostConstruct      │
+│    ~~- Здесь работает @PostConstruct~~      │
 └─────────────────────────────────────────┘
        │
        ▼
@@ -103,15 +101,13 @@ text
 │     2) DisposableBean.destroy()         │
 │     3) destroyMethod из @Bean           │
 └─────────────────────────────────────────┘
+```
 
 ---
-
 ## 💻 Код, который показывает ВСЕ этапы (включая сканирование)
 
 ### 1. Класс, который будет найден через компонент-сканирование
-
-java
-
+```java
 package com.example.beans;
 import org.springframework.beans.factory.*;
 import org.springframework.context.*;
@@ -123,8 +119,7 @@ public class ПолныйЖизненныйЦикл implements
     BeanFactoryAware, 
     ApplicationContextAware,
     InitializingBean, 
-    DisposableBean 
-{
+    DisposableBean {
     
     public ПолныйЖизненныйЦикл() {
         System.out.println("🔥 ЭТАП 3: Конструктор — бин создан");
@@ -166,11 +161,11 @@ public class ПолныйЖизненныйЦикл implements
         System.out.println("📦 ЭТАП 10B: DisposableBean.destroy()");
     }
 }
+```
 
-### 2. Конфигурация с @Bean-методом (другой способ регистрации)
-
-java
-
+### 2. Конфигурация с @Bean-методом 
+(другой способ регистрации)
+```java
 package com.example.config;
 import com.example.beans.ДругойБин;
 import org.springframework.context.annotation.*;
@@ -187,11 +182,10 @@ public class AppConfig {
         return new ДругойБин();
     }
 }
+```
 
 ### 3. Просмотр BeanDefinition (чтобы увидеть ЭТАП 1)
-
-java
-
+```java
 @Component
 public class ИнспекторBeanDefinition implements BeanDefinitionRegistryPostProcessor {
     
@@ -210,11 +204,10 @@ public class ИнспекторBeanDefinition implements BeanDefinitionRegistryP
         System.out.println("⚙️ ЭТАП 2: BeanFactoryPostProcessor — можно модифицировать определения");
     }
 }
+```
 
 ### 4. Кастомный BeanPostProcessor (чтобы увидеть ЭТАПЫ 6 и 8)
-
-java
-
+```java
 @Component
 public class ЛоггерBeanPostProcessor implements BeanPostProcessor {
     
@@ -234,13 +227,11 @@ public class ЛоггерBeanPostProcessor implements BeanPostProcessor {
         return bean;
     }
 }
+```
 
 ---
-
 ## 🧠 Полный вывод консоли (что ты увидишь при запуске)
-
-text
-
+```text
 📋 ЭТАП 1: Создание BeanDefinition
    - полныйЖизненныйЦикл → класс: com.example.beans.ПолныйЖизненныйЦикл, scope: singleton
    - другойБин → класс: com.example.beans.ДругойБин, scope: singleton
@@ -260,9 +251,9 @@ text
 ... приложение работает ...
 💀 ЭТАП 10A: @PreDestroy
 📦 ЭТАП 10B: DisposableBean.destroy()
+```
 
 ---
-
 ## 🎯 Почему этапы 0–2 критически важны (то, что ты упустил бы без меня)
 
 |Этап|Что это даёт|Реальный пример|
@@ -272,9 +263,7 @@ text
 |**2. BeanFactoryPostProcessor**|Модифицирует все определения сразу|`PropertySourcesPlaceholderConfigurer` заменяет `${...}`|
 
 ### Пример мощи этапа 2 (код, который меняет игру)
-
-java
-
+```java
 @Component
 public class ДинамическийScopePostProcessor implements BeanDefinitionRegistryPostProcessor {
     @Override
@@ -289,9 +278,9 @@ public class ДинамическийScopePostProcessor implements BeanDefinitio
         }
     }
 }
+```
 
 ---
-
 ## 📚 Рифма для запоминания ПОЛНОЙ версии
 
 > **Сканируй, определи, обработай слегка,**  
@@ -304,13 +293,10 @@ public class ДинамическийScopePostProcessor implements BeanDefinitio
 > **Вот и весь цикл, ты теперь не новичок, а герой!**
 
 ---
-
 ## 🔥 Главный вывод (исправленный)
 
 **Жизненный цикл бина начинается не с конструктора, а с момента, когда Spring узнаёт о классе.**  
 `BeanDefinition` — это «свидетельство о рождении» бина. Без него контейнер слеп.  
 Именно поэтому `BeanFactoryPostProcessor` (этап 2) настолько мощный — он работает с ещё не рождёнными бинами.
 
-Теперь у тебя в голове полная карта: от `@ComponentScan` до `@PreDestroy`. Ты готов к любому вопросу на собеседовании. 💪
-
-Хочешь, я покажу разницу между **singleton** и **prototype** в разрезе этого цикла? Или как `@Lazy` влияет на создание BeanDefinition?
+---
