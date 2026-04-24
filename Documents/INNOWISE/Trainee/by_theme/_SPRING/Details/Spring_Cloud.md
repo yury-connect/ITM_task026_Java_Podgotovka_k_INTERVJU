@@ -1,6 +1,6 @@
-## 📌 Краткий ответ
+## 📌 Spring Cloud, краткий ответ
 
-**Spring Cloud** — это именно набор Spring Boot Starter'ов, которые решают типовые проблемы при разработке **распределённых систем** (микросервисов):
+**Spring Cloud** — это именно набор Spring Boot Starter'ов, которые решают типовые проблемы при разработке **распределённых систем** (*микросервисов*):
 
 - Как сервисы находят друг друга (*Discovery*)    
 - Как они общаются между собой (*Communication*)    
@@ -9,7 +9,7 @@
 - Как отслеживать запросы (*Tracing*)    
 
 ---
-## 🧩 Из каких стартеров состоит Spring Cloud?
+## 🧩 Из каких стартеров состоит `Spring Cloud`?
 
 | Стартер                                              | Что делает                                                              |
 | ---------------------------------------------------- | ----------------------------------------------------------------------- |
@@ -23,7 +23,7 @@
 | `spring-cloud-starter-bus`                           | Шина событий для обновления конфигурации на лету                        |
 
 ---
-## 🎯 Пример "без Spring Cloud" vs "с Spring Cloud"
+## 🎯 Пример "без `Spring Cloud`" vs "с `Spring Cloud`"
 
 ### Без `Spring Cloud` (*кастомное решение*):
 ```java
@@ -35,7 +35,6 @@ User user = rest.getForObject(url, User.class);
 // ❌ Есть 3 экземпляра сервиса? Сам реализуй балансировку.
 // ❌ Сервис упал? Таймаут и ошибка.
 ```
-
 ### С `Spring Cloud`:
 ```java
 // 1. Подключил стартер openfeign
@@ -62,9 +61,9 @@ public class MyService {
 ---
 ## 🏗️ Архитектура микросервисов с Spring Cloud
 ```text
-                    API Gateway (spring-cloud-gateway)
+               API Gateway (spring-cloud-gateway)
                            |
-                    (маршрутизация, аутентификация)
+               (маршрутизация, аутентификация)
                            |
         ┌──────────────────┼──────────────────┐
         |                  |                  |
@@ -72,31 +71,27 @@ public class MyService {
    (Eureka Client)   (Eureka Client)    (Eureka Client)
         |                  |                  |
         └──────────────────┴──────────────────┘
-                    Service Discovery (Eureka Server)
-                    (знает, где какой сервис живёт)
+           Service Discovery (Eureka Server)
+           (знает, где какой сервис живёт)
         ┌──────────────────┬──────────────────┐
         |                  |                  |
    Config Server      Circuit Breaker     Tracing (Zipkin)
-   (общая конфигурация)  (Resilience4j)     (какой запрос куда шёл)
+(общая конфигурация)   (Resilience4j)   (какой запрос куда шёл)
 
 ```
 
 ---
 ## ✅ Итог
 
-|Ваше утверждение|Оценка|
-|---|---|
-|"Spring Cloud — это набор стартеров"|✅ **Верно**|
-|"чтобы обеспечивать межсервисное взаимодействие"|✅ **Верно**|
-
+| Ваше утверждение                                 | Оценка      |
+| ------------------------------------------------ | ----------- |
+| "`Spring Cloud` — это набор стартеров"           | ✅ **Верно** |
+| "чтобы обеспечивать межсервисное взаимодействие" | ✅ **Верно** |
 **Уточнение:** Spring Cloud решает не только коммуникацию, но и **все сопутствующие проблемы** распределённых систем (discovery, конфигурация, отказоустойчивость, трассировка, gateway).
 
 ---
-
 ## 📦 Простой пример подключения
-
-xml
-
+```xml
 <dependency>
     <groupId>org.springframework.cloud</groupId>
     <artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
@@ -105,16 +100,16 @@ xml
     <groupId>org.springframework.cloud</groupId>
     <artifactId>spring-cloud-starter-openfeign</artifactId>
 </dependency>
+```
 
 И добавить аннотации:
-
-java
-
+```java
 @SpringBootApplication
 @EnableFeignClients
 @EnableDiscoveryClient
 public class MyApplication {
     // ...
 }
+```
 
-
+---
