@@ -1,26 +1,26 @@
-# Отличия `@Component` vs `@Bean`
+# Отличия `@Component` и `@Bean`
 
 ---
 ## Полная таблица отличий `@Component` vs `@Bean`
 
-|Характеристика|`@Component`|`@Bean`|
-|---|---|---|
-|Где ставится|На классе|На методе|
-|Кто пишет код класса|Вы сами|Вы или сторонняя библиотека|
-|Контроль над созданием|Spring через рефлексию|Вы сами (new, фабрика, builder)|
-|Внешние классы (из JAR)|❌ Нельзя|✅ Можно обернуть|
-|**Имена бинов**|По умолчанию: ClassName -> camelCase|По умолчанию: имя метода|
-|**Несколько имён (алиасы)**|❌ Не поддерживается|✅ `@Bean(name = {"bean1", "bean2"})`|
-|**Параметры/зависимости**|Через поля конструктора (внедрение)|Как аргументы метода|
-|**Условное создание**|`@ConditionalOnClass` и т.д.|`@ConditionalOnClass`, `@ConditionalOnMissingBean` и т.д.|
-|**Инициализация/уничтожение**|`@PostConstruct`, `@PreDestroy`|`initMethod`, `destroyMethod`|
-|**Тип возвращаемого значения**|Сам класс|Любой тип (интерфейс, абстрактный класс)|
-|**Проксирование (scope)**|Да, через `@Scope`|Да, через `@Scope`|
+| Характеристика                 | `@Component`                          | `@Bean`                                                           |
+| ------------------------------ | ------------------------------------- | ----------------------------------------------------------------- |
+| Где ставится                   | На классе                             | На методе                                                         |
+| Кто пишет код класса           | Вы сами                               | Вы или сторонняя библиотека                                       |
+| Контроль над созданием         | Spring через рефлексию                | Вы сами (*new, фабрика, builder*)                                 |
+| Внешние классы (из JAR)        | ❌ Нельзя                              | ✅ Можно обернуть                                                  |
+| **Имена бинов**                | По умолчанию: ClassName -> camelCase  | По умолчанию: имя метода                                          |
+| **Несколько имён (алиасы)**    | ❌ Не поддерживается                   | ✅ `@Bean(name = {"bean1", "bean2"})`                              |
+| **Параметры/зависимости**      | Через поля конструктора (*внедрение*) | Как аргументы метода                                              |
+| **Условное создание**          | `@ConditionalOnClass` <br>и т.д.      | `@ConditionalOnClass`, <br>`@ConditionalOnMissingBean` <br>и т.д. |
+| **Инициализация/уничтожение**  | `@PostConstruct`, `@PreDestroy`       | `initMethod`, `destroyMethod`                                     |
+| **Тип возвращаемого значения** | Сам класс                             | Любой тип <br>(*интерфейс, <br>абстрактный класс*)                |
+| **Проксирование (scope)**      | Да, <br>через `@Scope`                | Да, <br>через `@Scope`                                            |
 
 ---
-## Алиасы (несколько имён)
+## **Алиасы** (*несколько имён*)
 
-### `@Component` – НЕТ алиасов
+### `@Component` – **НЕТ** алиасов
 ```java
 @Component
 public class MyService {
@@ -28,7 +28,7 @@ public class MyService {
     // Несколько имён указать НЕЛЬЗЯ
 }
 ```
-### `@Bean` – ЕСТЬ алиасы
+### `@Bean` – **ЕСТЬ** алиасы
 ```java
 @Configuration
 public class AppConfig {
@@ -46,14 +46,13 @@ private WeatherService service;  // Работает!
 ```
 
 ---
-## Параметры бинов
-
-Это **КЛЮЧЕВОЕ отличие**!
-
-### `@Component` – зависимости через поля/конструктор
+## **Параметры** бинов
+ ***КЛЮЧЕВОЕ** отличие!*
+### `@Component` – зависимости через **поля**/**конструктор**
 ```java
 @Component
 public class UserService {
+
     private final UserRepository repository;
     
     // Зависимости внедряются Spring'ом автоматически
@@ -63,15 +62,16 @@ public class UserService {
 }
 ```
 
-### `@Bean` – зависимости как параметры метода
+### `@Bean` – зависимости как **параметры метода**
 ```java
 @Configuration
 public class AppConfig {
     
     @Bean
-    public UserService userService(UserRepository repository,  // Spring подставит бин
-                                   MailSender mailSender,     // Spring подставит бин
-                                   String appName) {         // Или значение из properties
+    public UserService userService(
+			    UserRepository repository,  // Spring подставит бин
+                MailSender mailSender,     // Spring подставит бин
+                String appName) {         // Или значение из properties
         return new UserService(repository, mailSender, appName);
     }
 }
@@ -79,10 +79,6 @@ public class AppConfig {
 
 **Важное преимущество – динамическое создание с разными параметрами:**
 ```java
-
-```
-
-
 @Configuration
 public class DataSourceConfig {
     
@@ -101,27 +97,25 @@ public class DataSourceConfig {
         return new HikariDataSource(/* ... */);
     }
 }
+```
 
 ---
-
 ## Возврат интерфейса
 
-### `@Component` – возвращает конкретный класс
-
-java
-
+### `@Component` – возвращает конкретный **класс**
+```java
 @Component
 public class JdbcUserRepository implements UserRepository {
     // В контейнере будет бин типа JdbcUserRepository
 }
+
 // Можно внедрить по интерфейсу:
 @Autowired
 private UserRepository repository;  // Работает, но бин-то конкретный
+```
 
-### `@Bean` – может вернуть интерфейс
-
-java
-
+### `@Bean` – может вернуть **интерфейс**
+```java
 @Configuration
 public class AppConfig {
     
@@ -135,15 +129,13 @@ public class AppConfig {
         }
     }
 }
+```
 
 ---
-
 ## Инициализация и уничтожение
 
 ### `@Component`
-
-java
-
+```java
 @Component
 public class MyService {
     
@@ -157,11 +149,10 @@ public class MyService {
         System.out.println("Уничтожение");
     }
 }
+```
 
 ### `@Bean`
-
-java
-
+```java
 @Configuration
 public class AppConfig {
     
@@ -170,13 +161,11 @@ public class AppConfig {
         return new SomeLibraryClass();  // Чужой класс, нет аннотаций
     }
 }
+```
 
 ---
-
 ## Условное создание (пример)
-
-java
-
+```java
 @Configuration
 public class DatabaseConfig {
     
@@ -198,11 +187,11 @@ public class DatabaseConfig {
         return new H2DataSource();  // Если ничего не подошло
     }
 }
+```
 
 Для `@Component` тоже есть `@Conditional`, но для `@Bean` это более гибко.
 
 ---
-
 ## Итог: когда что использовать?
 
 |Сценарий|Решение|
@@ -215,10 +204,4 @@ public class DatabaseConfig {
 |**Бин может отсутствовать или быть условным**|`@Bean`|
 |**Простота и стандартный DI**|`@Component`|
 
-
-
-
-
-
-
-
+---
