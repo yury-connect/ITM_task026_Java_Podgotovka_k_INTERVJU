@@ -27,24 +27,24 @@ public class MyConfig {
 ### Особенности
 - ✅ Вы **полностью** контролируете, какие бины создаются    
 - ✅ Работает **всегда** (*если класс попал в context scan*)    
-- ❌ **Не зависит** от наличия других классов в classpath    
+- ❌ **Не зависит** от наличия **других классов** в classpath    
 - ❌ **Не может быть "отключена" автоматически** 
-	  (только если вы уберёте её из сканирования)
-
+	  (*только если вы уберёте её из сканирования*)
 ### Где использовать
-- Ваше собственное приложение    
-- Ваш собственный стартер (если бин нужен всегда)    
+- Ваше **собственное приложение**    
+- Ваш **собственный стартер** (*если бин нужен **всегда***)    
 
 ---
 ## 🔄 `@AutoConfiguration` — автоматическое управление
+*Доступна только в **Spring boot***
 
 ### Что это?
-Специальная аннотация для **автоконфигураций в Spring Boot Starter'ах**. Это расширение `@Configuration` с дополнительными возможностями.
-
+Специальная аннотация для **автоконфигураций в Spring Boot Starter'ах**. 
+Это расширение `@Configuration` с <u>дополнительными возможностями</u>.
 ### Пример
-```
+```java
 @AutoConfiguration
-@ConditionalOnClass(OpenWeatherClient.class)  // Ключевое отличие!
+@ConditionalOnClass(OpenWeatherClient.class)  // Ключевое отличие !!!
 @ConditionalOnProperty(name = "weather.enabled", havingValue = "true")
 public class WeatherAutoConfiguration {
     
@@ -54,32 +54,70 @@ public class WeatherAutoConfiguration {
     }
 }
 ```
-
 ### Особенности
 - ✅ Срабатывает **только при определённых условиях** (`@Conditional...`)    
-- ✅ Можно отключить целиком через `spring.autoconfigure.exclude`    
-- ✅ Spring Boot загружает их **в специальном порядке** (можно управлять очередностью)    
-- ❌ Не сработает, если не добавить файл в `META-INF/spring/org.springframework.boot.autoconfigure.AutoConfiguration.imports`
+- ✅ Можно **отключить** целиком через `spring.autoconfigure.exclude`    
+- ✅ Spring Boot загружает их **в специальном порядке** 
+	  *(можно управлять очередностью)*    
+- ❌ **Не сработает**, если не добавить файл в <br>`META-INF/spring/org.springframework.boot.autoconfigure.AutoConfiguration.imports`
 
 ### Где использовать
-- **ТОЛЬКО** в Spring Boot Starter'ах    
+- **ТОЛЬКО** в `Spring Boot Starter`'ах    
 - Для библиотек, которые могут присутствовать или отсутствовать в проекте    
 
 ---
 ## 📋 Сравнительная таблица
 
-|Характеристика|`@Configuration`|`@AutoConfiguration`|
-|---|---|---|
-|**Для чего**|Для вашего кода|Для сторонних стартеров|
-|**Условия создания бинов**|Нет (или сам пишете `@Conditional`)|Есть встроенные механизмы|
-|**Порядок загрузки**|Как попали в сканирование|Можно управлять (`@AutoConfigureAfter`, `@AutoConfigureBefore`, `@AutoConfigureOrder`)|
-|**Отключение**|Только удалить класс из сканирования|Через `spring.autoconfigure.exclude`|
-|**Файл регистрации**|Не нужен|Нужен (`AutoConfiguration.imports`)|
-|**Использование в стартерах**|Да (если бин всегда нужен)|Да (рекомендованный способ)|
-|**Использование в приложении**|Да (основной способ)|Нет (бессмысленно)|
+| Характеристика                 | `@Configuration`                         | `@AutoConfiguration`                                                                           |
+| ------------------------------ | ---------------------------------------- | ---------------------------------------------------------------------------------------------- |
+| **Для чего**                   | Для вашего кода                          | Для сторонних стартеров                                                                        |
+| **Условия создания бинов**     | Нет (или сам пишете `@Conditional`)      | Есть встроенные механизмы                                                                      |
+| **Порядок загрузки**           | Как попали <br>в сканирование            | Можно управлять (`@AutoConfigureAfter`, <br>`@AutoConfigureBefore`, <br>`@AutoConfigureOrder`) |
+| **Отключение**                 | Только удалить класс <br>из сканирования | Через <br>`spring.autoconfigure.exclude`                                                       |
+| **Файл регистрации**           | Не нужен                                 | Нужен <br>(`AutoConfiguration.imports`)                                                        |
+| **Использование в стартерах**  | Да <br>(*если бин всегда нужен*)         | Да <br>(рекомендованный способ)                                                                |
+| **Использование в приложении** | Да <br>(*основной способ*)               | Нет (бессмысленно)                                                                             |
 
 ---
-## 🏗️ Как работает автоконфигурация (подробно)
+### Что такое `before`, `beforeName`, `after`, `afterName`?
+Это **атрибуты**, которые можно указать прямо в `@AutoConfiguration`:
+```java
+@AutoConfiguration(
+    before = DataSourceAutoConfiguration.class,  // до конкретной конфигурации
+    beforeName = "org.some.AutoConfig",          // до конфигурации по имени
+    after = JdbcTemplateAutoConfiguration.class, // после конкретной конфигурации
+    afterName = "com.example.MyAutoConfig"       // после конфигурации по имени
+)
+public class MyWeatherAutoConfiguration {
+    // ...
+}
+```
+### Альтернатива (***рекомендуемый** способ*)
+Вместо атрибутов в аннотации, можно использовать отдельные аннотации:
+```java
+@AutoConfiguration
+@AutoConfigureBefore(DataSourceAutoConfiguration.class)
+@AutoConfigureAfter(JdbcTemplateAutoConfiguration.class)
+@AutoConfigureOrder(Ordered.HIGHEST_PRECEDENCE)
+public class MyWeatherAutoConfiguration {
+    // ...
+}
+```
+### Важный момент
+> Эти аннотации могут быть применены как к классам 
+> с аннотацией `@Configuration`, так и к классам с `@AutoConfiguration`
+
+Это означает, что даже в **обычном приложении** (*не стартере*) вы **можете** управлять порядком загрузки ваших конфигураций:
+```java
+@Configuration
+@AutoConfigureAfter(SomeOtherConfig.class)  // ✅ Работает!
+public class MyAppConfig {
+    // Ваши бины
+}
+```
+
+---
+## 🏗️ Как работает **автоконфигурация** (*подробно*)
 
 ### Шаг 1. Пишем автоконфигурацию в стартере
 ```java
@@ -113,8 +151,7 @@ com.innowise.weather.WeatherAutoConfiguration
 ```
 
 ### Шаг 3. Spring Boot при запуске:
-
-1. Сканирует все `AutoConfiguration.imports` в classpath    
+1. Сканирует все `AutoConfiguration.imports` в *classpath*    
 2. Проверяет условия у каждой автоконфигурации    
 3. Создаёт бины ТОЛЬКО из тех, чьи условия выполнены    
 
@@ -132,7 +169,6 @@ com.innowise.weather.WeatherAutoConfiguration
 |`@ConditionalOnExpression`|Сложные условия на SpEL|
 
 ---
-
 ## 🎮 Порядок загрузки автоконфигураций
 ```java
 @AutoConfiguration
