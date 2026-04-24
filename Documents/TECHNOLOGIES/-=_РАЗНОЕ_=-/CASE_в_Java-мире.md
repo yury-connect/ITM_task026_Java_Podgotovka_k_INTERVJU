@@ -105,12 +105,11 @@ package com.innowise.weatherstarter.config;
 
 ---
 ### 🏷️ **Git-ветки** → `kebab-case` или `/`
-
-
-
+```bash
 feature/add-weather-api          
 refactor/weather-cleanup         
-bugfix/null-pointer-fix           
+bugfix/null-pointer-fix     
+```
 
 |✅ Пример|❌ Неправильно|
 |---|---|
@@ -118,24 +117,20 @@ bugfix/null-pointer-fix
 |`refactor/date-2026-04-24`|`refactor/date_2026_04_24`|
 
 ---
-
 ### 🏷️ **Git-теги (версии)** → `vX.Y.Z` или стандарт семантического версионирования
-
-bash
-
+```bash
 v1.0.0
 v2.1.3-SNAPSHOT
 v0.0.1
+```
 
 ---
-
 ### 🧬 **Имена классов** → `PascalCase`
-
-java
-
+```java
 public class WeatherService {}
 public class OpenWeatherClient {}
 public class UserProfileController {}
+```
 
 |✅ Пример|❌ Неправильно|
 |---|---|
@@ -143,124 +138,99 @@ public class UserProfileController {}
 |`UserServiceImpl`|`userService`|
 
 ---
-
 ### 🔧 **Имена методов** → `camelCase`
-
-java
-
+```java
 public String getWeatherByCity() {}
 public void saveUserProfile() {}
 private boolean isValidApiKey() {}
+```
 
 ---
-
 ### 📝 **Имена переменных** → `camelCase`
-
-java
-
+```java
 String userName = "Yury";
 int maxRetryCount = 3;
 List<WeatherData> weatherHistory;
+```
 
 ---
-
 ### 🔒 **Константы** → `UPPER_SNAKE_CASE`
-
-java
-
+```java
 public static final int MAX_RETRIES = 3;
 public static final String DEFAULT_API_URL = "https://api.openweathermap.org";
 private static final Logger LOGGER = LoggerFactory.getLogger(MyClass.class);
+```
 
 ---
-
 ### 🎨 **Имена перечислений (enum)** → `PascalCase` для класса, `UPPER_SNAKE` для значений
-
-java
-
+```java
 public enum WeatherUnit {
     METRIC,
     IMPERIAL,
     STANDARD
 }
+```
 
 ---
-
 ### 🏗️ **Имена интерфейсов** → `PascalCase`
-
-java
-
+```java
 public interface WeatherClient {}
 public interface UserRepository {}
 // Опционально: префикс I (C# стиль) не принят в Java
+```
 
 ---
-
 ### 📁 **Имена файлов (Java)** → `PascalCase.java`
-
-text
-
+```text
 WeatherService.java
 OpenWeatherClientImpl.java
 ApplicationConfig.java
+```
 
 ---
-
 ### ⚙️ **Имена файлов конфигурации** → `kebab-case`
-
-text
-
+```text
 application.yml
 application-dev.properties
 logback-spring.xml
 bootstrap.yml
+```
 
 ---
-
 ### 🐳 **Docker-образы** → `lowercase:kebab-case`
-
-text
-
+```text
 openweathermap-starter:1.0.0
 myapp/weather-service:latest
+```
 
 ---
-
 ### 🔗 **URL-маппинги в Spring** → `kebab-case` (рекомендуется) или `snake_case`
-
-java
-
+```java
 @GetMapping("/user-profile")           // ✅ kebab-case
 @GetMapping("/weather/by-city")        // ✅ kebab-case
 @GetMapping("/user_profile")           // ⚠️ snake_case (работает, но редко)
+```
 
 ---
-
 ### 📦 **Имена модулей (Java 9+)** → `kebab-case`
-
-text
-
+```text
 module openweathermap.starter {
     exports com.innowise.weather;
 }
+```
 
 ---
-
 ### 🗃️ **Имена БД и таблиц** → `snake_case` (традиция SQL)
-
-sql
-
+```sql
 CREATE TABLE user_profile (
     user_id BIGINT,
     created_at TIMESTAMP
 );
+```
 
 ---
-
 ### 🌿 **Имена веток с типом изменений** → `тип/описание`
-
-text
-
+```text
 feature/    - новая функциональность
 bugfix/     - исправление бага
 refactor/   - рефакторинг
@@ -269,9 +239,9 @@ chore/      - обслуживание (зависимости, конфиги)
 docs/       - документация
 test/       - тесты
 perf/       - производительность
+```
 
 ---
-
 ## 📊 Сводная таблица (шпаргалка)
 
 |Что именуем|Стиль|Пример|
@@ -294,10 +264,11 @@ perf/       - производительность
 |Таблицы в БД|`snake_case`|`user_profile`|
 
 ---
-
 ## 💡 Золотое правило
 
 > **Python/БД** → `snake_case` 🐍  
 > **Java/JS** → `camelCase` / `PascalCase` 🐫  
 > **URL/CSS/Git/конфиги** → `kebab-case` 🥒  
 > **Константы** → `UPPER_SNAKE_CASE` 🔥
+
+---
