@@ -708,3 +708,5 @@ TRACE [main] org.hibernate.type.descriptor.sql.BasicBinder - binding parameter [
 **Для production:** Отключите подробное логирование SQL (оставляет только WARN/ERROR) из-за производительности и безопасности (пароли в логах). Используйте p6spy только для отладки.
 
 ---
+
+⬅️**Previous** ⬆️ **Next**➡️
