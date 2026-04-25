@@ -1,6 +1,8 @@
 # Группа 6: Spring Boot Core 
 (Средне-высокая частота)
 
+[⬅️**Previous**](Группа_05-Spring_MVC_и_REST)          [⬆️](SPRING-121_вопрос_на_middle)          [**Next**➡️](Группа_07-Spring_Data_&_БД)
+
 Spring Boot Core — это то, что отличает Middle-разработчика от Junior. Отвечаю максимально точно и с аргументацией.
 
 ---
@@ -607,4 +609,4 @@ management.endpoints.web.exposure.include=custom-info
 
 ---
 
-⬅️**Previous**          ⬆️          **Next**➡️
+[⬅️**Previous**](Группа_05-Spring_MVC_и_REST)          [⬆️](SPRING-121_вопрос_на_middle)          [**Next**➡️](Группа_07-Spring_Data_&_БД)

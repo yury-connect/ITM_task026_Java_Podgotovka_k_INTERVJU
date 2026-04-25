@@ -1,6 +1,8 @@
 # Группа 7: `Spring Data` и Работа с БД 
 (Очень высокая частота)
 
+[⬅️**Previous**](Группа_06-Spring_Boot_Core)          [⬆️](SPRING-121_вопрос_на_middle)          [**Next**➡️](Группа_08-Spring_Security)
+
 **Spring Data JPA** — это то, с чем Middle-разработчик работает постоянно. 
 Отвечаю максимально точно и с аргументацией.
 
@@ -709,4 +711,4 @@ TRACE [main] org.hibernate.type.descriptor.sql.BasicBinder - binding parameter [
 
 ---
 
-⬅️**Previous** ⬆️ **Next**➡️
+[⬅️**Previous**](Группа_06-Spring_Boot_Core)          [⬆️](SPRING-121_вопрос_на_middle)          [**Next**➡️](Группа_08-Spring_Security)
