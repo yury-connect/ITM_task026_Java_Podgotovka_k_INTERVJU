@@ -30,6 +30,10 @@
 
 [🔙 _к списку вопросов по теме_ **Spring** 🔙](https://github.com/yury-connect/ITM_task026_Java_Podgotovka_k_INTERVJU/blob/by_questions/ITM/ITM06_Spring/Spring.md)
 
+[🔙 _к списку вопросов по теме_ **Spring** 🔙](Documents/ITM_academy/itm06_Spring/Spring_вопросы)
+
+
+
 ---
 ###### _"Чем меньше ты зависишь — тем легче двигаться вперёд. <br>Это работает и в коде, и в жизни."_
 
