@@ -1,6 +1,7 @@
 # Как устроен ApplicationContext?
 
 ---
+Близкие темы: [`ApplicationContext` -_xранение бинов_](/Documents/ITM_academy/itm06_Spring/additionally/ApplicationContext-xранение_бинов.md)
 ## 🏛️ Простая метафора
 
 > **ApplicationContext** — это **директор ресторана**. Он не готовит сам, но:> 
@@ -14,7 +15,6 @@
 ```text
 ApplicationContext = Фасад (обертка) над DefaultListableBeanFactory
 ```
-`ApplicationContext` -xранение бинов
 
 |Компонент|Что делает|
 |---|---|
@@ -94,3 +94,4 @@ ApplicationContext (фасад)
 _ApplicationContext — это умная обертка вокруг фабрики, которая хранит бины в трех кешах и добавляет enterprise-фичи._
 
 ---
+Близкие темы: [`ApplicationContext` -_xранение бинов_](/Documents/ITM_academy/itm06_Spring/additionally/ApplicationContext-xранение_бинов.md)

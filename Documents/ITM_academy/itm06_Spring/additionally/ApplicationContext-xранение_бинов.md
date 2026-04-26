@@ -1,9 +1,11 @@
 # Хранение бинов в **ApplicationContext**
 
+---
+###### Близкие темы: [`ApplicationContext` *кратко*](/Documents/ITM_academy/itm06_Spring/additionally/ApplicationContext_кратко.md)
 **ApplicationContext** — это центральный интерфейс в Spring, 
 который предоставляет <u>конфигурацию</u> и управление <u>жизненным циклом бинов</u>. 
 По сути, это "умная" фабрика бинов.
-[`ApplicationContext` *кратко*](/Documents/ITM_academy/itm06_Spring/additionally/ApplicationContext_кратко.md)
+
 ## **Как он хранит бины:**
 1. **Контейнер Singleton-бинов (`DefaultSingletonBeanRegistry`):**    
     - Большинство бинов (по умолчанию) имеют скоуп `singleton`.        
@@ -157,4 +159,4 @@ String dbUrl = context.getEnvironment().getProperty("db.url");
 ```
 
 ---
-[`ApplicationContext` *кратко*](/Documents/ITM_academy/itm06_Spring/additionally/ApplicationContext_кратко.md)
+Близкие темы: [`ApplicationContext` *кратко*](/Documents/ITM_academy/itm06_Spring/additionally/ApplicationContext_кратко.md)
