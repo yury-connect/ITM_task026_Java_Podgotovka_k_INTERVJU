@@ -24,13 +24,30 @@
 | `Request`     | один бин на **HTTP-запрос** (_Web_)                    |
 | `Session`     | один бин на **HTTP-сессию** (_Web_)                    |
 | `Application` | один бин на `ServletContext` (_Web_)                   |
+```java
+@Configuration
+public class AppConfig {
+
+    @Bean(
+        name = {"userService", "userServiceV1", "mainUserService"},  // 3 имени
+        initMethod = "customInit",
+        destroyMethod = "customDestroy",
+        autowireCandidate = false
+    )
+    
+    @Scope("prototype")  // ← КАЖДЫЙ запрос — НОВЫЙ экземпляр
+    public UserService userService() {
+        return new UserService();
+    }
+}
+```
 
 ---
 ### 💡 Важно:
-- `@Bean` — альтернатива аннотациям `@Component`, `@Service`, и т.п., когда нужна **ручная** регистрация.
+- `@Bean` — альтернатива `@Component`, `@Service`, и т.п., когда нужна **ручная** регистрация.
 - Используется, когда бин создаётся через стороннюю библиотеку или требует сложной инициализации.
 
-[🌟 `@Bean` и `@Configuration`: Как это работает? 🌟](https://github.com/yury-connect/ITM_task026_Java_Podgotovka_k_INTERVJU/blob/by_questions/ITM/ITM06_Spring/otc/@Bean_with_@Configuration_vs_@Component.md)
+[🌟 `@Bean` и `@Configuration`: Как это работает? 🌟](/Documents/ITM_academy/itm06_Spring/additionally/@Bean_with_@Configuration_vs_@Component.md)
 
 ---
 ###### _“Spring может всё. <br>Но чем больше он может, тем важнее знать, что тебе действительно нужно.” 😉_

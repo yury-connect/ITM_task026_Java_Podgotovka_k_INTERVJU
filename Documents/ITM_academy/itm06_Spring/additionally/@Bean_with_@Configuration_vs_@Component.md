@@ -24,6 +24,7 @@
 ```java
 @Configuration
 public class AppConfig {
+
     @Bean
     public MyService myService() {
         return new MyService(myDao()); // Безопасный вызов другого @Bean-метода
@@ -94,6 +95,7 @@ MyDao dao = context.getBean(MyDao.class);
 ```java
 @Component
 public class MyComponent {
+
     @Bean
     public MyService myService() {
         return new MyService(myDao()); // Новый экземпляр MyDao
@@ -132,7 +134,7 @@ MyDao dao = context.getBean(MyDao.class);
 - `@Component` с `@Bean` работает, но может привести к ошибкам, так как Spring не применяет специальную обработку.
 
 ---
-## Когда можно использовать `@Bean` вне `@Configuration`? 🤷‍♂️
+## Когда можно использовать <br>`@Bean` вне `@Configuration`? 🤷‍♂️
 
 В редких случаях `@Bean` в `@Component` может быть оправдан, если:
 - Метод `@Bean` **не зависит** от других `@Bean`-методов в том же классе.
@@ -158,8 +160,7 @@ public class SimpleComponent {
 
 1. **Используйте `@Configuration`**:    
     - Помещайте все методы `@Bean` в классы с `@Configuration`.
-    - Пример:
-        
+    - Пример:        
 ```java
         @Configuration
         public class AppConfig {
@@ -175,8 +176,8 @@ public class SimpleComponent {
     - `@Component`/`@Service`/`@Repository` — для бизнес-логики и доступа к данным.
       
 3. **Включайте сканирование**:    
-    - Убедитесь, что `@ComponentScan` охватывает пакеты с `@Configuration` и `@Component`:
-        
+    - Убедитесь, что `@ComponentScan` 
+	      охватывает пакеты с `@Configuration` и `@Component`:        
 ```java
         @Configuration
         @ComponentScan("com.example")
@@ -201,10 +202,14 @@ public class SimpleComponent {
 ---
 ## Итоги 🎉
 
-- **Утверждение «@Bean обнаружение происходит через @Configuration»** означает, что Spring ожидает методы `@Bean` в классах `@Configuration`, где они обрабатываются с помощью CGLIB-прокси для правильного управления бинами.
-- **Можно ли использовать `@Bean` в `@Component`?** Да, но это **не рекомендуется**, так как:
-    - Вызовы `@Bean`-методов не перехватываются Spring, что может привести к созданию дублирующих объектов.
-    - Нарушается singleton-поведение для зависимостей.
+- **Утверждение «`@Bean` обнаружение происходит через `@Configuration`»** означает, что Spring ожидает методы `@Bean` в классах `@Configuration`, где они обрабатываются с помощью *CGLIB*-прокси для правильного управления бинами.
+  
+- **Можно ли использовать `@Bean` в `@Component`?** 
+  Да, но это **не рекомендуется**, так как:
+    - Вызовы `@Bean` - методов не перехватываются *Spring*'ом, 
+	      что может привести к созданию дублирующих объектов.
+    - Нарушается *singleton* - поведение для зависимостей.
+      
 - **Лучшая практика**: Используйте `@Configuration` для методов `@Bean`, а `@Component` — для обычных бинов (сервисов, репозиториев).
 
 ---
