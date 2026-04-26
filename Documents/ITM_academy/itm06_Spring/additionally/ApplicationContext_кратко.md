@@ -1,7 +1,8 @@
 # Как устроен ApplicationContext?
 
 ---
-Близкие темы: [`ApplicationContext` -_xранение бинов_](/Documents/ITM_academy/itm06_Spring/additionally/ApplicationContext-xранение_бинов.md)
+###### Близкая тема: [`ApplicationContext` -_xранение бинов_](/Documents/ITM_academy/itm06_Spring/additionally/ApplicationContext-xранение_бинов.md)
+###### Близкая тема: [Расскажите про ApplicationContext - xранение бинов и BeanFactory, чем отличаются? В каких случаях что стоит использовать?](/Documents/ITM_academy/itm06_Spring/solutions/03_ApplicationContext&BeanFactory.md)
 ## 🏛️ Простая метафора
 
 > **ApplicationContext** — это **директор ресторана**. Он не готовит сам, но:> 
@@ -94,4 +95,5 @@ ApplicationContext (фасад)
 _ApplicationContext — это умная обертка вокруг фабрики, которая хранит бины в трех кешах и добавляет enterprise-фичи._
 
 ---
-Близкие темы: [`ApplicationContext` -_xранение бинов_](/Documents/ITM_academy/itm06_Spring/additionally/ApplicationContext-xранение_бинов.md)
+###### Близкая тема: [`ApplicationContext` -_xранение бинов_](/Documents/ITM_academy/itm06_Spring/additionally/ApplicationContext-xранение_бинов.md)
+###### Близкая тема: [Расскажите про ApplicationContext - xранение бинов и BeanFactory, чем отличаются? В каких случаях что стоит использовать?](/Documents/ITM_academy/itm06_Spring/solutions/03_ApplicationContext&BeanFactory.md)

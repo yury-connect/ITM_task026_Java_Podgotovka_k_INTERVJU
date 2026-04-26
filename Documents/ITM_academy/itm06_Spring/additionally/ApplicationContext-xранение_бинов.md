@@ -1,7 +1,9 @@
 # Хранение бинов в **ApplicationContext**
 
 ---
-###### Близкие темы: [`ApplicationContext` *кратко*](/Documents/ITM_academy/itm06_Spring/additionally/ApplicationContext_кратко.md)
+###### Близкая тема: [`ApplicationContext` *кратко*](/Documents/ITM_academy/itm06_Spring/additionally/ApplicationContext_кратко.md)
+###### Близкая тема: [Расскажите про ApplicationContext - xранение бинов и BeanFactory, чем отличаются? В каких случаях что стоит использовать?](/Documents/ITM_academy/itm06_Spring/solutions/03_ApplicationContext&BeanFactory.md)
+
 **ApplicationContext** — это центральный интерфейс в Spring, 
 который предоставляет <u>конфигурацию</u> и управление <u>жизненным циклом бинов</u>. 
 По сути, это "умная" фабрика бинов.
@@ -159,4 +161,5 @@ String dbUrl = context.getEnvironment().getProperty("db.url");
 ```
 
 ---
-Близкие темы: [`ApplicationContext` *кратко*](/Documents/ITM_academy/itm06_Spring/additionally/ApplicationContext_кратко.md)
+###### Близкая тема: [`ApplicationContext` _кратко_](/Documents/ITM_academy/itm06_Spring/additionally/ApplicationContext_кратко.md)
+###### Близкая тема: [Расскажите про ApplicationContext - xранение бинов и BeanFactory, чем отличаются? В каких случаях что стоит использовать?](/Documents/ITM_academy/itm06_Spring/solutions/03_ApplicationContext&BeanFactory.md)
