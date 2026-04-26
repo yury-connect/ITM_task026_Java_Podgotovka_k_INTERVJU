@@ -3,7 +3,7 @@
 **ApplicationContext** — это центральный интерфейс в Spring, 
 который предоставляет <u>конфигурацию</u> и управление <u>жизненным циклом бинов</u>. 
 По сути, это "умная" фабрика бинов.
-
+[`ApplicationContext` *кратко*](/Documents/ITM_academy/itm06_Spring/additionally/ApplicationContext_кратко.md)
 ## **Как он хранит бины:**
 1. **Контейнер Singleton-бинов (`DefaultSingletonBeanRegistry`):**    
     - Большинство бинов (по умолчанию) имеют скоуп `singleton`.        
@@ -89,7 +89,7 @@ graph TD
 ```
 
 ## 🔑 Ключевые дополнения `ApplicationContext`
-1. Упрощенная работа с конфигурацией 🔽
+#### 1. 🔽 Упрощенная работа с конфигурацией 🔽
 > - **Автоматическое сканирование компонентов**  
     Поддержка аннотаций (`@Component`, `@Service`, `@Repository`) через `@ComponentScan`.
 >    
@@ -99,7 +99,62 @@ graph TD
 >- **Импорт конфигураций**  
     Возможность объединять конфиги через `@Import`.
 
-1. Управление жизненным циклом 🔽
-2. 
+#### 2. 🔽 Управление жизненным циклом 🔽
+>- **Автоматическая регистрация `BeanPostProcessor` и `BeanFactoryPostProcessor`**  
+    В `BeanFactory` их нужно регистрировать вручную.
+>    
+>- **Автоматический вызов `@PostConstruct` и `@PreDestroy`**  
+    В `BeanFactory` эти аннотации не обрабатываются без дополнительной настройки.
 
+#### 3. 🔽 Интеграция с AOP 🔽
+>- **Автоматическое создание AOP-прокси**  
+    Для `@Transactional`, `@Cacheable` и других аспектов.
 
+#### 4. 🔽 Доступ к ресурсам и интернационализация 🔽
+> - **Унифицированный API для ресурсов**  
+    Методы `getResource()` для работы с _файлами, URL, classpath_:
+```java
+Resource resource = context.getResource("classpath:config.properties");
+```
+>
+>- **Интернационализация (_i18n_)**  
+    Поддержка MessageSource для локализованных сообщений:
+```java
+String msg = context.getMessage("greeting", null, Locale.ENGLISH);
+```
+
+#### 5. 🔽 Событийная модель (Event Publishing) 🔽
+> - **Публикация и обработка событий**  
+    Например, уведомления о старте/остановке контекста:
+```java
+// Публикация события
+context.publishEvent(new MyCustomEvent());
+
+// Обработчик
+@EventListener
+public void handleEvent(MyCustomEvent event) { ... }
+```
+
+#### 6. 🔽 Интеграция с веб-средой 🔽
+> - **Поддержка веб-приложений**  
+    Специальные реализации `WebApplicationContext` для:
+	    - Доступа к `ServletContext`
+	    - Scope `request` и `session`
+	    - Загрузки ресурсов через `/WEB-INF`
+
+#### 7. 🔽 Профили и окружение 🔽
+> - **Управление профилями (`@Profile`)**  
+    Активация бинов в зависимости от окружения:
+```java
+@Profile("prod")
+@Service
+public class ProdService { ... }
+```
+>
+> - **Доступ к переменным окружения** Через `Environment` API:
+```java
+String dbUrl = context.getEnvironment().getProperty("db.url");
+```
+
+---
+[`ApplicationContext` *кратко*](/Documents/ITM_academy/itm06_Spring/additionally/ApplicationContext_кратко.md)

@@ -1,6 +1,6 @@
 # Хранение в **BeanFactory**
 
-**BeanFactory** — это корневой интерфейс, родитель [`ApplicationContext`](Documents/ITM_academy/itm06_Spring/additionally/ApplicationContext). 
+**BeanFactory** — это корневой интерфейс, родитель [`ApplicationContext`](ApplicationContext-xранение_бинов.md). 
 Он предоставляет более простую функциональность/ базовый контракт (контейнер должен уметь отдавать бины по имени/типу и управлять ими: ленивая инициализация, базовое DI).
 
 ## Как работает его внутренняя кухня?

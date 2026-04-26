@@ -14,6 +14,7 @@
 ```text
 ApplicationContext = Фасад (обертка) над DefaultListableBeanFactory
 ```
+`ApplicationContext` -xранение бинов
 
 |Компонент|Что делает|
 |---|---|

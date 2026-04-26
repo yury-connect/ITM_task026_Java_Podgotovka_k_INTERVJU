@@ -1,7 +1,7 @@
-# Расскажите про [ApplicationContext](Documents/ITM_academy/itm06_Spring/additionally/ApplicationContext) и [BeanFactory](Documents/ITM_academy/itm06_Spring/additionally/BeanFactory), чем отличаются? В каких случаях что стоит использовать?
+# Расскажите про [ApplicationContext-xранение_бинов](../additionally/ApplicationContext-xранение_бинов.md) и [BeanFactory](Documents/ITM_academy/itm06_Spring/additionally/BeanFactory), чем отличаются? В каких случаях что стоит использовать?
 
 ---
-### 🔍 [`ApplicationContext`](Documents/ITM_academy/itm06_Spring/additionally/ApplicationContext) vs [`BeanFactory`](Documents/ITM_academy/itm06_Spring/additionally/BeanFactory)
+### 🔍 [`ApplicationContext`](../additionally/ApplicationContext-xранение_бинов.md) vs [`BeanFactory`](Documents/ITM_academy/itm06_Spring/additionally/BeanFactory)
 
 | Компонент            | Назначение                                                                                                                                          |
 | :------------------- | :-------------------------------------------------------------------------------------------------------------------------------------------------- |
