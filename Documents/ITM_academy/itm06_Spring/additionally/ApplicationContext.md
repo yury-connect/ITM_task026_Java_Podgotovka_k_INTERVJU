@@ -35,16 +35,13 @@ public class DefaultSingletonBeanRegistry {
     - Кэши для ускорения доступа, для типов, ResolvableDependencies и т.д..
 
 **Процесс получения бина из контекста:**  
-Когда вы пишете `context.getBean("myService")`, Spring просто делает `map.get("myService")` (если это синглтон) и возвращает вам готовый объект.
+Когда вы пишете `context.getBean("myService")`, Spring выполняет `singletonObjects.get("myService")` (*для singleton*) и возвращает готовый объект..
 
 ---
 ## Что еще хранится в **ApplicationContext**
-
-Кроме самих объектов бинов, Spring хранит много метаинформации:
-1. **BeanDefinitionRegistry:** Хранит `BeanDefinition` — это рецепт создания бина (класс, скоуп, имена методов init/destroy, аргументы конструктора).    
+1. **`BeanDefinition`**’ы (класс, scope, зависимости, init/destroy методы и т.д.).  
 2. **Aliases Map:** Хранит псевдонимы для бинов (если вы дали бину несколько имен).    
-3. **ResolvableDependencies:** Для внедрения зависимостей по типам.    
-
+3. **ResolvableDependencies:** Информация для резолва/ внедрения зависимостей по типам.    
 ### Наглядный пример (как это выглядит в памяти)
 Допустим, у вас есть класс:
 ```java
@@ -54,16 +51,19 @@ public class UserService {
     private OrderService orderService;
 }
 ```
-В момент старта приложения в `ApplicationContext` (в `DefaultListableBeanFactory`) создаются/хранятся:
+В момент старта приложения в `ApplicationContext` (в `DefaultListableBeanFactory`) создаются/хранятся (внутри ApplicationContext):
 1. **Ключ:** `"userService"` : **Значение:** `com.example.UserService@1234` (сам объект)    
 2. **Ключ:** `"orderService"` : **Значение:** `com.example.OrderService@5678` (сам объект)    
-3. **Отдельно в другом реестре:** `BeanDefinition` для UserService: `scope=singleton`, `beanClass=UserService`, `autowired=byType` и т.д.    
+3. **Отдельно в другом реестре:** `BeanDefinition` для UserService: `scope=singleton`, `beanClass=UserService`, `autowired=byType` и т.д. // Отдельный BeanDefinition для каждого бина (с метаданными)   
 4. **В поле объекта UserService:** лежит ссылка на `orderService` (которую Spring туда положил через рефлексию).    
 
 ---
 ### Резюме для собеседования
 
 Если спросят "Как хранятся бины?", можно ответить так:
-> *"Синглтон-бины хранятся в `ConcurrentHashMap` внутри `DefaultSingletonBeanRegistry`. Ключом является имя бина, а значением — готовый объект (либо `ObjectFactory` для решения циклических зависимостей). `ApplicationContext` хранит не только сами бины, но и их метаданные (`BeanDefinition`) в отдельных реестрах. Это позволяет Spring управлять их жизненным циклом, применять постпроцессоры и внедрять зависимости. В отличие от `BeanFactory`, `ApplicationContext` преинициализирует синглтоны при старте."*
+> - Синглтон-бины хранятся в `ConcurrentHashMap` внутри `DefaultSingletonBeanRegistry`.
+> - Ключом является имя бина, а значением — готовый объект (либо `ObjectFactory` для решения циклических зависимостей). 
+> - `ApplicationContext` хранит не только сами бины, но и их метаданные (`BeanDefinition`) в отдельных реестрах. Это позволяет Spring управлять их жизненным циклом, применять постпроцессоры и внедрять зависимости. 
+> - В отличие от `BeanFactory`, `ApplicationContext` по умолчанию преинициализирует все `singleton`-бины при старте приложения
 
 ---
