@@ -2,7 +2,6 @@
 
 ---
 ### 🔍 [`ApplicationContext`](Documents/ITM_academy/itm06_Spring/additionally/ApplicationContext) vs [`BeanFactory`](Documents/ITM_academy/itm06_Spring/additionally/BeanFactory)
-![|1024x452](./_Attachments_03_ApplicationContext&BeanFactory/2025-04-22_16-24-14.png)
 
 ### 🧠 Суть:
 
@@ -72,7 +71,7 @@
 ###### _"Переусложнённая конфигурация — это не гибкость, это отчаяние."_
 
 ---
-
+#### 📝 Материал из методички 🔽
 ```
 ***** из методички *****
 * ApplicationContext является наследником BeanFactory и полностью реализует его функционал, добавляя больше специфических enterprise-функций. Может работать с бинами всех скоупов.
