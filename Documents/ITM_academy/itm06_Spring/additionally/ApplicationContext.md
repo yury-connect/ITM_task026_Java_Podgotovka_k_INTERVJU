@@ -67,3 +67,39 @@ public class UserService {
 > - В отличие от `BeanFactory`, `ApplicationContext` по умолчанию преинициализирует все `singleton`-бины при старте приложения
 
 ---
+## 🌈 Визуальная иерархия <br>интерфейсов `ApplicationContext`
+```mermaid
+graph TD
+    A[<b>BeanFactory</b><br>📜 - базовый интерфейс] --> B[ListableBeanFactory<br>🔍 - поиск/перечисление]
+    B --> C[HierarchicalBeanFactory<br>🌳 - иерархия]
+    C --> D[<b>ApplicationContext</b><br>🚀 - основной контекст]
+    D --> E[ConfigurableApplicationContext<br>⚙️ - конфигурация]
+    E --> F[AbstractApplicationContext<br>📦 - абстракция]
+    F --> G[AnnotationConfigApplicationContext<br>🖋️ - аннотации]
+    F --> H[ClassPathXmlApplicationContext<br>📄 - XML]
+    F --> I[GenericWebApplicationContext<br>🌐 - веб]
+    
+    classDef interface fill:#FFD6E0,stroke:#FF85A2;
+    classDef abstract fill:#E0F9FF,stroke:#85D4FF;
+    classDef impl fill:#D0F0C0,stroke:#7ABA7A;
+    
+    class A,B,C,D,E interface;
+    class F abstract;
+    class G,H,I impl;
+```
+
+## 🔑 Ключевые дополнения `ApplicationContext`
+1. Упрощенная работа с конфигурацией 🔽
+> - **Автоматическое сканирование компонентов**  
+    Поддержка аннотаций (`@Component`, `@Service`, `@Repository`) через `@ComponentScan`.
+>    
+>- **Поддержка Java Config**  
+    Работа с `@Configuration` и `@Bean` **без** XML.
+>    
+>- **Импорт конфигураций**  
+    Возможность объединять конфиги через `@Import`.
+
+1. Управление жизненным циклом 🔽
+2. 
+
+
