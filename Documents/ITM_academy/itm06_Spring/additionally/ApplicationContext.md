@@ -10,26 +10,29 @@
     - Spring хранит их в `ConcurrentHashMap` (конкретно — `singletonObjects`).        
     - Ключ — это имя бина (String), значение — готовый объект (сам экземпляр вашего класса).
 ```java
-// Пример того, как это выглядит внутри Spring (упрощенно)
+// Упрощённый вид внутри Spring
 public class DefaultSingletonBeanRegistry {
 
-    // Самая главная мапа, где хранятся готовые бины
-    private final Map<String, Object> singletonObjects = new ConcurrentHashMap<>(256);
+    // Основная мапа с готовыми singleton-бинaми
+    private final Map<String, Object> singletonObjects = 
+	    new ConcurrentHashMap<>(256);
     
     // Дополнительные мапы для решения циклических зависимостей:
+    // ранние ссылки (объект уже создан, но ещё не полностью инициализирован)
     private final Map<String, Object> earlySingletonObjects = 
-	    new HashMap<>(16); // ранние ссылки
+	    new ConcurrentHashMap<>(16);   
     private final Map<String, ObjectFactory<?>> singletonFactories = 
-	    new HashMap<>(16); // фабрики
+	    new ConcurrentHashMap<>(16); // фабрики для early exposure
 }
 ```
       
 2. **Контейнер Prototype-бинов:**    
-    - Для скоупа `prototype` Spring **не хранит** бин после создания. Он создает новый экземпляр при каждом запросе и отдает его вам, не сохраняя в контексте для последующего использования.
+    - Для скоупа **prototype** Spring **не хранит** бин после создания. Новый экземпляр создаётся при каждом запросе getBean() и сразу отдаётся клиенту.
     
 3. **Дополнительные структуры:**    
-    - Мапы для хранения информации о бинах (`BeanDefinition`).        
-    - Кэши для ускорения доступа.
+    - `BeanDefinitionRegistry` — хранит `BeanDefinition` (*рецепт создания бина*).
+    - Aliases Map        
+    - Кэши для ускорения доступа, для типов, ResolvableDependencies и т.д..
 
 **Процесс получения бина из контекста:**  
 Когда вы пишете `context.getBean("myService")`, Spring просто делает `map.get("myService")` (если это синглтон) и возвращает вам готовый объект.
