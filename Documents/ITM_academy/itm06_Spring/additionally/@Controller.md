@@ -3,10 +3,7 @@
 Аннотация **`@Controller`** — это ключевая часть Spring MVC, используемая для создания веб-контроллеров, которые обрабатывают HTTP-запросы и возвращают ответы. Она помогает разделить бизнес-логику и представление, делая веб-приложения модульными и удобными для поддержки. Давайте разберём всё по полочкам, чтобы было понятно и наглядно! 🛠️
 
 ---
-
 ## Что такое `@Controller`? 🤔
-
-[](https://github.com/yury-connect/ITM_task026_Java_Podgotovka_k_INTERVJU/blob/by_questions/ITM/ITM06_Spring/otc/@Controller_Detailed_Guide.md#%D1%87%D1%82%D0%BE-%D1%82%D0%B0%D0%BA%D0%BE%D0%B5-controller-)
 
 `@Controller` — это специализированная аннотация Spring, которая:
 
@@ -23,8 +20,6 @@
 ---
 
 ## Как работает `@Controller`? 🔄
-
-[](https://github.com/yury-connect/ITM_task026_Java_Podgotovka_k_INTERVJU/blob/by_questions/ITM/ITM06_Spring/otc/@Controller_Detailed_Guide.md#%D0%BA%D0%B0%D0%BA-%D1%80%D0%B0%D0%B1%D0%BE%D1%82%D0%B0%D0%B5%D1%82-controller-)
 
 `@Controller` интегрируется с инфраструктурой Spring MVC, которая обрабатывает веб-запросы. Вот как это происходит:
 
@@ -67,8 +62,6 @@
 
 ## Отличие `@Controller` от `@RestController` 🌐
 
-[](https://github.com/yury-connect/ITM_task026_Java_Podgotovka_k_INTERVJU/blob/by_questions/ITM/ITM06_Spring/otc/@Controller_Detailed_Guide.md#%D0%BE%D1%82%D0%BB%D0%B8%D1%87%D0%B8%D0%B5-controller-%D0%BE%D1%82-restcontroller-)
-
 |Аннотация|Описание|
 |:--|:--|
 |**`@Controller`**|Для традиционных веб-приложений, возвращающих представления (HTML, JSP).|
@@ -80,7 +73,6 @@
 - `@RestController` — для API, где ответы сериализуются в JSON/XML.
 
 ---
-
 ## Основные аннотации для методов `@Controller` 📋
 
 Методы контроллера используют аннотации для маппинга запросов и обработки данных:
@@ -108,14 +100,14 @@
 public class UserController {
     @Autowired
     private UserService userService;
-
+	
     @GetMapping
     public String getUsers(Model model) {
         List<User> users = userService.findAll();
         model.addAttribute("users", users);
         return "user-list"; // Возвращает Thymeleaf-шаблон user-list.html
     }
-
+	
     @PostMapping
     public String createUser(@ModelAttribute User user) {
         userService.save(user);
@@ -177,45 +169,43 @@ public class UserRestController {
 3. **Обработка исключений**:    
     - Используйте `@ExceptionHandler` для локальной обработки ошибок в контроллере.
     - Пример:
-        
-        ```java
-        @Controller
-        public class UserController {
-            @ExceptionHandler(UserNotFoundException.class)
-            public String handleNotFound(UserNotFoundException ex, Model model) {
-                model.addAttribute("error", ex.getMessage());
-                return "error";
-            }
-        }
-        ```
-        
+```java
+@Controller
+public class UserController {
+	@ExceptionHandler(UserNotFoundException.class)
+	public String handleNotFound(UserNotFoundException ex, Model model) {
+		model.addAttribute("error", ex.getMessage());
+		return "error";
+	}
+}
+```
+    
 4. **Глобальная обработка ошибок**:    
     - Используйте `@ControllerAdvice` для обработки исключений на уровне всего приложения.
-    - Пример:        
-        ```java
-        @ControllerAdvice
-        public class GlobalExceptionHandler {
-            @ExceptionHandler(Exception.class)
-            public ResponseEntity<String> handleAllExceptions(Exception ex) {
-                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error: " + ex.getMessage());
-            }
-        }
-        ```
-        
+    - Пример:      
+```java
+@ControllerAdvice
+public class GlobalExceptionHandler {
+	@ExceptionHandler(Exception.class)
+	public ResponseEntity<String> handleAllExceptions(Exception ex) {
+		return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error: " + ex.getMessage());
+	}
+}
+```        
+    
 5. **Поддержка валидации**:    
     - Аннотация `@Valid` проверяет входные данные (например, `@RequestBody`).
     - Пример:
-        
-        ```java
-        @PostMapping
-        public ResponseEntity<User> createUser(@Valid @RequestBody User user, BindingResult result) {
-            if (result.hasErrors()) {
-                return ResponseEntity.badRequest().build();
-            }
-            return ResponseEntity.ok(userService.save(user));
-        }
-        ```
-        
+```java
+@PostMapping
+public ResponseEntity<User> createUser(@Valid @RequestBody User user, BindingResult result) {
+	if (result.hasErrors()) {
+		return ResponseEntity.badRequest().build();
+	}
+	return ResponseEntity.ok(userService.save(user));
+}
+```
+	
 6. **Редиректы и flash-атрибуты**:    
     - Используйте `RedirectAttributes` для передачи данных при редиректе.
     - Пример:
