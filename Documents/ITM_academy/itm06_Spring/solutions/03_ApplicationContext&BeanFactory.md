@@ -3,8 +3,6 @@
 ---
 ### 🔍 [`ApplicationContext`](Documents/ITM_academy/itm06_Spring/additionally/ApplicationContext) vs [`BeanFactory`](Documents/ITM_academy/itm06_Spring/additionally/BeanFactory)
 
-### 🧠 Суть:
-
 | Компонент            | Назначение                                                                                                                                          |
 | :------------------- | :-------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `BeanFactory`        | 💡 Базовый `IoC`-контейнер (_легковесный_) — **управляет** бинами и **внедряет** зависимости.                                                       |

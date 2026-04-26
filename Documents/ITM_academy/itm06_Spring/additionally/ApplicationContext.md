@@ -1,21 +1,26 @@
 # Хранение бинов в **ApplicationContext**
 
-**ApplicationContext** — это центральный интерфейс в Spring, который предоставляет <u>конфигурацию</u> и управление <u>жизненным циклом бинов</u>. По сути, это "умная" фабрика бинов.
+**ApplicationContext** — это центральный интерфейс в Spring, 
+который предоставляет <u>конфигурацию</u> и управление <u>жизненным циклом бинов</u>. 
+По сути, это "умная" фабрика бинов.
 
 ## **Как он хранит бины:**
-1. **Контейнер Singleton-бинов (DefaultSingletonBeanRegistry):**    
+1. **Контейнер Singleton-бинов (`DefaultSingletonBeanRegistry`):**    
     - Большинство бинов (по умолчанию) имеют скоуп `singleton`.        
     - Spring хранит их в `ConcurrentHashMap` (конкретно — `singletonObjects`).        
     - Ключ — это имя бина (String), значение — готовый объект (сам экземпляр вашего класса).
 ```java
 // Пример того, как это выглядит внутри Spring (упрощенно)
 public class DefaultSingletonBeanRegistry {
+
     // Самая главная мапа, где хранятся готовые бины
     private final Map<String, Object> singletonObjects = new ConcurrentHashMap<>(256);
     
     // Дополнительные мапы для решения циклических зависимостей:
-    private final Map<String, Object> earlySingletonObjects = new HashMap<>(16); // ранние ссылки
-    private final Map<String, ObjectFactory<?>> singletonFactories = new HashMap<>(16); // фабрики
+    private final Map<String, Object> earlySingletonObjects = 
+	    new HashMap<>(16); // ранние ссылки
+    private final Map<String, ObjectFactory<?>> singletonFactories = 
+	    new HashMap<>(16); // фабрики
 }
 ```
       
@@ -56,7 +61,6 @@ public class UserService {
 ### Резюме для собеседования
 
 Если спросят "Как хранятся бины?", можно ответить так:
-
-> "Синглтон-бины хранятся в `ConcurrentHashMap` внутри `DefaultSingletonBeanRegistry`. Ключом является имя бина, а значением — готовый объект (либо `ObjectFactory` для решения циклических зависимостей). `ApplicationContext` хранит не только сами бины, но и их метаданные (`BeanDefinition`) в отдельных реестрах. Это позволяет Spring управлять их жизненным циклом, применять постпроцессоры и внедрять зависимости. В отличие от `BeanFactory`, `ApplicationContext` преинициализирует синглтоны при старте."
+> *"Синглтон-бины хранятся в `ConcurrentHashMap` внутри `DefaultSingletonBeanRegistry`. Ключом является имя бина, а значением — готовый объект (либо `ObjectFactory` для решения циклических зависимостей). `ApplicationContext` хранит не только сами бины, но и их метаданные (`BeanDefinition`) в отдельных реестрах. Это позволяет Spring управлять их жизненным циклом, применять постпроцессоры и внедрять зависимости. В отличие от `BeanFactory`, `ApplicationContext` преинициализирует синглтоны при старте."*
 
 ---
