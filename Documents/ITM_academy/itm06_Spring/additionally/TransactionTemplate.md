@@ -1,4 +1,5 @@
-**`TransactionTemplate`** — это инструмент Spring для программного управления транзакциями. Он дает больше контроля, чем декларативные аннотации (`@Transactional`), но проще, чем низкоуровневая работа с `PlatformTransactionManager`.
+**`TransactionTemplate`** — это инструмент Spring для программного управления транзакциями. Он дает больше контроля, чем декларативные аннотации 
+(`@Transactional`), но проще, чем низкоуровневая работа с `PlatformTransactionManager`.
 
 ### Как это работает:
 1. **Создание:** Ты получаешь бин `TransactionTemplate` из контекста Spring.    
@@ -9,6 +10,7 @@
 ```java
 @Service
 public class UserService {
+
     private final TransactionTemplate transactionTemplate;
     private final UserRepository userRepository;
     public UserService(TransactionTemplate transactionTemplate, 
@@ -16,6 +18,7 @@ public class UserService {
         this.transactionTemplate = transactionTemplate;
         this.userRepository = userRepository;
     }
+    
     public void complexOperation() {
         transactionTemplate.execute(status -> {
             // Код внутри транзакции

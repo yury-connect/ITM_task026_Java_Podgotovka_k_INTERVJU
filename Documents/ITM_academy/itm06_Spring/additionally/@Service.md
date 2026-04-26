@@ -22,7 +22,7 @@ public class UserService {
     
     @Transactional
     public User registerUser(UserDto dto) {
-        // Здесь бизнес-логика: проверки, хеширование пароля, вызовы других сервисов
+        // Здесь бизнес-логика: проверки, хеширование пароля, вызовы др. сервисов
         if (userRepository.existsByEmail(dto.getEmail())) {
             throw new UserAlreadyExistsException("Email занят");
         }
@@ -47,13 +47,15 @@ public class UserService {
 @RestController // Слой API
 @RequestMapping("/api/users")
 public class UserController {
-    private final UserService userService; // Зависимость на сервис (не на репозиторий!)
+    private final UserService userService; // Зависимость на сервис
 }
+
 @Service // Слой бизнес-логики
 public class UserService {
     private final UserRepository userRepository;
     private final EmailService emailService; // Можно внедрять другие сервисы
 }
+
 @Repository // Слой данных
 public interface UserRepository extends JpaRepository<User, Long> {
 }

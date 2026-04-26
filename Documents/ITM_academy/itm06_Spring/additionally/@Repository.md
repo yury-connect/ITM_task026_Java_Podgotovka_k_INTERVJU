@@ -1,21 +1,12 @@
 # Обработка исключений аннотацией `@Repository` 🚀
 
-[](https://github.com/yury-connect/ITM_task026_Java_Podgotovka_k_INTERVJU/blob/by_questions/ITM/ITM06_Spring/otc/@Repository_Exception_Handling.md#%D0%BE%D0%B1%D1%80%D0%B0%D0%B1%D0%BE%D1%82%D0%BA%D0%B0-%D0%B8%D1%81%D0%BA%D0%BB%D1%8E%D1%87%D0%B5%D0%BD%D0%B8%D0%B9-%D0%B0%D0%BD%D0%BD%D0%BE%D1%82%D0%B0%D1%86%D0%B8%D0%B5%D0%B9-repository-)
-
+---
 Аннотация `@Repository` не только помечает класс как компонент для работы с данными, но и автоматически **перехватывает и преобразует** исключения, связанные с доступом к данным, в унифицированные исключения Spring из пакета `org.springframework.dao`. Это упрощает обработку ошибок в приложении.
 
----
-
 ## Какие исключения обрабатывает `@Repository`? 🔍
-
-[](https://github.com/yury-connect/ITM_task026_Java_Podgotovka_k_INTERVJU/blob/by_questions/ITM/ITM06_Spring/otc/@Repository_Exception_Handling.md#%D0%BA%D0%B0%D0%BA%D0%B8%D0%B5-%D0%B8%D1%81%D0%BA%D0%BB%D1%8E%D1%87%D0%B5%D0%BD%D0%B8%D1%8F-%D0%BE%D0%B1%D1%80%D0%B0%D0%B1%D0%B0%D1%82%D1%8B%D0%B2%D0%B0%D0%B5%D1%82-repository-)
-
 `@Repository` работает в связке с **PersistenceExceptionTranslationPostProcessor**, который автоматически переводит специфические для технологий исключения (например, JDBC, Hibernate, JPA) в иерархию исключений Spring `DataAccessException`.
 
 ### Основные категории обрабатываемых исключений:
-
-[](https://github.com/yury-connect/ITM_task026_Java_Podgotovka_k_INTERVJU/blob/by_questions/ITM/ITM06_Spring/otc/@Repository_Exception_Handling.md#%D0%BE%D1%81%D0%BD%D0%BE%D0%B2%D0%BD%D1%8B%D0%B5-%D0%BA%D0%B0%D1%82%D0%B5%D0%B3%D0%BE%D1%80%D0%B8%D0%B8-%D0%BE%D0%B1%D1%80%D0%B0%D0%B1%D0%B0%D1%82%D1%8B%D0%B2%D0%B0%D0%B5%D0%BC%D1%8B%D1%85-%D0%B8%D1%81%D0%BA%D0%BB%D1%8E%D1%87%D0%B5%D0%BD%D0%B8%D0%B9)
-
 1. **JDBC**:
     - `SQLException` → Преобразуется в подклассы `DataAccessException` (например, `DataIntegrityViolationException`, `DuplicateKeyException`).
 2. **Hibernate**:
@@ -27,52 +18,43 @@
 
 ### Примеры преобразований:
 
-[](https://github.com/yury-connect/ITM_task026_Java_Podgotovka_k_INTERVJU/blob/by_questions/ITM/ITM06_Spring/otc/@Repository_Exception_Handling.md#%D0%BF%D1%80%D0%B8%D0%BC%D0%B5%D1%80%D1%8B-%D0%BF%D1%80%D0%B5%D0%BE%D0%B1%D1%80%D0%B0%D0%B7%D0%BE%D0%B2%D0%B0%D0%BD%D0%B8%D0%B9)
-
-|Технология|Исходное исключение|Преобразуется в (Spring)|
-|:--|:--|:--|
-|JDBC|`SQLException` (нарушение уникальности)|`DuplicateKeyException`|
-|Hibernate|`ConstraintViolationException`|`DataIntegrityViolationException`|
-|JPA|`NoResultException`|`EmptyResultDataAccessException`|
-|JPA|`EntityNotFoundException`|`EmptyResultDataAccessException`|
-|Общее|`OptimisticLockingFailureException`|`OptimisticLockingFailureException` (Spring)|
+| Технология | Исходное исключение                         | Преобразуется в (Spring)                         |
+| :--------- | :------------------------------------------ | :----------------------------------------------- |
+| JDBC       | `SQLException` <br>(нарушение уникальности) | `DuplicateKeyException`                          |
+| Hibernate  | `ConstraintViolationException`              | `DataIntegrityViolationException`                |
+| JPA        | `NoResultException`                         | `EmptyResultDataAccessException`                 |
+| JPA        | `EntityNotFoundException`                   | `EmptyResultDataAccessException`                 |
+| Общее      | `OptimisticLockingFailureException`         | `OptimisticLockingFailureException` <br>(Spring) |
 
 ---
-
 ## Как это работает? 🛠️
 
-[](https://github.com/yury-connect/ITM_task026_Java_Podgotovka_k_INTERVJU/blob/by_questions/ITM/ITM06_Spring/otc/@Repository_Exception_Handling.md#%D0%BA%D0%B0%D0%BA-%D1%8D%D1%82%D0%BE-%D1%80%D0%B0%D0%B1%D0%BE%D1%82%D0%B0%D0%B5%D1%82-%EF%B8%8F)
-
 1. **Аннотация `@Repository`**:
-    
     - Помечает класс как бин, предназначенный для работы с данными.
     - Регистрирует его для обработки исключений через `PersistenceExceptionTranslator`.
+    
 2. **PersistenceExceptionTranslationPostProcessor**:
-    
     - Автоматически применяется к бинам с `@Repository`.
-    - Перехватывает исключения, выбрасываемые в методах класса, и преобразует их в `DataAccessException`.
-3. **Иерархия `DataAccessException`**:
+    - Перехватывает исключения, выбрасываемые в методах класса, <br>и преобразует их в `DataAccessException`.
     
-    - Это непроверяемые исключения (`RuntimeException`), что упрощает их обработку.
-    - Включает множество подклассов для точной классификации ошибок (например, `DataAccessResourceFailureException`, `InvalidDataAccessApiUsageException`).
+3. **Иерархия `DataAccessException`**:
+    - Это непроверяемые исключения (`RuntimeException`), <br>что упрощает их обработку.
+    - Включает множество подклассов для точной классификации <br>ошибок (например, `DataAccessResourceFailureException`, `InvalidDataAccessApiUsageException`).
 
 ---
-
 ## Пример работы 🎯
-
-[](https://github.com/yury-connect/ITM_task026_Java_Podgotovka_k_INTERVJU/blob/by_questions/ITM/ITM06_Spring/otc/@Repository_Exception_Handling.md#%D0%BF%D1%80%D0%B8%D0%BC%D0%B5%D1%80-%D1%80%D0%B0%D0%B1%D0%BE%D1%82%D1%8B-)
-
 Предположим, у нас есть репозиторий, который пытается выполнить запрос, но запись не найдена:
-
 ```java
 @Repository
 public class UserRepository {
+
     @PersistenceContext
     private EntityManager entityManager;
 
     public User findById(Long id) {
         try {
-            return entityManager.createQuery("SELECT u FROM User u WHERE u.id = :id", User.class)
+            return entityManager
+	            .createQuery("SELECT u FROM User u WHERE u.id = :id", User.class)
                     .setParameter("id", id)
                     .getSingleResult();
         } catch (NoResultException e) {
@@ -84,53 +66,39 @@ public class UserRepository {
 ```
 
 **Что происходит**:
-
 - Если запрос выбрасывает `NoResultException` (JPA), то `@Repository` автоматически преобразует его в `EmptyResultDataAccessException`.
 - Разработчику не нужно вручную обрабатывать `NoResultException` — он работает с унифицированным исключением Spring.
 
 ---
-
 ## Почему это полезно? 🌟
-
-[](https://github.com/yury-connect/ITM_task026_Java_Podgotovka_k_INTERVJU/blob/by_questions/ITM/ITM06_Spring/otc/@Repository_Exception_Handling.md#%D0%BF%D0%BE%D1%87%D0%B5%D0%BC%D1%83-%D1%8D%D1%82%D0%BE-%D0%BF%D0%BE%D0%BB%D0%B5%D0%B7%D0%BD%D0%BE-)
-
 - **Унификация**: Разные технологии (JDBC, Hibernate, JPA) имеют свои исключения, но `@Repository` приводит их к единой иерархии `DataAccessException`.
 - **Читаемость**: Код становится чище, так как не нужно обрабатывать специфические исключения каждой технологии.
 - **Гибкость**: Легко переключаться между ORM или JDBC, не меняя логику обработки ошибок.
 - **Совместимость с транзакциями**: `DataAccessException` — это `RuntimeException`, что идеально для отката транзакций с `@Transactional`.
 
 ---
-
 ## Как включить обработку исключений? ⚙️
 
-[](https://github.com/yury-connect/ITM_task026_Java_Podgotovka_k_INTERVJU/blob/by_questions/ITM/ITM06_Spring/otc/@Repository_Exception_Handling.md#%D0%BA%D0%B0%D0%BA-%D0%B2%D0%BA%D0%BB%D1%8E%D1%87%D0%B8%D1%82%D1%8C-%D0%BE%D0%B1%D1%80%D0%B0%D0%B1%D0%BE%D1%82%D0%BA%D1%83-%D0%B8%D1%81%D0%BA%D0%BB%D1%8E%D1%87%D0%B5%D0%BD%D0%B8%D0%B9-%EF%B8%8F)
-
 1. **Аннотация `@Repository`**:
-    
     - Достаточно пометить класс, и Spring автоматически применит обработку исключений.
-2. **Включение обработки исключений**:
     
+2. **Включение обработки исключений**:
     - В Spring Boot это работает автоматически благодаря автоконфигурации.
     - В обычном Spring нужно добавить:
         
-        ```java
-        @Configuration
-        @EnableJpaRepositories
-        public class AppConfig {
-            @Bean
-            public PersistenceExceptionTranslationPostProcessor exceptionTranslation() {
-                return new PersistenceExceptionTranslationPostProcessor();
-            }
-        }
-        ```
-        
+```java
+@Configuration
+@EnableJpaRepositories
+public class AppConfig {
+	@Bean
+	public PersistenceExceptionTranslationPostProcessor exceptionTranslation() {
+		return new PersistenceExceptionTranslationPostProcessor();
+	}
+}
+```
 
 ---
-
 ## Подводные камни ⚠️
-
-[](https://github.com/yury-connect/ITM_task026_Java_Podgotovka_k_INTERVJU/blob/by_questions/ITM/ITM06_Spring/otc/@Repository_Exception_Handling.md#%D0%BF%D0%BE%D0%B4%D0%B2%D0%BE%D0%B4%D0%BD%D1%8B%D0%B5-%D0%BA%D0%B0%D0%BC%D0%BD%D0%B8-%EF%B8%8F)
-
 1. **Только для `@Repository`**:
     - Обработка исключений применяется только к классам, помеченным `@Repository`. Если использовать `@Component`, исключения не преобразуются.
 2. **Ограниченная область действия**:
@@ -139,13 +107,7 @@ public class UserRepository {
     - Для корректной работы нужен правильный `PersistenceExceptionTranslator` (например, для Hibernate или JPA).
 
 ---
-
 ## Итоги 🎯
-
-[](https://github.com/yury-connect/ITM_task026_Java_Podgotovka_k_INTERVJU/blob/by_questions/ITM/ITM06_Spring/otc/@Repository_Exception_Handling.md#%D0%B8%D1%82%D0%BE%D0%B3%D0%B8-)
-
 Аннотация `@Repository` автоматически преобразует специфические исключения (JDBC `SQLException`, Hibernate `HibernateException`, JPA `PersistenceException`) в унифицированные исключения Spring (`DataAccessException`). Это упрощает обработку ошибок, делает код чище и поддерживает переключение между технологиями без изменения логики.
 
 ---
-
-_Страница полностью сгенерирована модельью grok.com_

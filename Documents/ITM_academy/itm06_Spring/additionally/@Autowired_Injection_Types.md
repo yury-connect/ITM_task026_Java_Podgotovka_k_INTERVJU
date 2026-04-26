@@ -1,9 +1,7 @@
 # Типы внедрения зависимостей с `@Autowired` в Spring 🌟
 
-[](https://github.com/yury-connect/ITM_task026_Java_Podgotovka_k_INTERVJU/blob/by_questions/ITM/ITM06_Spring/otc/@Autowired_Injection_Types.md#%D1%82%D0%B8%D0%BF%D1%8B-%D0%B2%D0%BD%D0%B5%D0%B4%D1%80%D0%B5%D0%BD%D0%B8%D1%8F-%D0%B7%D0%B0%D0%B2%D0%B8%D1%81%D0%B8%D0%BC%D0%BE%D1%81%D1%82%D0%B5%D0%B9-%D1%81-autowired-%D0%B2-spring-)
-
+---
 **`@Autowired`** — это аннотация Spring, которая автоматизирует внедрение зависимостей, позволяя контейнеру находить подходящие бины по типу, имени или квалификатору. Она поддерживает три основных типа внедрения:
-
 1. **Внедрение в поле (Field Injection)**.
 2. **Внедрение через конструктор (Constructor Injection)**.
 3. **Внедрение через сеттер или метод (Setter/Method Injection)**.
@@ -11,10 +9,7 @@
 Каждый тип имеет свои особенности, сценарии использования и подводные камни. Давайте разберём их по порядку! 🚀
 
 ---
-
 ## Общий механизм работы `@Autowired` 🔍
-
-[](https://github.com/yury-connect/ITM_task026_Java_Podgotovka_k_INTERVJU/blob/by_questions/ITM/ITM06_Spring/otc/@Autowired_Injection_Types.md#%D0%BE%D0%B1%D1%89%D0%B8%D0%B9-%D0%BC%D0%B5%D1%85%D0%B0%D0%BD%D0%B8%D0%B7%D0%BC-%D1%80%D0%B0%D0%B1%D0%BE%D1%82%D1%8B-autowired-)
 
 - **`@Autowired`** указывает Spring, где и какую зависимость нужно внедрить.
 - Spring ищет подходящий бин в контейнере:
@@ -28,23 +23,13 @@
 - Если бин не найден и `required = true` (по умолчанию), выбрасывается `NoSuchBeanDefinitionException`. Можно отключить обязательность с `required = false`.
 
 ---
-
 ## 1. Внедрение в поле (Field Injection) 📌
 
-[](https://github.com/yury-connect/ITM_task026_Java_Podgotovka_k_INTERVJU/blob/by_questions/ITM/ITM06_Spring/otc/@Autowired_Injection_Types.md#1-%D0%B2%D0%BD%D0%B5%D0%B4%D1%80%D0%B5%D0%BD%D0%B8%D0%B5-%D0%B2-%D0%BF%D0%BE%D0%BB%D0%B5-field-injection-)
-
 ### Описание
-
-[](https://github.com/yury-connect/ITM_task026_Java_Podgotovka_k_INTERVJU/blob/by_questions/ITM/ITM06_Spring/otc/@Autowired_Injection_Types.md#%D0%BE%D0%BF%D0%B8%D1%81%D0%B0%D0%BD%D0%B8%D0%B5)
-
 - `@Autowired` ставится непосредственно на поле класса.
 - Spring внедряет зависимость напрямую в поле, минуя конструкторы и сеттеры.
 - Используется через **рефлексию**, что позволяет обойти модификаторы доступа (`private`).
-
 ### Особенности
-
-[](https://github.com/yury-connect/ITM_task026_Java_Podgotovka_k_INTERVJU/blob/by_questions/ITM/ITM06_Spring/otc/@Autowired_Injection_Types.md#%D0%BE%D1%81%D0%BE%D0%B1%D0%B5%D0%BD%D0%BD%D0%BE%D1%81%D1%82%D0%B8)
-
 - **Простота**: Минимальный код, не требует конструкторов или методов.
 - **Прямой доступ**: Зависимость сразу доступна в поле.
 - **Минусы**:
@@ -52,21 +37,14 @@
     - Сложность тестирования: нельзя внедрить зависимости без Spring (например, в unit-тестах).
     - Скрытые зависимости: не очевидно, какие зависимости нужны, пока не посмотришь поля.
     - Проблемы с неизменяемостью: нельзя сделать поле `final`.
-
 ### Когда использовать?
-
-[](https://github.com/yury-connect/ITM_task026_Java_Podgotovka_k_INTERVJU/blob/by_questions/ITM/ITM06_Spring/otc/@Autowired_Injection_Types.md#%D0%BA%D0%BE%D0%B3%D0%B4%D0%B0-%D0%B8%D1%81%D0%BF%D0%BE%D0%BB%D1%8C%D0%B7%D0%BE%D0%B2%D0%B0%D1%82%D1%8C)
-
 - Для быстрого прототипирования или простых приложений.
 - **Не рекомендуется** для production-кода из-за минусов.
-
 ### Пример
-
-[](https://github.com/yury-connect/ITM_task026_Java_Podgotovka_k_INTERVJU/blob/by_questions/ITM/ITM06_Spring/otc/@Autowired_Injection_Types.md#%D0%BF%D1%80%D0%B8%D0%BC%D0%B5%D1%80)
-
 ```java
 @Service
 public class UserService {
+
     @Autowired
     private UserRepository userRepository; // Внедрение в поле
 
@@ -77,62 +55,41 @@ public class UserService {
 ```
 
 **Что происходит**:
-
-- Spring находит бин типа `UserRepository` и внедряет его в поле `userRepository` через рефлексию.
+- Spring находит бин типа `UserRepository` 
+	  и внедряет его в поле `userRepository` через рефлексию.
 - Если бин не найден, выбрасывается исключение (если `required = true`).
-
 ### Подводные камни ⚠️
-
-[](https://github.com/yury-connect/ITM_task026_Java_Podgotovka_k_INTERVJU/blob/by_questions/ITM/ITM06_Spring/otc/@Autowired_Injection_Types.md#%D0%BF%D0%BE%D0%B4%D0%B2%D0%BE%D0%B4%D0%BD%D1%8B%D0%B5-%D0%BA%D0%B0%D0%BC%D0%BD%D0%B8-%EF%B8%8F)
-
-- **Тестирование**: Нельзя создать `UserService` без Spring, так как нет конструктора для передачи `UserRepository`.
-- **Неоднозначность**: Если есть несколько бинов типа `UserRepository`, нужно добавить `@Qualifier`:
+- **Тестирование**: Нельзя создать `UserService` без Spring, 
+	  так как нет конструктора для передачи `UserRepository`.
+- **Неоднозначность**: Если есть несколько бинов типа `UserRepository`, 
+	  нужно добавить `@Qualifier`:    
+```java
+@Autowired
+@Qualifier("specificRepository")
+private UserRepository userRepository;
+```
     
-    ```java
-    @Autowired
-    @Qualifier("specificRepository")
-    private UserRepository userRepository;
-    ```
-    
-- **NullPointerException**: Если `UserService` создаётся вне Spring (например, через `new`), поле будет `null`.
+- **NullPointerException**: Если `UserService` создаётся вне Spring 
+	  (например, через `new`), поле будет `null`.
 
 ---
-
 ## 2. Внедрение через конструктор (Constructor Injection) 🏗️
-
-[](https://github.com/yury-connect/ITM_task026_Java_Podgotovka_k_INTERVJU/blob/by_questions/ITM/ITM06_Spring/otc/@Autowired_Injection_Types.md#2-%D0%B2%D0%BD%D0%B5%D0%B4%D1%80%D0%B5%D0%BD%D0%B8%D0%B5-%D1%87%D0%B5%D1%80%D0%B5%D0%B7-%D0%BA%D0%BE%D0%BD%D1%81%D1%82%D1%80%D1%83%D0%BA%D1%82%D0%BE%D1%80-constructor-injection-%EF%B8%8F)
-
 ### Описание
-
-[](https://github.com/yury-connect/ITM_task026_Java_Podgotovka_k_INTERVJU/blob/by_questions/ITM/ITM06_Spring/otc/@Autowired_Injection_Types.md#%D0%BE%D0%BF%D0%B8%D1%81%D0%B0%D0%BD%D0%B8%D0%B5-1)
-
 - `@Autowired` ставится на конструктор класса.
 - Spring вызывает конструктор, передавая необходимые зависимости.
 - Если в классе только один конструктор, `@Autowired` можно опустить (начиная с Spring 4.3).
-
 ### Особенности
-
-[](https://github.com/yury-connect/ITM_task026_Java_Podgotovka_k_INTERVJU/blob/by_questions/ITM/ITM06_Spring/otc/@Autowired_Injection_Types.md#%D0%BE%D1%81%D0%BE%D0%B1%D0%B5%D0%BD%D0%BD%D0%BE%D1%81%D1%82%D0%B8-1)
-
 - **Чёткость зависимостей**: Все зависимости явно указаны в конструкторе.
 - **Неизменяемость**: Поля можно сделать `final`, что предотвращает их изменение.
 - **Тестирование**: Легко создавать экземпляры класса без Spring, передавая зависимости вручную.
 - **Минусы**:
     - Более громоздкий код, особенно если много зависимостей.
     - Конструктор может стать сложным при большом числе параметров.
-
 ### Когда использовать?
-
-[](https://github.com/yury-connect/ITM_task026_Java_Podgotovka_k_INTERVJU/blob/by_questions/ITM/ITM06_Spring/otc/@Autowired_Injection_Types.md#%D0%BA%D0%BE%D0%B3%D0%B4%D0%B0-%D0%B8%D1%81%D0%BF%D0%BE%D0%BB%D1%8C%D0%B7%D0%BE%D0%B2%D0%B0%D1%82%D1%8C-1)
-
 - **Рекомендуемый подход** для production-кода.
 - Подходит для классов с обязательными зависимостями.
 - Идеально для обеспечения неизменяемости и тестируемости.
-
 ### Пример
-
-[](https://github.com/yury-connect/ITM_task026_Java_Podgotovka_k_INTERVJU/blob/by_questions/ITM/ITM06_Spring/otc/@Autowired_Injection_Types.md#%D0%BF%D1%80%D0%B8%D0%BC%D0%B5%D1%80-1)
-
 ```java
 @Service
 public class UserService {
@@ -150,42 +107,25 @@ public class UserService {
 ```
 
 **Что происходит**:
-
 - Spring находит бин типа `UserRepository` и передаёт его в конструктор.
 - Поле `userRepository` инициализируется и остаётся неизменяемым (`final`).
 - Если бин не найден, выбрасывается исключение.
-
 ### Подводные камни ⚠️
+- **Множественные бины**: Если есть несколько бинов `UserRepository`, используйте `@Qualifier`:    
+```java
+public UserService(@Qualifier("specificRepository") UserRepository userRepository) {
+	this.userRepository = userRepository;
+}
+```
 
-[](https://github.com/yury-connect/ITM_task026_Java_Podgotovka_k_INTERVJU/blob/by_questions/ITM/ITM06_Spring/otc/@Autowired_Injection_Types.md#%D0%BF%D0%BE%D0%B4%D0%B2%D0%BE%D0%B4%D0%BD%D1%8B%D0%B5-%D0%BA%D0%B0%D0%BC%D0%BD%D0%B8-%EF%B8%8F-1)
-
-- **Множественные бины**: Если есть несколько бинов `UserRepository`, используйте `@Qualifier`:
-    
-    ```java
-    public UserService(@Qualifier("specificRepository") UserRepository userRepository) {
-        this.userRepository = userRepository;
-    }
-    ```
-    
 - **Циклические зависимости**: Если два бина зависят друг от друга через конструкторы, Spring выбросит `BeanCurrentlyInCreationException`. Решение: использовать `@Lazy` или сеттер-внедрение.
 
 ---
-
 ## 3. Внедрение через сеттер или метод (Setter/Method Injection) 🔧
-
-[](https://github.com/yury-connect/ITM_task026_Java_Podgotovka_k_INTERVJU/blob/by_questions/ITM/ITM06_Spring/otc/@Autowired_Injection_Types.md#3-%D0%B2%D0%BD%D0%B5%D0%B4%D1%80%D0%B5%D0%BD%D0%B8%D0%B5-%D1%87%D0%B5%D1%80%D0%B5%D0%B7-%D1%81%D0%B5%D1%82%D1%82%D0%B5%D1%80-%D0%B8%D0%BB%D0%B8-%D0%BC%D0%B5%D1%82%D0%BE%D0%B4-settermethod-injection-)
-
 ### Описание
-
-[](https://github.com/yury-connect/ITM_task026_Java_Podgotovka_k_INTERVJU/blob/by_questions/ITM/ITM06_Spring/otc/@Autowired_Injection_Types.md#%D0%BE%D0%BF%D0%B8%D1%81%D0%B0%D0%BD%D0%B8%D0%B5-2)
-
 - `@Autowired` ставится на метод (обычно сеттер), который принимает зависимость как параметр.
 - Spring вызывает метод, передавая бин.
-
 ### Особенности
-
-[](https://github.com/yury-connect/ITM_task026_Java_Podgotovka_k_INTERVJU/blob/by_questions/ITM/ITM06_Spring/otc/@Autowired_Injection_Types.md#%D0%BE%D1%81%D0%BE%D0%B1%D0%B5%D0%BD%D0%BD%D0%BE%D1%81%D1%82%D0%B8-2)
-
 - **Гибкость**: Позволяет внедрять необязательные зависимости или изменять их во время выполнения.
 - **Читаемость**: Зависимости явно указаны в методе.
 - **Минусы**:
@@ -194,29 +134,22 @@ public class UserService {
 - **Варианты**:
     - Классический сеттер (например, `setUserRepository`).
     - Любой метод с `@Autowired`, принимающий зависимости.
-
 ### Когда использовать?
-
-[](https://github.com/yury-connect/ITM_task026_Java_Podgotovka_k_INTERVJU/blob/by_questions/ITM/ITM06_Spring/otc/@Autowired_Injection_Types.md#%D0%BA%D0%BE%D0%B3%D0%B4%D0%B0-%D0%B8%D1%81%D0%BF%D0%BE%D0%BB%D1%8C%D0%B7%D0%BE%D0%B2%D0%B0%D1%82%D1%8C-2)
-
 - Для **необязательных зависимостей** (с `required = false`).
 - Когда нужно динамически менять зависимости.
 - Для избежания циклических зависимостей.
-
 ### Пример
-
-[](https://github.com/yury-connect/ITM_task026_Java_Podgotovka_k_INTERVJU/blob/by_questions/ITM/ITM06_Spring/otc/@Autowired_Injection_Types.md#%D0%BF%D1%80%D0%B8%D0%BC%D0%B5%D1%80-2)
-
 ```java
 @Service
 public class UserService {
-    private UserRepository userRepository;
 
+    private UserRepository userRepository;
+	
     @Autowired
     public void setUserRepository(UserRepository userRepository) {
         this.userRepository = userRepository;
     }
-
+	
     public User findUser(Long id) {
         return userRepository.findById(id);
     }
@@ -224,14 +157,9 @@ public class UserService {
 ```
 
 **Что происходит**:
-
 - Spring вызывает `setUserRepository`, передавая бин `UserRepository`.
 - Поле `userRepository` инициализируется.
-
 ### Вариант: Произвольный метод
-
-[](https://github.com/yury-connect/ITM_task026_Java_Podgotovka_k_INTERVJU/blob/by_questions/ITM/ITM06_Spring/otc/@Autowired_Injection_Types.md#%D0%B2%D0%B0%D1%80%D0%B8%D0%B0%D0%BD%D1%82-%D0%BF%D1%80%D0%BE%D0%B8%D0%B7%D0%B2%D0%BE%D0%BB%D1%8C%D0%BD%D1%8B%D0%B9-%D0%BC%D0%B5%D1%82%D0%BE%D0%B4)
-
 ```java
 @Service
 public class UserService {
@@ -247,31 +175,22 @@ public class UserService {
 ```
 
 **Что происходит**:
-
 - Spring вызывает метод `configure`, передавая оба бина.
 - Подходит для сложных сценариев, где нужно внедрить несколько зависимостей сразу.
-
 ### Подводные камни ⚠️
-
-[](https://github.com/yury-connect/ITM_task026_Java_Podgotovka_k_INTERVJU/blob/by_questions/ITM/ITM06_Spring/otc/@Autowired_Injection_Types.md#%D0%BF%D0%BE%D0%B4%D0%B2%D0%BE%D0%B4%D0%BD%D1%8B%D0%B5-%D0%BA%D0%B0%D0%BC%D0%BD%D0%B8-%EF%B8%8F-2)
-
 - **Необязательные зависимости**: Если `required = false`, поле может остаться `null`:
-    
-    ```java
-    @Autowired(required = false)
-    public void setOptionalDependency(OptionalBean bean) {
-        this.optionalBean = bean;
-    }
-    ```
+```java
+@Autowired(required = false)
+public void setOptionalDependency(OptionalBean bean) {
+	this.optionalBean = bean;
+}
+```
     
 - **Изменяемость**: Сеттер позволяет менять зависимость, что может привести к ошибкам.
 - **Тестирование**: Требуется вызов сеттера в тестах, что менее удобно, чем конструктор.
 
 ---
-
 ## Сравнительная таблица типов внедрения 📊
-
-[](https://github.com/yury-connect/ITM_task026_Java_Podgotovka_k_INTERVJU/blob/by_questions/ITM/ITM06_Spring/otc/@Autowired_Injection_Types.md#%D1%81%D1%80%D0%B0%D0%B2%D0%BD%D0%B8%D1%82%D0%B5%D0%BB%D1%8C%D0%BD%D0%B0%D1%8F-%D1%82%D0%B0%D0%B1%D0%BB%D0%B8%D1%86%D0%B0-%D1%82%D0%B8%D0%BF%D0%BE%D0%B2-%D0%B2%D0%BD%D0%B5%D0%B4%D1%80%D0%B5%D0%BD%D0%B8%D1%8F-)
 
 |Характеристика|Field Injection|Constructor Injection|Setter/Method Injection|
 |---|---|---|---|
@@ -285,114 +204,89 @@ public class UserService {
 |**Рекомендация**|🚫 Не для продакшена|🌟 Основной выбор|⚠️ Для необязательных|
 
 ---
-
 ## Общие особенности `@Autowired` ⚙️
 
-[](https://github.com/yury-connect/ITM_task026_Java_Podgotovka_k_INTERVJU/blob/by_questions/ITM/ITM06_Spring/otc/@Autowired_Injection_Types.md#%D0%BE%D0%B1%D1%89%D0%B8%D0%B5-%D0%BE%D1%81%D0%BE%D0%B1%D0%B5%D0%BD%D0%BD%D0%BE%D1%81%D1%82%D0%B8-autowired-%EF%B8%8F)
-
-1. **Автоматическое связывание**:
-    
+1. **Автоматическое связывание**:    
     - Spring ищет бин по типу. Если тип неоднозначен, использует имя поля/параметра или `@Qualifier`.
     - Пример с `@Qualifier`:
-        
-        ```java
-        @Autowired
-        private UserRepository specificRepository;
-        ```
-        
+```java
+@Autowired
+private UserRepository specificRepository;
+```
+    
 2. **Обязательность**:
-    
     - По умолчанию `required = true` (бин должен существовать).
-    - `required = false` позволяет внедрять необязательные зависимости:
-        
-        ```java
-        @Autowired(required = false)
-        private OptionalBean optionalBean;
-        ```
-        
+    - `required = false` позволяет внедрять необязательные зависимости:        
+```java
+@Autowired(required = false)
+private OptionalBean optionalBean;
+```
+    
 3. **Работа с коллекциями**:
+    - `@Autowired` может внедрять списки или карты бинов одного типа:        
+```java
+@Autowired
+private List<UserRepository> repositories; // Все бины типа UserRepository
+```
     
-    - `@Autowired` может внедрять списки или карты бинов одного типа:
-        
-        ```java
-        @Autowired
-        private List<UserRepository> repositories; // Все бины типа UserRepository
-        ```
-        
-4. **Конфликты бинов**:
-    
+4. **Конфликты бинов**:    
     - Если найдено несколько бинов, используйте:
         - `@Qualifier` для точного указания.
-        - `@Primary` для обозначения основного бина:
-            
-            ```java
-            @Bean
-            @Primary
-            public UserRepository primaryRepository() {
-                return new PrimaryUserRepository();
-            }
-            ```
-            
-5. **Поддержка Java 8 Optional**:
+        - `@Primary` для обозначения основного бина:            
+```java
+@Bean
+@Primary
+public UserRepository primaryRepository() {
+	return new PrimaryUserRepository();
+}
+```
     
-    - Можно внедрять зависимости как `Optional`:
-        
-        ```java
-        @Autowired
-        private Optional<UserRepository> userRepository;
-        ```
-        
+5. **Поддержка Java 8 Optional**:    
+    - Можно внедрять зависимости как `Optional`:        
+```java
+@Autowired
+private Optional<UserRepository> userRepository;
+```
 
 ---
-
 ## Рекомендации по использованию `@Autowired` 🌟
 
-[](https://github.com/yury-connect/ITM_task026_Java_Podgotovka_k_INTERVJU/blob/by_questions/ITM/ITM06_Spring/otc/@Autowired_Injection_Types.md#%D1%80%D0%B5%D0%BA%D0%BE%D0%BC%D0%B5%D0%BD%D0%B4%D0%B0%D1%86%D0%B8%D0%B8-%D0%BF%D0%BE-%D0%B8%D1%81%D0%BF%D0%BE%D0%BB%D1%8C%D0%B7%D0%BE%D0%B2%D0%B0%D0%BD%D0%B8%D1%8E-autowired-)
-
 1. **Предпочитайте конструктор-внедрение**:
-    
     - Обеспечивает неизменяемость, тестируемость и чёткость зависимостей.
     - Используйте без `@Autowired`, если конструктор единственный.
-2. **Избегайте внедрения в поля**:
     
+2. **Избегайте внедрения в поля**:
     - Подходит только для прототипов или учебных проектов.
     - Для production-кода используйте конструкторы или сеттеры.
-3. **Используйте сеттер-внедрение для необязательных зависимостей**:
     
+3. **Используйте сеттер-внедрение для необязательных зависимостей**:
     - Указывайте `required = false` для гибкости.
     - Полезно для плагинов или опциональных компонентов.
+    
 4. **Обрабатывайте неоднозначности**:
-    
     - Используйте `@Qualifier`, `@Primary` или имена бинов для разрешения конфликтов.
+    
 5. **Тестируйте без Spring**:
-    
     - Конструктор-внедрение позволяет легко создавать объекты в unit-тестах:
-        
-        ```java
-        UserService service = new UserService(new MockUserRepository());
-        ```
-        
-6. **Избегайте циклических зависимостей**:
+```java
+UserService service = new UserService(new MockUserRepository());
+```
     
+6. **Избегайте циклических зависимостей**:
     - Если они возникают, используйте `@Lazy` или сеттер-внедрение:
-        
-        ```java
-        @Autowired
-        public void setOtherService(@Lazy OtherService otherService) {
-            this.otherService = otherService;
-        }
-        ```
-        
+```java
+@Autowired
+public void setOtherService(@Lazy OtherService otherService) {
+	this.otherService = otherService;
+}
+```
 
 ---
-
 ## Подводные камни ⚠️
 
-[](https://github.com/yury-connect/ITM_task026_Java_Podgotovka_k_INTERVJU/blob/by_questions/ITM/ITM06_Spring/otc/@Autowired_Injection_Types.md#%D0%BF%D0%BE%D0%B4%D0%B2%D0%BE%D0%B4%D0%BD%D1%8B%D0%B5-%D0%BA%D0%B0%D0%BC%D0%BD%D0%B8-%EF%B8%8F-3)
-
 1. **NoSuchBeanDefinitionException**:
-    
     - Если бин не найден, Spring выбросит исключение. Проверьте, что бин зарегистрирован (через `@Component`, `@Bean` или сканирование).
+    
 2. **NoUniqueBeanDefinitionException**:
     
     - Возникает при наличии нескольких бинов одного типа. Решение: `@Qualifier` или `@Primary`.

@@ -10,6 +10,7 @@
 ```java
 @Controller
 public class OldApiController {
+
     @ResponseBody // Нужно писать у каждого метода!
     @GetMapping("/user")
     public User getUser() {
@@ -24,10 +25,12 @@ public class OldApiController {
 @RestController // Достаточно написать один раз
 @RequestMapping("/api/users")
 public class UserController {
+
     @GetMapping("/{id}")
     public User getUserById(@PathVariable Long id) {
         return new User(id, "John"); // Автоматически конвертируется в JSON
     }
+    
     @PostMapping
     public User createUser(@RequestBody User user) {
         return userService.save(user); // Ответ сразу уйдет в JSON
