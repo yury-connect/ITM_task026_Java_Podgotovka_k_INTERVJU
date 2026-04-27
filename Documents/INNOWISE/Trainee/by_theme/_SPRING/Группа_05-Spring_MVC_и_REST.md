@@ -26,33 +26,33 @@
     
 7. Отправляет HTTP-ответ клиенту.    
 
-**Ключевая роль:** Единая точка входа, централизующая обработку запросов, что упрощает конфигурацию и добавление сквозной логики (интерсепторы, обработка исключений).
+**Ключевая роль:** Единая точка входа, централизующая обработку запросов, 
+что упрощает конфигурацию и добавление сквозной логики 
+(интерсепторы, обработка исключений).
 
 ---
-
-### 48. Жизненный цикл HTTP запроса в Spring MVC (от сервлета до контроллера)
+### 48. Жизненный цикл HTTP запроса в Spring MVC <br>(*от сервлета до контроллера*)
 
 **Ответ:** Жизненный цикл включает следующие этапы:
 
-|Этап|Компонент|Действие|
-|---|---|---|
-|1|Контейнер сервлетов (Tomcat)|Принимает TCP-соединение, парсит HTTP-запрос, создает `HttpServletRequest`/`HttpServletResponse`|
-|2|`DispatcherServlet`|Получает запрос от контейнера (метод `service()` → `doGet()`/`doPost()`)|
-|3|`HandlerMapping`|Ищет обработчик (контроллер и метод) по URL, HTTP-методу, параметрам, заголовкам|
-|4|`HandlerInterceptor` (preHandle)|Выполняются все перехватчики **до** вызова контроллера|
-|5|`HandlerAdapter`|Адаптирует вызов контроллера: преобразует параметры, валидацию, вызывает метод|
-|6|**Метод контроллера**|Выполняется бизнес-логика, возвращает `ModelAndView`, `ResponseEntity` или другое значение|
-|7|`HandlerInterceptor` (postHandle)|Выполняются **после** контроллера, но **до** рендеринга view|
-|8|`ViewResolver`|Определяет, какой view рендерить (если возвращено имя view)|
-|9|Рендеринг|JSP/Thymeleaf и т.д. формируют HTML|
-|10|`HandlerInterceptor` (afterCompletion)|Выполняются **после** рендеринга (всегда, даже при исключениях)|
-|11|`DispatcherServlet`|Отправляет HTTP-ответ клиенту|
+| Этап | Компонент                                    | Действие                                                                                                     |
+| ---- | -------------------------------------------- | ------------------------------------------------------------------------------------------------------------ |
+| 1    | Контейнер сервлетов (*Tomcat*)               | Принимает TCP-соединение, <br>парсит HTTP-запрос, <br>создает `HttpServletRequest`/<br>`HttpServletResponse` |
+| 2    | `DispatcherServlet`                          | Получает запрос от контейнера (метод `service()` → `doGet()`/`doPost()`)                                     |
+| 3    | `HandlerMapping`                             | Ищет обработчик (*контроллер и метод*) <br>по URL, HTTP-методу, параметрам, заголовкам                       |
+| 4    | `HandlerInterceptor` <br>(*preHandle*)       | Выполняются все перехватчики <br>**до** вызова контроллера                                                   |
+| 5    | `HandlerAdapter`                             | Адаптирует вызов контроллера: преобразует параметры, валидацию, вызывает метод                               |
+| 6    | **Метод контроллера**                        | Выполняется бизнес-логика, <br>возвращает `ModelAndView`, `ResponseEntity` <br>или другое значение           |
+| 7    | `HandlerInterceptor` <br>(*postHandle*)      | Выполняются **после** контроллера, <br>но **до** рендеринга view                                             |
+| 8    | `ViewResolver`                               | Определяет, какой view рендерить <br>(если возвращено имя view)                                              |
+| 9    | Рендеринг                                    | *JSP*/ *Thymeleaf* и т.д. формируют *HTML*                                                                   |
+| 10   | `HandlerInterceptor` <br>(*afterCompletion*) | Выполняются **после** рендеринга <br>(всегда, даже при исключениях)                                          |
+| 11   | `DispatcherServlet`                          | Отправляет HTTP-ответ клиенту                                                                                |
 
 **Важно:** Для REST-контроллеров (`@RestController` / `@ResponseBody`) этапы рендеринга view (8–9) пропускаются — `HandlerAdapter` через `HttpMessageConverter` сразу записывает результат (JSON/XML и т.д.) в `HttpServletResponse`.
 
 ---
-
-### 49. Что такое `@RestController`? Чем отличается от `@Controller` + `@ResponseBody`?
+### 49. Что такое `@RestController`? <br>Чем отличается от `@Controller` + `@ResponseBody`?
 
 **Ответ:** `@RestController` — это **специализированная аннотация** Spring MVC, предназначенная для RESTful веб-сервисов.
 
@@ -67,34 +67,39 @@ public @interface RestController {
 
 **Разница:**
 
-|Характеристика|`@Controller`|`@RestController`|
-|---|---|---|
-|Назначение|Web-приложения с HTML-страницами|REST API (JSON/XML)|
-|Возвращаемое значение|Имя view (JSP, Thymeleaf)|Данные (POJO, коллекции, строки)|
-|`@ResponseBody`|Нужно ставить на каждый метод отдельно|Не нужно — все методы подразумевают `@ResponseBody`|
-|`@ResponseBody` на уровне класса|Можно добавить, но многословно|Уже включена|
+| Характеристика                       | `@Controller`                              | `@RestController`                                   |
+| ------------------------------------ | ------------------------------------------ | --------------------------------------------------- |
+| Назначение                           | Web-приложения <br>с HTML-страницами       | REST API (JSON/XML)                                 |
+| Возвращаемое значение                | Имя view <br>(JSP, Thymeleaf)              | Данные <br>(POJO, коллекции, строки)                |
+| `@ResponseBody`                      | Нужно ставить <br>на каждый метод отдельно | Не нужно — все методы подразумевают `@ResponseBody` |
+| `@ResponseBody` <br>на уровне класса | Можно добавить, <br>но многословно         | Уже включена                                        |
 
 **Пример:**
 ```java
 // Эквивалентны:
 @RestController
 public class UserController {
+
     @GetMapping("/user")
     public User getUser() { return new User(); }
 }
+
 // И:
+
 @Controller
 @ResponseBody
 public class UserController {
+
     @GetMapping("/user")
     public User getUser() { return new User(); }
 }
 ```
 
-**Вывод:** `@RestController` — это удобный синтаксический сахар, избавляющий от необходимости повторять `@ResponseBody` на каждом методе.
+**Вывод:** `@RestController` — это удобный синтаксический сахар, 
+избавляющий от необходимости повторять `@ResponseBody` на каждом методе.
 
 ---
-### 50. Аннотации маппинга: `@RequestMapping`, `@GetMapping`, `@PostMapping` и т.д.
+### 50. Аннотации маппинга: <br>`@RequestMapping`, `@GetMapping`, `@PostMapping` и т.д.
 
 **Ответ:** Это аннотации, связывающие HTTP-запросы с методами контроллеров.
 
@@ -105,14 +110,14 @@ public class UserController {
 
 **Параметры `@RequestMapping` (важные):**
 
-|Параметр|Описание|Пример|
-|---|---|---|
-|`value` / `path`|URL-шаблон|`@RequestMapping("/users")`|
-|`method`|HTTP-метод|`method = RequestMethod.POST`|
-|`params`|Условия на параметрах запроса|`params = "action=create"`|
-|`headers`|Условия на заголовках|`headers = "Content-Type=application/json"`|
-|`consumes`|Тип содержимого запроса|`consumes = MediaType.APPLICATION_JSON_VALUE`|
-|`produces`|Тип содержимого ответа|`produces = MediaType.APPLICATION_JSON_VALUE`|
+| Параметр         | Описание                          | Пример                                        |
+| ---------------- | --------------------------------- | --------------------------------------------- |
+| `value` / `path` | URL-шаблон                        | `@RequestMapping("/users")`                   |
+| `method`         | HTTP-метод                        | `method = RequestMethod.POST`                 |
+| `params`         | Условия <br>на параметрах запроса | `params = "action=create"`                    |
+| `headers`        | Условия на заголовках             | `headers = "Content-Type=application/json"`   |
+| `consumes`       | Тип <br>содержимого запроса       | `consumes = MediaType.APPLICATION_JSON_VALUE` |
+| `produces`       | Тип <br>содержимого ответа        | `produces = MediaType.APPLICATION_JSON_VALUE` |
 
 **Примеры:**
 ```java
@@ -122,22 +127,26 @@ public class UserController {
 @PostMapping(value = "/user", consumes = "application/json", produces = "application/json")
 ```
 
-**Важный нюанс:** `@RequestMapping` на уровне класса задает **базовый путь** для всех методов:
+**Важный нюанс:** `@RequestMapping` на уровне класса 
+	задает **базовый путь** для всех методов:
 ```java
 @RestController
 @RequestMapping("/api/v1/users")
 public class UserController {
+
     @GetMapping("/{id}")  // реальный путь: /api/v1/users/{id}
     public User get(@PathVariable Long id) { ... }
 }
 ```
 
-С Spring 4.3+ рекомендуется использовать специализированные аннотации (`@GetMapping`, `@PostMapping` и т.д.) вместо `@RequestMapping(method = ...)`.
+С *Spring 4.3+* рекомендуется использовать специализированные аннотации 
+(`@GetMapping`, `@PostMapping` и т.д.) вместо `@RequestMapping(method = ...)`.
 
 ---
 ### 51. Что такое `@PathVariable`, `@RequestParam`, `@RequestHeader`, `@CookieValue`?
 
-**Ответ:** Это аннотации для извлечения данных из HTTP-запроса в параметры метода контроллера.
+**Ответ:** Это аннотации для извлечения данных из HTTP-запроса 
+	в параметры метода контроллера.
 
 |Аннотация|Источник данных|Пример URL|Пример кода|
 |---|---|---|---|
