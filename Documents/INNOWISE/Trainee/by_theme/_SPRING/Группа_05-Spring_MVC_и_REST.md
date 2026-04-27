@@ -50,7 +50,7 @@
 |10|`HandlerInterceptor` (afterCompletion)|Выполняются **после** рендеринга (всегда, даже при исключениях)|
 |11|`DispatcherServlet`|Отправляет HTTP-ответ клиенту|
 
-**Важно:** Для REST (с `@ResponseBody`) этапы 8-9 пропускаются — `HandlerAdapter` сразу записывает результат в `HttpServletResponse` через `HttpMessageConverter`.
+**Важно:** Для REST-контроллеров (`@RestController` / `@ResponseBody`) этапы рендеринга view (8–9) пропускаются — `HandlerAdapter` через `HttpMessageConverter` сразу записывает результат (JSON/XML и т.д.) в `HttpServletResponse`.
 
 ---
 
@@ -96,17 +96,14 @@ public class UserController {
 **Вывод:** `@RestController` — это удобный синтаксический сахар, избавляющий от необходимости повторять `@ResponseBody` на каждом методе.
 
 ---
-
 ### 50. Аннотации маппинга: `@RequestMapping`, `@GetMapping`, `@PostMapping` и т.д.
 
 **Ответ:** Это аннотации, связывающие HTTP-запросы с методами контроллеров.
 
 **Иерархия:**
-
 - `@RequestMapping` — базовая, может использоваться на уровне класса и метода.
     
-- `@GetMapping`, `@PostMapping`, `@PutMapping`, `@DeleteMapping`, `@PatchMapping` — специализированные версии для конкретных HTTP-методов (доступны с Spring 4.3).
-    
+- `@GetMapping`, `@PostMapping`, `@PutMapping`, `@DeleteMapping`, `@PatchMapping` — специализированные версии для конкретных HTTP-методов (доступны с Spring 4.3). 
 
 **Параметры `@RequestMapping` (важные):**
 
@@ -137,8 +134,9 @@ public class UserController {
 }
 ```
 
----
+С Spring 4.3+ рекомендуется использовать специализированные аннотации (`@GetMapping`, `@PostMapping` и т.д.) вместо `@RequestMapping(method = ...)`.
 
+---
 ### 51. Что такое `@PathVariable`, `@RequestParam`, `@RequestHeader`, `@CookieValue`?
 
 **Ответ:** Это аннотации для извлечения данных из HTTP-запроса в параметры метода контроллера.
@@ -169,12 +167,9 @@ public String get(@RequestParam(defaultValue = "1") int page,
                   @RequestParam(required = false) String name)
 ```
 
-- `required = true` (по умолчанию) — исключение, если параметр отсутствует.
-    
-- `defaultValue` — значение по умолчанию (неявно делает `required=false`).
-    
-- Можно получить `Map<String, String>` всех параметров: `@RequestParam Map<String, String> allParams`.
-    
+- `required = true` (по умолчанию) — исключение, если параметр отсутствует.    
+- `defaultValue` — значение по умолчанию (неявно делает `required=false`).    
+- Можно получить `Map<String, String>` всех параметров: `@RequestParam Map<String, String> allParams`.    
 
 **`@RequestHeader`:**
 ```java
@@ -190,7 +185,6 @@ public String get(@CookieValue(value = "JSESSIONID", required = false) String se
 **Важный нюанс:** Все эти аннотации могут быть использованы вместе в одном методе.
 
 ---
-
 ### 52. Как принять JSON в методе контроллера? (`@RequestBody`)
 
 **Ответ:** Для приема JSON в теле HTTP-запроса используется аннотация **`@RequestBody`**.
@@ -224,29 +218,22 @@ public User createUser(@RequestBody User user) {
     
 
 **Важные нюансы:**
-
 - Можно принять `List<T>`: `@RequestBody List<User> users`.
     
 - Можно принять `Map<String, Object>`.
     
 - Требуется `Content-Type: application/json` в запросе (иначе 415 Unsupported Media Type).
     
-- С Jackson можно кастомизировать десериализацию через аннотации (`@JsonIgnore`, `@JsonProperty`, `@JsonFormat`).
-    
+- С Jackson можно кастомизировать десериализацию через аннотации (`@JsonIgnore`, `@JsonProperty`, `@JsonFormat`).    
 
 ---
-
 ### 53. Как вернуть JSON? (Автоматически через `HttpMessageConverter` и Jackson)
 
 **Ответ:** Spring MVC автоматически конвертирует возвращаемое значение метода в JSON, когда:
-
-- Метод помечен `@ResponseBody` или класс — `@RestController`.
-    
-- Клиент указал `Accept: application/json` (или `*/*`).
-    
+- Метод помечен `@ResponseBody` или класс — `@RestController`.    
+- Клиент указал `Accept: application/json` (или `*/*`).    
 
 **Как работает:**
-
 1. `DispatcherServlet` определяет, что метод должен вернуть тело ответа (`@ResponseBody`).
     
 2. Вызывает `HandlerMethodReturnValueHandler` для `@ResponseBody` (`RequestResponseBodyMethodProcessor`).
@@ -256,15 +243,14 @@ public User createUser(@RequestBody User user) {
     - Из `produces` аннотации (`@GetMapping(produces = "application/json")`).
         
     - Из заголовка `Accept` клиента (Content negotiation).
-        
+    
 4. Выбирает подходящий `HttpMessageConverter`:
     
     - `MappingJackson2HttpMessageConverter` для JSON.
         
     - `Jaxb2RootElementHttpMessageConverter` для XML.
-        
-5. Конвертер записывает Java-объект в `HttpServletResponse.getOutputStream()` как JSON.
     
+5. Конвертер записывает Java-объект в `HttpServletResponse.getOutputStream()` как JSON.    
 
 **Пример:**
 ```java
@@ -278,18 +264,13 @@ public class UserController {
 ```
 
 **Jackson автоматически:**
-
-- Сериализует публичные поля или через геттеры.
-    
-- Игнорирует `null` (можно настроить `@JsonInclude(Include.NON_NULL)`).
-    
-- Работает с `LocalDate`, `Instant` через модуль `JavaTimeModule`.
-    
+- Сериализует публичные поля или через геттеры.    
+- Игнорирует `null` (можно настроить `@JsonInclude(Include.NON_NULL)`).    
+- Работает с `LocalDate`, `Instant` через модуль `JavaTimeModule`.    
 
 **Ручное управление:** Можно вернуть `ResponseEntity<T>` для полного контроля над статусом и заголовками.
 
 ---
-
 ### 54. Что такое `ResponseEntity`? Когда использовать?
 
 **Ответ:** `ResponseEntity` — это обертка над HTTP-ответом, позволяющая контролировать **статус-код**, **заголовки** и **тело** ответа.
@@ -335,7 +316,6 @@ ResponseEntity.internalServerError().body(error) // 500
 **Вывод:** Если ответ всегда одинаковый (например, всегда 200 с JSON) — достаточно `@ResponseBody`. Если статус или заголовки зависят от результата — используйте `ResponseEntity`.
 
 ---
-
 ### 55. Что такое `@ModelAttribute`? Где применяется?
 
 **Ответ:** `@ModelAttribute` — аннотация Spring MVC для связывания параметров запроса с **полями объекта** (data binding). Она работает на уровне методов класса и на параметрах методов.
@@ -371,25 +351,20 @@ public class MyController {
 ```
 
 **Где применяется:**
-
 - **HTML-формы (Thymeleaf, JSP)** — для отображения и отправки данных формы.
     
 - **Фильтры/интерсепторы** — для предзаполнения общих атрибутов (текущий пользователь, настройки).
     
-- **REST API** — реже, но можно использовать вместо `@RequestBody` для form-urlencoded.
-    
+- **REST API** — реже, но можно использовать вместо `@RequestBody` для form-urlencoded.    
 
 **Важные нюансы:**
-
 - Поддерживает `BindingResult` для валидации: `@ModelAttribute User user, BindingResult result`.
     
 - `@ModelAttribute` на методе выполняется **перед каждым** запросом в контроллере.
     
-- Можно использовать `@SessionAttributes` для сохранения `@ModelAttribute` между запросами.
-    
+- Можно использовать `@SessionAttributes` для сохранения `@ModelAttribute` между запросами.    
 
 ---
-
 ### 56. Как обрабатывать исключения в REST контроллерах? (`@ExceptionHandler`, `@ControllerAdvice`)
 
 **Ответ:** В Spring MVC есть два основных способа централизованной обработки исключений в REST:
@@ -422,9 +397,14 @@ public class GlobalExceptionHandler {
     
     @ExceptionHandler(MethodArgumentNotValidException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public Map<String, String> handleValidation(MethodArgumentNotValidException e) {
-        return e.getBindingResult().getFieldErrors().stream()
-            .collect(Collectors.toMap(FieldError::getField, FieldError::getDefaultMessage));
+    public Map<String, String> handleValidation(
+	    MethodArgumentNotValidException e) {
+        return e
+	        .getBindingResult()
+	        .getFieldErrors()
+	        .stream()
+            .collect(Collectors
+	            .toMap(FieldError::getField, FieldError::getDefaultMessage));
     }
     
     @ExceptionHandler(Exception.class)
@@ -437,25 +417,16 @@ public class GlobalExceptionHandler {
 ```
 
 **Приоритет обработки:**
-
-1. `@ExceptionHandler` в самом контроллере (самый высокий приоритет).
-    
-2. `@ControllerAdvice` с указанием `assignableTypes` или аннотаций.
-    
-3. `@ControllerAdvice` без ограничений.
-    
+1. `@ExceptionHandler` в самом контроллере (самый высокий приоритет).    
+2. `@ControllerAdvice` с указанием `assignableTypes` или аннотаций.    
+3. `@ControllerAdvice` без ограничений.    
 
 **Важные моменты:**
-
-- Методы `@ExceptionHandler` могут принимать `HttpServletRequest`, `HttpServletResponse`, `WebRequest`.
-    
-- Можно возвращать `ResponseEntity` для полного контроля.
-    
-- `@ControllerAdvice` поддерживает ограничения: `@ControllerAdvice(assignableTypes = UserController.class)`.
-    
+- Методы `@ExceptionHandler` могут принимать `HttpServletRequest`, `HttpServletResponse`, `WebRequest`.    
+- Можно возвращать `ResponseEntity` для полного контроля.    
+- `@ControllerAdvice` поддерживает ограничения: `@ControllerAdvice(assignableTypes = UserController.class)`.    
 
 ---
-
 ### 57. В чем разница между `@ControllerAdvice` и `@RestControllerAdvice`?
 
 **Ответ:** `@RestControllerAdvice` — это специализированная версия `@ControllerAdvice` для REST API.
@@ -482,6 +453,7 @@ public @interface RestControllerAdvice {
 ```java
 @RestControllerAdvice
 public class RestExceptionHandler { ... }
+
 // И:
 @ControllerAdvice
 @ResponseBody
@@ -491,7 +463,6 @@ public class RestExceptionHandler { ... }
 **Вывод:** Для современных REST-приложений используйте `@RestControllerAdvice` — это сокращает код и делает намерения явными.
 
 ---
-
 ### 58. Что такое `HandlerInterceptor`? Чем отличается от Filter (сервлетный)?
 
 **Ответ:** `HandlerInterceptor` — это интерфейс Spring MVC для перехвата HTTP-запросов **на уровне диспетчера Spring**, до и после вызова контроллера.
@@ -499,9 +470,13 @@ public class RestExceptionHandler { ... }
 **Методы `HandlerInterceptor`:**
 ```java
 public interface HandlerInterceptor {
+
     boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler);
+    
     void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler, ModelAndView mav);
+    
     void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex);
+    
 }
 ```
 
@@ -517,11 +492,9 @@ public interface HandlerInterceptor {
 |Порядок выполнения|**Внешний** (раньше)|**Внутренний** (после `DispatcherServlet`)|
 
 **Когда что использовать:**
-
 - **`Filter`** — для низкоуровневых вещей: логирование IP, CORS, сжатие, аутентификация на уровне контейнера, кодировка (`CharacterEncodingFilter`).
     
-- **`HandlerInterceptor`** — для Spring-специфичных задач: проверка прав на основе аннотаций контроллера, добавление общих атрибутов в модель, измерение времени выполнения контроллера.
-    
+- **`HandlerInterceptor`** — для Spring-специфичных задач: проверка прав на основе аннотаций контроллера, добавление общих атрибутов в модель, измерение времени выполнения контроллера.    
 
 **Пример интерсептора:**
 ```java
@@ -542,7 +515,6 @@ public class PerformanceInterceptor implements HandlerInterceptor {
 ```
 
 ---
-
 ### 59. Что такое `WebMvcConfigurer`? Зачем нужен?
 
 **Ответ:** `WebMvcConfigurer` — это интерфейс для **программной настройки** Spring MVC поверх конфигурации по умолчанию (Spring Boot auto-configuration). Он пришел на замену XML-конфигурации и старому `WebMvcConfigurerAdapter`.
@@ -568,7 +540,9 @@ public class WebConfig implements WebMvcConfigurer {
     
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
-        registry.addInterceptor(new PerformanceInterceptor()).addPathPatterns("/api/**");
+        registry
+        .addInterceptor(new PerformanceInterceptor())
+        .addPathPatterns("/api/**");
     }
     
     @Override
@@ -577,7 +551,8 @@ public class WebConfig implements WebMvcConfigurer {
     }
     
     @Override
-    public void configureMessageConverters(List<HttpMessageConverter<?>> converters) {
+    public void configureMessageConverters(
+	    List<HttpMessageConverter<?>> converters) {
         converters.add(new MappingJackson2HttpMessageConverter());
     }
     
@@ -591,7 +566,6 @@ public class WebConfig implements WebMvcConfigurer {
 **Важно:** В Spring Boot, если вы реализуете `WebMvcConfigurer`, ваши настройки **добавляются** к авто-конфигурации, а не заменяют её. Если нужно полностью заменить конфигурацию, используйте `@EnableWebMvc`.
 
 ---
-
 ### 60. Как настроить CORS в Spring Boot? (`@CrossOrigin`)
 
 **Ответ:** CORS (Cross-Origin Resource Sharing) настраивается в Spring Boot на трех уровнях:
@@ -635,14 +609,11 @@ spring.mvc.cors.max-age=3600
 ```
 
 **Как работает CORS в Spring:**
-
 1. При preflight-запросе (OPTIONS) Spring автоматически отвечает заголовками CORS.
     
-2. При основном запросе проверяет заголовок `Origin` и добавляет `Access-Control-Allow-Origin` в ответ.
-    
+2. При основном запросе проверяет заголовок `Origin` и добавляет `Access-Control-Allow-Origin` в ответ.    
 
 **Важные нюансы:**
-
 - Если используются `@CrossOrigin` + глобальная конфигурация, они объединяются (более специфичная имеет приоритет).
     
 - `allowCredentials = true` и `allowedOrigins = "*"` несовместимы (нужно указывать конкретные origins).
