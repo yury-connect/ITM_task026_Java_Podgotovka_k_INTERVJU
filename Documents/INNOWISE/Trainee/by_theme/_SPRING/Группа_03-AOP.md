@@ -25,6 +25,8 @@
 
 **В Spring AOP реализован поверх прокси (динамических или CGLIB) и является proxy-based AOP, а не полноценным AspectJ (хотя может использовать AspectJ для pointcut-выражений).**
 
+В *Spring AOP* реализован поверх **прокси** (JDK Dynamic Proxy или CGLIB) и является **proxy-based AOP**. Он не меняет байт-код класса (в отличие от полноценного AspectJ с compile-time или load-time weaving).
+
 ---
 ### 27. Основные **термины AOP**: <br>Aspect, JoinPoint, Advice, Pointcut, Weaving
 
