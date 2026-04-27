@@ -244,26 +244,24 @@ public User createUser(@RequestBody User user) {
 - Метод помечен `@ResponseBody` или класс — `@RestController`.    
 - Клиент указал `Accept: application/json` (или `*/*`).    
 
-**Как работает:**
-1. `DispatcherServlet` определяет, что метод должен вернуть тело ответа (`@ResponseBody`).
+#### **Как работает:**
+1. `DispatcherServlet` определяет, что метод 
+	   должен вернуть тело ответа (`@ResponseBody`).
     
 2. Вызывает `HandlerMethodReturnValueHandler` для `@ResponseBody` (`RequestResponseBodyMethodProcessor`).
     
-3. Определяет тип содержимого ответа:
-    
-    - Из `produces` аннотации (`@GetMapping(produces = "application/json")`).
-        
+3. Определяет тип содержимого ответа:    
+    - Из `produces` аннотации (`@GetMapping(produces = "application/json")`).        
     - Из заголовка `Accept` клиента (Content negotiation).
     
-4. Выбирает подходящий `HttpMessageConverter`:
-    
-    - `MappingJackson2HttpMessageConverter` для JSON.
-        
+4. Выбирает подходящий `HttpMessageConverter`:    
+    - `MappingJackson2HttpMessageConverter` для JSON.        
     - `Jaxb2RootElementHttpMessageConverter` для XML.
     
-5. Конвертер записывает Java-объект в `HttpServletResponse.getOutputStream()` как JSON.    
+5. Конвертер записывает Java-объект 
+   в `HttpServletResponse.getOutputStream()`  как JSON.    
 
-**Пример:**
+#### **Пример:**
 ```java
 @RestController
 public class UserController {
@@ -274,12 +272,14 @@ public class UserController {
 }
 ```
 
-**Jackson автоматически:**
+#### **Jackson автоматически:**
 - Сериализует публичные поля или через геттеры.    
-- Игнорирует `null` (можно настроить `@JsonInclude(Include.NON_NULL)`).    
+- По умолчанию сериализует null 
+	  (можно отключить через @JsonInclude(Include.NON_NULL)).    
 - Работает с `LocalDate`, `Instant` через модуль `JavaTimeModule`.    
 
-**Ручное управление:** Можно вернуть `ResponseEntity<T>` для полного контроля над статусом и заголовками.
+**Ручное управление:** Можно вернуть `ResponseEntity<T>` 
+		для полного контроля над статусом и заголовками.
 
 ---
 ### 54. Что такое `ResponseEntity`? Когда использовать?
@@ -600,7 +600,7 @@ public class WebConfig implements WebMvcConfigurer {
 **Ответ:** CORS (Cross-Origin Resource Sharing) настраивается 
 	в Spring Boot на трех уровнях:
 
-**Уровень 1: `@CrossOrigin` на уровне контроллера или метода (*самый простой*):**
+1️⃣ **Уровень 1: `@CrossOrigin` на уровне контроллера или метода (*самый простой*):**
 ```java
 @RestController
 @CrossOrigin(origins = "https://example.com") // для всего контроллера
@@ -612,7 +612,7 @@ public class UserController {
 }
 ```
 
-**Уровень 2: Глобальная конфигурация через `WebMvcConfigurer` (*рекомендуемый способ*):**
+2️⃣ **Уровень 2: Глобальная конфигурация через `WebMvcConfigurer` (*рекомендуемый способ*):**
 ```java
 @Configuration
 public class WebConfig implements WebMvcConfigurer {
@@ -629,7 +629,7 @@ public class WebConfig implements WebMvcConfigurer {
 }
 ```
 
-**Уровень 3: Через `application.properties` (*Spring Boot 2+*):**
+3️⃣ **Уровень 3: Через `application.properties` (*Spring Boot 2+*):**
 ```properties
 spring.mvc.cors.allowed-origins=https://example.com
 spring.mvc.cors.allowed-methods=GET,POST,PUT,DELETE
@@ -640,17 +640,44 @@ spring.mvc.cors.max-age=3600
 
 #### **Как работает CORS в Spring:**
 1. При preflight-запросе (OPTIONS) Spring автоматически отвечает заголовками CORS.
-    
-2. При основном запросе проверяет заголовок `Origin` и добавляет `Access-Control-Allow-Origin` в ответ.    
+2. При основном запросе проверяет заголовок `Origin` 
+	   и добавляет `Access-Control-Allow-Origin` в ответ.    
+```text
+// ### 🧪 Как это работает под капотом (для сложных запросов)
+1. Браузер отправляет preflight-запрос OPTIONS
+   ↓
+2. Сервер отвечает заголовками CORS:
+   Access-Control-Allow-Origin: http://localhost:3000
+   Access-Control-Allow-Methods: GET, POST
+   ↓
+3. Браузер проверяет — разрешено?
+   ↓
+4. Если да → отправляет реальный запрос
+```
 
 #### **Важные нюансы:**
-- Если используются `@CrossOrigin` + глобальная конфигурация, они объединяются (более специфичная имеет приоритет).
+- Если используются `@CrossOrigin` + глобальная конфигурация, 
+	  они объединяются (*более специфичная имеет приоритет*).
     
-- `allowCredentials = true` и `allowedOrigins = "*"` несовместимы (нужно указывать конкретные origins).
+- `allowCredentials = true` и `allowedOrigins = "*"` несовместимы 
+	  (*нужно указывать конкретные origins*).
     
-- Для WebFlux (реактивный стек) используется `CorsConfiguration` и `WebFluxConfigurer`.
+- Для WebFlux (*реактивный стек*) используется `CorsConfiguration` 
+	  и `WebFluxConfigurer`.
 
-**Частая ошибка:** Не настроен OPTIONS-метод для preflight-запросов. Spring обрабатывает его автоматически, если CORS настроен правильно.
+#### 📊 Все параметры `@CrossOrigin`
+
+|Параметр|Что делает|Пример|
+|---|---|---|
+|`origins` / `value`|Разрешенные домены|`"http://localhost:3000"`|
+|`allowedHeaders`|Какие заголовки можно отправлять|`"Authorization", "Content-Type"`|
+|`exposedHeaders`|Какие заголовки видит клиент|`"X-Total-Count"`|
+|`methods`|Разрешенные HTTP-методы|`"GET", "POST", "DELETE"`|
+|`allowCredentials`|Можно ли передавать куки/токены|`"true"`|
+|`maxAge`|Кэширование preflight-запроса (сек)|`3600`|
+
+**Частая ошибка:** Не настроен OPTIONS-метод для preflight-запросов. 
+Spring обрабатывает его автоматически, если CORS настроен правильно.
 
 ---
 
