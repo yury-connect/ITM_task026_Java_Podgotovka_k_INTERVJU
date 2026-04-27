@@ -1,0 +1,1160 @@
+<!doctype html>
+<html lang="ru">
+<head>
+    <meta charset="utf-8">
+    <title>Логирование и OpenSearch — ITM Platform Workshop</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Reveal.js -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5/dist/reveal.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5/dist/theme/black.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5/plugin/highlight/monokai.css">
+
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --accent: #4fd1ff;
+            --bg-card: #020617;
+            --text-muted: #94a3b8;
+            --warn: #f87171;
+            --ok: #4ade80;
+        }
+
+        body {
+            background: #020617;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .reveal {
+            font-size: 30px;
+        }
+
+        .reveal h1, .reveal h2 {
+            font-weight: 800;
+            text-transform: none;
+            letter-spacing: -0.02em;
+            margin-bottom: 0.3em;
+        }
+
+        .accent { color: var(--accent); }
+        .warn   { color: var(--warn); }
+        .ok     { color: var(--ok); }
+
+        .subtitle {
+            color: var(--text-muted);
+            font-size: 0.9em;
+            margin-top: 20px;
+        }
+
+        .card {
+            background: var(--bg-card);
+            border-radius: 12px;
+            padding: 16px 28px;
+            margin: 10px auto;
+            width: 90%;
+            text-align: left;
+        }
+
+        .card ul {
+            list-style: none;
+            padding-left: 0;
+        }
+
+        .card li {
+            margin: 8px 0;
+            padding-left: 26px;
+            position: relative;
+        }
+
+        .card li::before {
+            content: "›";
+            position: absolute;
+            left: 0;
+            color: var(--accent);
+            font-weight: bold;
+        }
+
+        /* two-column card grid */
+        .card-row {
+            display: flex;
+            gap: 14px;
+            margin: 10px auto;
+            width: 90%;
+        }
+
+        .card-row .card {
+            flex: 1;
+            margin: 0;
+            width: auto;
+        }
+
+        .card-row .card.warn-border {
+            border: 1px solid var(--warn);
+        }
+
+        .card-row .card.ok-border {
+            border: 1px solid var(--ok);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 14px;
+            font-size: 0.8em;
+        }
+
+        th {
+            color: var(--accent);
+            text-align: left;
+            padding-bottom: 6px;
+        }
+
+        td {
+            padding: 8px 0;
+            border-bottom: 1px solid #1e293b;
+            vertical-align: top;
+        }
+
+        .muted {
+            color: var(--text-muted);
+            font-size: 0.72em;
+            margin-top: 10px;
+        }
+
+        /* pipeline steps */
+        .pipeline {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .pipeline li {
+            margin: 8px 0;
+            padding-left: 26px;
+            position: relative;
+            font-size: 0.85em;
+        }
+
+        .pipeline li::before {
+            content: "▼";
+            position: absolute;
+            left: 0;
+            color: var(--accent);
+            font-size: 0.7em;
+            top: 5px;
+        }
+
+        .pipeline li:first-child::before { content: "›"; font-size: 1em; top: 0; }
+
+        .pipeline .step-label {
+            color: var(--accent);
+            font-weight: 600;
+        }
+
+        .pipeline .step-desc {
+            color: var(--text-muted);
+            font-size: 0.85em;
+        }
+
+        /* diagram styles */
+        .diagram-wrap {
+            width: 92%;
+            margin: 0 auto;
+        }
+    </style>
+</head>
+
+<body>
+<div class="reveal">
+    <div class="slides">
+
+        <!-- TITLE -->
+        <section>
+            <h1>Логирование и<br><span class="accent">OpenSearch</span></h1>
+            <p class="subtitle">Централизованное логирование в проекте<br>Java · Spring Boot · Kubernetes · Fluentd · OpenSearch</p>
+        </section>
+
+        <!-- AGENDA -->
+        <section>
+            <h2>План воркшопа</h2>
+            <div class="card">
+                <table>
+                    <tr><th>Блок</th><th>Время</th></tr>
+                    <tr><td>Введение. Проблема логирования</td><td>5 мин</td></tr>
+                    <tr><td>ELK Stack и OpenSearch</td><td>10 мин</td></tr>
+                    <tr><td>Архитектура логирования в Kubernetes</td><td>10 мин</td></tr>
+                    <tr><td>Log4j2 и JSON-логи</td><td>10 мин</td></tr>
+                    <tr><td>Как лог становится документом</td><td>5 мин</td></tr>
+                    <tr><td>Практика: поиск логов в UI</td><td>15–20 мин</td></tr>
+                </table>
+            </div>
+        </section>
+
+        <!-- PROBLEM -->
+        <section>
+            <h2>Представьте такую систему</h2>
+            <div class="card">
+                <p>В Kubernetes работает <span class="accent">20 микросервисов</span>:<br>
+                user-service, profile-service, education-service, notification-service...</p>
+                <br>
+                <p>Пользователь говорит: <span class="warn">"Я не могу отправить задание"</span></p>
+                <br>
+                <p>Где искать ошибку?</p>
+            </div>
+            <p class="muted">Контейнеры постоянно перезапускаются · логи распределены по нодам · ssh + grep нереально</p>
+        </section>
+
+        <!-- CENTRALIZED -->
+        <section>
+            <h2>Централизованное логирование</h2>
+            <div class="card">
+                <p>Главная идея: <span class="accent">все сервисы пишут логи → система собирает их в одно место</span></p>
+                <br>
+                <ul>
+                    <li>Сбор логов из всех источников</li>
+                    <li>Единое хранилище и индексация</li>
+                    <li>Быстрый поиск и фильтрация</li>
+                    <li>Дашборды и алерты</li>
+                </ul>
+            </div>
+            <p class="muted">Сервисы не думают о том, куда уходят логи. Только stdout.</p>
+        </section>
+
+        <!-- ELK STACK -->
+        <section>
+            <h2>ELK Stack — классика</h2>
+            <div class="card">
+                <table>
+                    <tr>
+                        <th>Компонент</th>
+                        <th>Роль</th>
+                    </tr>
+                    <tr>
+                        <td><span class="accent">E</span>lasticsearch</td>
+                        <td>Хранение, инвертированный индекс, быстрый полнотекстовый поиск</td>
+                    </tr>
+                    <tr>
+                        <td><span class="accent">L</span>ogstash</td>
+                        <td>Сбор логов, парсинг, трансформация, обогащение метаданными</td>
+                    </tr>
+                    <tr>
+                        <td><span class="accent">K</span>ibana</td>
+                        <td>Web UI: Discover, дашборды, графики, алерты</td>
+                    </tr>
+                </table>
+            </div>
+        </section>
+
+        <!-- ═══════════════════════════════════════════════════════════
+             NEW SLIDE: ELK ARCHITECTURE DIAGRAM
+             ═══════════════════════════════════════════════════════════ -->
+        <section>
+            <h2>ELK Stack — как компоненты работают вместе</h2>
+
+            <div class="diagram-wrap">
+                <!-- SVG: horizontal pipeline with 4 stages -->
+                <svg viewBox="0 0 920 310" xmlns="http://www.w3.org/2000/svg"
+                     style="width:100%;display:block;font-family:Inter,sans-serif;">
+                    <defs>
+                        <marker id="arr" markerWidth="10" markerHeight="7"
+                                refX="9" refY="3.5" orient="auto">
+                            <polygon points="0 0, 10 3.5, 0 7" fill="#4fd1ff"/>
+                        </marker>
+                        <!-- Glow filter for highlight boxes -->
+                        <filter id="glow">
+                            <feGaussianBlur stdDeviation="3" result="blur"/>
+                            <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+                        </filter>
+                    </defs>
+
+                    <!-- ── BOX 1: Sources ── -->
+                    <rect x="8" y="55" width="168" height="180" rx="12"
+                          fill="#0f172a" stroke="#475569" stroke-width="1.5"/>
+                    <!-- header strip -->
+                    <rect x="8" y="55" width="168" height="36" rx="12" fill="#1e293b"/>
+                    <rect x="8" y="79" width="168" height="12" fill="#1e293b"/>
+                    <text x="92" y="78" text-anchor="middle"
+                          fill="#94a3b8" font-size="12" font-weight="600" letter-spacing="1">СЕРВИСЫ</text>
+                    <!-- service pills -->
+                    <rect x="24" y="104" width="136" height="24" rx="6" fill="#1e293b"/>
+                    <text x="92" y="121" text-anchor="middle" fill="white" font-size="12">user-service</text>
+                    <rect x="24" y="134" width="136" height="24" rx="6" fill="#1e293b"/>
+                    <text x="92" y="151" text-anchor="middle" fill="white" font-size="12">profile-service</text>
+                    <rect x="24" y="164" width="136" height="24" rx="6" fill="#1e293b"/>
+                    <text x="92" y="181" text-anchor="middle" fill="white" font-size="12">auth-service</text>
+                    <text x="92" y="218" text-anchor="middle" fill="#4ade80" font-size="11">→ stdout</text>
+
+                    <!-- ── ARROW 1 → 2 ── -->
+                    <line x1="176" y1="145" x2="225" y2="145"
+                          stroke="#4fd1ff" stroke-width="2" marker-end="url(#arr)"/>
+
+                    <!-- ── BOX 2: Fluentd / L ── -->
+                    <rect x="225" y="55" width="178" height="180" rx="12"
+                          fill="#0f172a" stroke="#4fd1ff" stroke-width="2" filter="url(#glow)"/>
+                    <rect x="225" y="55" width="178" height="36" rx="12" fill="#0c2340"/>
+                    <rect x="225" y="79" width="178" height="12" fill="#0c2340"/>
+                    <text x="314" y="78" text-anchor="middle"
+                          fill="#4fd1ff" font-size="12" font-weight="700" letter-spacing="1">L — LOGSTASH</text>
+                    <!-- big letter -->
+                    <text x="314" y="135" text-anchor="middle"
+                          fill="#4fd1ff" font-size="38" font-weight="800" opacity="0.15">L</text>
+                    <text x="314" y="125" text-anchor="middle"
+                          fill="white" font-size="14" font-weight="600">Fluentd</text>
+                    <text x="314" y="147" text-anchor="middle"
+                          fill="#94a3b8" font-size="11">DaemonSet на каждой ноде</text>
+                    <text x="314" y="165" text-anchor="middle"
+                          fill="#94a3b8" font-size="11">читает /var/log/containers/</text>
+                    <text x="314" y="183" text-anchor="middle"
+                          fill="#94a3b8" font-size="11">добавляет k8s-метаданные</text>
+                    <text x="314" y="201" text-anchor="middle"
+                          fill="#94a3b8" font-size="11">отправляет в OpenSearch</text>
+
+                    <!-- ── ARROW 2 → 3 ── -->
+                    <line x1="403" y1="145" x2="452" y2="145"
+                          stroke="#4fd1ff" stroke-width="2" marker-end="url(#arr)"/>
+
+                    <!-- ── BOX 3: OpenSearch / E ── -->
+                    <rect x="452" y="55" width="208" height="180" rx="12"
+                          fill="#0f172a" stroke="#f87171" stroke-width="2" filter="url(#glow)"/>
+                    <rect x="452" y="55" width="208" height="36" rx="12" fill="#2d0d0d"/>
+                    <rect x="452" y="79" width="208" height="12" fill="#2d0d0d"/>
+                    <text x="556" y="78" text-anchor="middle"
+                          fill="#f87171" font-size="12" font-weight="700" letter-spacing="1">E — ELASTICSEARCH</text>
+                    <text x="556" y="125" text-anchor="middle"
+                          fill="white" font-size="14" font-weight="600">OpenSearch</text>
+                    <text x="556" y="147" text-anchor="middle"
+                          fill="#94a3b8" font-size="11">инвертированный индекс</text>
+                    <text x="556" y="165" text-anchor="middle"
+                          fill="#94a3b8" font-size="11">полнотекстовый поиск</text>
+                    <text x="556" y="183" text-anchor="middle"
+                          fill="#94a3b8" font-size="11">хранение документов</text>
+                    <text x="556" y="201" text-anchor="middle"
+                          fill="#94a3b8" font-size="11">горизонтальное масштабирование</text>
+
+                    <!-- ── ARROW 3 → 4 ── -->
+                    <line x1="660" y1="145" x2="706" y2="145"
+                          stroke="#4fd1ff" stroke-width="2" marker-end="url(#arr)"/>
+
+                    <!-- ── BOX 4: Dashboards / K ── -->
+                    <rect x="706" y="55" width="206" height="180" rx="12"
+                          fill="#0f172a" stroke="#4ade80" stroke-width="2" filter="url(#glow)"/>
+                    <rect x="706" y="55" width="206" height="36" rx="12" fill="#0a2010"/>
+                    <rect x="706" y="79" width="206" height="12" fill="#0a2010"/>
+                    <text x="809" y="78" text-anchor="middle"
+                          fill="#4ade80" font-size="12" font-weight="700" letter-spacing="1">K — KIBANA</text>
+                    <text x="809" y="125" text-anchor="middle"
+                          fill="white" font-size="14" font-weight="600">OpenSearch Dashboards</text>
+                    <text x="809" y="147" text-anchor="middle"
+                          fill="#94a3b8" font-size="11">Discover — поиск логов</text>
+                    <text x="809" y="165" text-anchor="middle"
+                          fill="#94a3b8" font-size="11">Дашборды и графики</text>
+                    <text x="809" y="183" text-anchor="middle"
+                          fill="#94a3b8" font-size="11">Алерты</text>
+                    <text x="809" y="201" text-anchor="middle"
+                          fill="#94a3b8" font-size="11">KQL-запросы</text>
+
+                    <!-- ── bottom labels ── -->
+                    <text x="92" y="265" text-anchor="middle"
+                          fill="#475569" font-size="11">Источники</text>
+                    <text x="314" y="265" text-anchor="middle"
+                          fill="#4fd1ff" font-size="11">Сбор и обогащение</text>
+                    <text x="556" y="265" text-anchor="middle"
+                          fill="#f87171" font-size="11">Хранение и поиск</text>
+                    <text x="809" y="265" text-anchor="middle"
+                          fill="#4ade80" font-size="11">Визуализация</text>
+
+                    <!-- ── flow label ── -->
+                    <text x="460" y="30" text-anchor="middle"
+                          fill="#334155" font-size="11">─────────────────── поток данных ──────────────────→</text>
+                </svg>
+            </div>
+
+            <p class="muted" style="margin-top:6px;">В нашем проекте: Fluentd вместо Logstash · OpenSearch вместо Elasticsearch · Dashboards вместо Kibana</p>
+        </section>
+
+        <!-- OPENSEARCH -->
+        <section>
+            <h2>Что такое OpenSearch</h2>
+            <div class="card">
+                <p>2010 → Elasticsearch создан, лицензия Apache 2.0</p>
+                <p>2021 → Elastic <span class="warn">сменила лицензию на SSPL</span> — нельзя использовать в SaaS</p>
+                <p>2021 → AWS сделал форк → <span class="accent">OpenSearch</span> — снова open-source</p>
+            </div>
+            <div class="card">
+                <ul>
+                    <li><span class="accent">OpenSearch</span> = Elasticsearch (движок, хранение, поиск)</li>
+                    <li><span class="accent">OpenSearch Dashboards</span> = Kibana (Web UI)</li>
+                    <li>API практически идентичен — знаете один, знаете оба</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- K8S ARCHITECTURE (текст) -->
+        <section>
+            <h2>Архитектура логирования в Kubernetes</h2>
+            <div class="card">
+                <ul class="pipeline">
+                    <li>
+                        <span class="step-label">Java-сервис (Spring Boot)</span><br>
+                        <span class="step-desc">log.info("User created") → log4j2 форматирует в JSON</span>
+                    </li>
+                    <li>
+                        <span class="step-label">stdout контейнера</span><br>
+                        <span class="step-desc">Docker/containerd сохраняет в /var/log/containers/</span>
+                    </li>
+                    <li>
+                        <span class="step-label">Fluentd DaemonSet</span><br>
+                        <span class="step-desc">запущен на каждой ноде, читает логи всех контейнеров</span>
+                    </li>
+                    <li>
+                        <span class="step-label">OpenSearch</span><br>
+                        <span class="step-desc">индексирует документы, хранит</span>
+                    </li>
+                    <li>
+                        <span class="step-label">OpenSearch Dashboards</span><br>
+                        <span class="step-desc">разработчик открывает UI и ищет</span>
+                    </li>
+                </ul>
+            </div>
+            <p class="muted">Важно: сервисы не отправляют логи напрямую в OpenSearch — только stdout</p>
+        </section>
+
+        <!-- ═══════════════════════════════════════════════════════════
+             NEW SLIDE: K8S LOG FLOW VISUAL DIAGRAM
+             ═══════════════════════════════════════════════════════════ -->
+        <section>
+            <h2>Путь лога: от кода до интерфейса</h2>
+
+            <div class="diagram-wrap">
+                <svg viewBox="0 0 920 420" xmlns="http://www.w3.org/2000/svg"
+                     style="width:100%;display:block;font-family:Inter,sans-serif;">
+                    <defs>
+                        <marker id="arr2" markerWidth="10" markerHeight="7"
+                                refX="9" refY="3.5" orient="auto">
+                            <polygon points="0 0, 10 3.5, 0 7" fill="#4fd1ff"/>
+                        </marker>
+                        <marker id="arr2-green" markerWidth="10" markerHeight="7"
+                                refX="9" refY="3.5" orient="auto">
+                            <polygon points="0 0, 10 3.5, 0 7" fill="#4ade80"/>
+                        </marker>
+                    </defs>
+
+                    <!-- ══════ KUBERNETES NODE BOUNDARY ══════ -->
+                    <rect x="10" y="10" width="610" height="395" rx="14"
+                          fill="none" stroke="#1e3a5f" stroke-width="2" stroke-dasharray="8,4"/>
+                    <rect x="10" y="10" width="140" height="26" rx="6" fill="#1e3a5f"/>
+                    <text x="80" y="28" text-anchor="middle"
+                          fill="#93c5fd" font-size="12" font-weight="600">Kubernetes Node</text>
+
+                    <!-- ── 3 service pods ── -->
+                    <!-- Pod 1 -->
+                    <rect x="30" y="55" width="160" height="90" rx="10"
+                          fill="#0f172a" stroke="#4fd1ff" stroke-width="1.5"/>
+                    <rect x="30" y="55" width="160" height="28" rx="10" fill="#1e293b"/>
+                    <rect x="30" y="71" width="160" height="12" fill="#1e293b"/>
+                    <text x="110" y="73" text-anchor="middle"
+                          fill="#93c5fd" font-size="11" font-weight="600">Pod: user-service</text>
+                    <text x="110" y="100" text-anchor="middle"
+                          fill="#4fd1ff" font-size="11">log.info("User created")</text>
+                    <text x="110" y="118" text-anchor="middle"
+                          fill="#94a3b8" font-size="10">→ log4j2 → JSON → stdout</text>
+                    <text x="110" y="134" text-anchor="middle"
+                          fill="#94a3b8" font-size="10">Spring Boot</text>
+
+                    <!-- Pod 2 -->
+                    <rect x="210" y="55" width="160" height="90" rx="10"
+                          fill="#0f172a" stroke="#4fd1ff" stroke-width="1.5"/>
+                    <rect x="210" y="55" width="160" height="28" rx="10" fill="#1e293b"/>
+                    <rect x="210" y="71" width="160" height="12" fill="#1e293b"/>
+                    <text x="290" y="73" text-anchor="middle"
+                          fill="#93c5fd" font-size="11" font-weight="600">Pod: profile-service</text>
+                    <text x="290" y="100" text-anchor="middle"
+                          fill="#4fd1ff" font-size="11">log.error("Not found")</text>
+                    <text x="290" y="118" text-anchor="middle"
+                          fill="#94a3b8" font-size="10">→ log4j2 → JSON → stdout</text>
+                    <text x="290" y="134" text-anchor="middle"
+                          fill="#94a3b8" font-size="10">Spring Boot</text>
+
+                    <!-- Pod 3 -->
+                    <rect x="390" y="55" width="160" height="90" rx="10"
+                          fill="#0f172a" stroke="#4fd1ff" stroke-width="1.5"/>
+                    <rect x="390" y="55" width="160" height="28" rx="10" fill="#1e293b"/>
+                    <rect x="390" y="71" width="160" height="12" fill="#1e293b"/>
+                    <text x="470" y="73" text-anchor="middle"
+                          fill="#93c5fd" font-size="11" font-weight="600">Pod: auth-service</text>
+                    <text x="470" y="100" text-anchor="middle"
+                          fill="#4fd1ff" font-size="11">log.warn("Retry...")</text>
+                    <text x="470" y="118" text-anchor="middle"
+                          fill="#94a3b8" font-size="10">→ log4j2 → JSON → stdout</text>
+                    <text x="470" y="134" text-anchor="middle"
+                          fill="#94a3b8" font-size="10">Spring Boot</text>
+
+                    <!-- arrows pods → containerd -->
+                    <line x1="110" y1="145" x2="110" y2="183"
+                          stroke="#4fd1ff" stroke-width="1.5" marker-end="url(#arr2)"/>
+                    <line x1="290" y1="145" x2="290" y2="183"
+                          stroke="#4fd1ff" stroke-width="1.5" marker-end="url(#arr2)"/>
+                    <line x1="470" y1="145" x2="470" y2="183"
+                          stroke="#4fd1ff" stroke-width="1.5" marker-end="url(#arr2)"/>
+
+                    <!-- converge lines to /var/log -->
+                    <line x1="110" y1="183" x2="290" y2="183"
+                          stroke="#4fd1ff" stroke-width="1" opacity="0.5"/>
+                    <line x1="290" y1="183" x2="470" y2="183"
+                          stroke="#4fd1ff" stroke-width="1" opacity="0.5"/>
+
+                    <!-- ── containerd / /var/log/containers ── -->
+                    <rect x="100" y="183" width="420" height="56" rx="10"
+                          fill="#0f172a" stroke="#475569" stroke-width="1.5"/>
+                    <text x="310" y="206" text-anchor="middle"
+                          fill="#94a3b8" font-size="11" font-weight="600">containerd</text>
+                    <text x="310" y="227" text-anchor="middle"
+                          fill="#4fd1ff" font-size="11">/var/log/containers/*.log</text>
+
+                    <!-- arrow containerd → fluentd -->
+                    <line x1="310" y1="239" x2="310" y2="278"
+                          stroke="#4fd1ff" stroke-width="2" marker-end="url(#arr2)"/>
+
+                    <!-- ── Fluentd DaemonSet ── -->
+                    <rect x="155" y="278" width="310" height="70" rx="10"
+                          fill="#0c2340" stroke="#4fd1ff" stroke-width="2"/>
+                    <text x="310" y="301" text-anchor="middle"
+                          fill="#4fd1ff" font-size="13" font-weight="700">Fluentd DaemonSet</text>
+                    <text x="310" y="320" text-anchor="middle"
+                          fill="#94a3b8" font-size="11">читает логи · добавляет namespace, pod_name,</text>
+                    <text x="310" y="336" text-anchor="middle"
+                          fill="#94a3b8" font-size="11">container_name, node_name из Kubernetes API</text>
+
+                    <!-- arrow Fluentd → OpenSearch (going out of k8s box) -->
+                    <line x1="465" y1="312" x2="660" y2="168"
+                          stroke="#4fd1ff" stroke-width="2" marker-end="url(#arr2)"/>
+                    <text x="600" y="232" text-anchor="middle"
+                          fill="#4fd1ff" font-size="10" transform="rotate(-30 600 232)">HTTP / bulk API</text>
+
+                    <!-- ══════ RIGHT COLUMN: OpenSearch + Dashboards ══════ -->
+
+                    <!-- ── OpenSearch Cluster ── -->
+                    <rect x="655" y="55" width="250" height="170" rx="12"
+                          fill="#0f172a" stroke="#f87171" stroke-width="2"/>
+                    <rect x="655" y="55" width="250" height="34" rx="12" fill="#2d0d0d"/>
+                    <rect x="655" y="77" width="250" height="12" fill="#2d0d0d"/>
+                    <text x="780" y="77" text-anchor="middle"
+                          fill="#f87171" font-size="12" font-weight="700">OpenSearch Cluster</text>
+
+                    <!-- node icons inside -->
+                    <rect x="670" y="102" width="65" height="50" rx="8" fill="#1e293b"/>
+                    <text x="702" y="124" text-anchor="middle" fill="white" font-size="10">Node 1</text>
+                    <text x="702" y="140" text-anchor="middle" fill="#94a3b8" font-size="9">Primary</text>
+
+                    <rect x="747" y="102" width="65" height="50" rx="8" fill="#1e293b"/>
+                    <text x="779" y="124" text-anchor="middle" fill="white" font-size="10">Node 2</text>
+                    <text x="779" y="140" text-anchor="middle" fill="#94a3b8" font-size="9">Replica</text>
+
+                    <rect x="824" y="102" width="65" height="50" rx="8" fill="#1e293b"/>
+                    <text x="856" y="124" text-anchor="middle" fill="white" font-size="10">Node 3</text>
+                    <text x="856" y="140" text-anchor="middle" fill="#94a3b8" font-size="9">Replica</text>
+
+                    <text x="780" y="175" text-anchor="middle"
+                          fill="#94a3b8" font-size="10">инвертированный индекс</text>
+                    <text x="780" y="192" text-anchor="middle"
+                          fill="#94a3b8" font-size="10">полнотекстовый поиск · JSON-документы</text>
+                    <text x="780" y="209" text-anchor="middle"
+                          fill="#94a3b8" font-size="10">индекс: itm-platform-logs-*</text>
+
+                    <!-- arrow OpenSearch → Dashboards -->
+                    <line x1="780" y1="225" x2="780" y2="272"
+                          stroke="#4ade80" stroke-width="2" marker-end="url(#arr2-green)"/>
+
+                    <!-- ── OpenSearch Dashboards ── -->
+                    <rect x="655" y="272" width="250" height="90" rx="12"
+                          fill="#0a2010" stroke="#4ade80" stroke-width="2"/>
+                    <text x="780" y="299" text-anchor="middle"
+                          fill="#4ade80" font-size="13" font-weight="700">OpenSearch Dashboards</text>
+                    <text x="780" y="320" text-anchor="middle"
+                          fill="#94a3b8" font-size="11">Discover · KQL-поиск</text>
+                    <text x="780" y="338" text-anchor="middle"
+                          fill="#94a3b8" font-size="11">Дашборды · Алерты</text>
+
+                    <!-- arrow Dashboards → Developer -->
+                    <line x1="780" y1="362" x2="780" y2="388"
+                          stroke="#4ade80" stroke-width="2" marker-end="url(#arr2-green)"/>
+
+                    <!-- Developer -->
+                    <text x="780" y="412" text-anchor="middle"
+                          fill="white" font-size="22">👩‍💻</text>
+                    <text x="820" y="410" text-anchor="start"
+                          fill="#94a3b8" font-size="11">Разработчик ищет логи</text>
+
+                    <!-- k8s node label bottom -->
+                    <text x="310" y="395" text-anchor="middle"
+                          fill="#1e3a5f" font-size="11" font-weight="600">Kubernetes Node (DaemonSet на каждой ноде)</text>
+                </svg>
+            </div>
+        </section>
+
+        <!-- LOG4J2 -->
+        <section>
+            <h2>Log4j2 в проекте</h2>
+            <div class="card">
+                <ul>
+                    <li>Форматирует логи через <span class="accent">JsonTemplateLayout</span> → JSON в stdout</li>
+                    <li>Управляет уровнями: ERROR · WARN · INFO · DEBUG</li>
+                    <li>Параметры через <code>{}</code> — подставляются только если уровень включён</li>
+                </ul>
+            </div>
+            <div class="card">
+                <pre><code class="language-java" style="font-size: 0.65em;">log.info("User created: userId={}", id);
+log.error("User not found: id={}", id, ex);
+log.debug("Request payload: {}", body);</code></pre>
+            </div>
+            <p class="muted">На проде обычно INFO и выше · DEBUG включают только при необходимости</p>
+        </section>
+
+        <!-- WHY JSON -->
+        <section>
+            <h2>Почему JSON-логи?</h2>
+            <div class="card-row">
+                <div class="card warn-border">
+                    <p class="warn">Plain text лог</p>
+                    <pre><code class="language-text" style="font-size:0.6em;">2024-01-15 10:23:45 ERROR
+[user-service] User not found
+id=123 traceId=abc-def</code></pre>
+                    <ul>
+                        <li>Нужен regexp для парсинга</li>
+                        <li>Формат может меняться</li>
+                        <li>Multiline — проблема</li>
+                    </ul>
+                </div>
+                <div class="card ok-border">
+                    <p class="ok">JSON лог</p>
+                    <pre><code class="language-json" style="font-size:0.6em;">{
+  "log.level": "ERROR",
+  "message": "User not found",
+  "userId": 123,
+  "traceId": "abc-def"
+}</code></pre>
+                    <ul>
+                        <li>Структурированные данные</li>
+                        <li>Парсинг без regexp</li>
+                        <li>Поиск по любому полю</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- LOG → DOCUMENT -->
+        <section>
+            <h2>Как лог становится документом</h2>
+            <div class="card-row">
+                <div class="card">
+                    <p style="color: var(--text-muted); font-size: 0.75em; margin-bottom: 10px;">Java пишет в stdout:</p>
+                    <pre><code class="language-json" style="font-size: 0.6em;">{
+  "timestamp": "2024-01-15T10:23:45Z",
+  "log.level": "ERROR",
+  "message": "User not found",
+  "logger": "UserService",
+  "userId": 123
+}</code></pre>
+                </div>
+                <div class="card" style="border: 1px solid var(--accent);">
+                    <p style="color: var(--accent); font-size: 0.75em; margin-bottom: 10px;">Документ в OpenSearch:</p>
+                    <pre><code class="language-json" style="font-size: 0.6em;">{
+  "timestamp": "2024-01-15T10:23:45Z",
+  "log.level": "ERROR",
+  "message": "User not found",
+  "logger": "UserService",
+  "userId": 123,
+  "kubernetes.namespace_name": "itm-platform-dev",
+  "kubernetes.container_name": "user-service",
+  "kubernetes.pod_name": "user-service-7d9f-xk2p"
+}</code></pre>
+                </div>
+            </div>
+            <p class="muted">Fluentd добавляет kubernetes.* поля автоматически — разработчик ничего не делает</p>
+        </section>
+
+        <!-- ═══════════════════════════════════════════════════════════
+             NEW SLIDE: OPENSEARCH INVERTED INDEX VISUALIZATION
+             ═══════════════════════════════════════════════════════════ -->
+        <section>
+            <h2>Как OpenSearch ищет за миллисекунды</h2>
+
+            <div class="diagram-wrap">
+                <svg viewBox="0 0 920 340" xmlns="http://www.w3.org/2000/svg"
+                     style="width:100%;display:block;font-family:Inter,sans-serif;">
+                    <defs>
+                        <marker id="arr3" markerWidth="8" markerHeight="6"
+                                refX="7" refY="3" orient="auto">
+                            <polygon points="0 0, 8 3, 0 6" fill="#4fd1ff"/>
+                        </marker>
+                    </defs>
+
+                    <!-- ── LEFT: Documents ── -->
+                    <text x="180" y="28" text-anchor="middle"
+                          fill="#94a3b8" font-size="13" font-weight="600">Документы (логи)</text>
+
+                    <!-- Doc 1 -->
+                    <rect x="20" y="40" width="320" height="64" rx="8" fill="#0f172a" stroke="#1e293b"/>
+                    <rect x="20" y="40" width="36" height="64" rx="8" fill="#1e293b"/>
+                    <rect x="56" y="40" width="1" height="64" fill="#1e293b"/>
+                    <text x="38" y="75" text-anchor="middle" fill="#4fd1ff" font-size="14" font-weight="700">1</text>
+                    <text x="200" y="62" text-anchor="middle" fill="#94a3b8" font-size="10">level: ERROR</text>
+                    <text x="200" y="78" text-anchor="middle" fill="white" font-size="11">"User not found: id=42"</text>
+                    <text x="200" y="94" text-anchor="middle" fill="#94a3b8" font-size="10">service: user-service</text>
+
+                    <!-- Doc 2 -->
+                    <rect x="20" y="116" width="320" height="64" rx="8" fill="#0f172a" stroke="#1e293b"/>
+                    <rect x="20" y="116" width="36" height="64" rx="8" fill="#1e293b"/>
+                    <rect x="56" y="116" width="1" height="64" fill="#1e293b"/>
+                    <text x="38" y="151" text-anchor="middle" fill="#4fd1ff" font-size="14" font-weight="700">2</text>
+                    <text x="200" y="138" text-anchor="middle" fill="#94a3b8" font-size="10">level: INFO</text>
+                    <text x="200" y="154" text-anchor="middle" fill="white" font-size="11">"User created: id=42"</text>
+                    <text x="200" y="170" text-anchor="middle" fill="#94a3b8" font-size="10">service: user-service</text>
+
+                    <!-- Doc 3 -->
+                    <rect x="20" y="192" width="320" height="64" rx="8" fill="#0f172a" stroke="#1e293b"/>
+                    <rect x="20" y="192" width="36" height="64" rx="8" fill="#1e293b"/>
+                    <rect x="56" y="192" width="1" height="64" fill="#1e293b"/>
+                    <text x="38" y="227" text-anchor="middle" fill="#4fd1ff" font-size="14" font-weight="700">3</text>
+                    <text x="200" y="214" text-anchor="middle" fill="#94a3b8" font-size="10">level: ERROR</text>
+                    <text x="200" y="230" text-anchor="middle" fill="white" font-size="11">"User not found: id=99"</text>
+                    <text x="200" y="246" text-anchor="middle" fill="#94a3b8" font-size="10">service: profile-service</text>
+
+                    <!-- ── CENTER: Index ── -->
+                    <text x="550" y="28" text-anchor="middle"
+                          fill="#94a3b8" font-size="13" font-weight="600">Инвертированный индекс</text>
+
+                    <!-- index table -->
+                    <rect x="390" y="40" width="320" height="220" rx="10"
+                          fill="#0c1931" stroke="#1e3a5f" stroke-width="1.5"/>
+                    <!-- header -->
+                    <rect x="390" y="40" width="320" height="30" rx="10" fill="#1e293b"/>
+                    <rect x="390" y="58" width="320" height="12" fill="#1e293b"/>
+                    <text x="490" y="59" text-anchor="middle" fill="#4fd1ff" font-size="11" font-weight="600">Слово / Значение</text>
+                    <text x="670" y="59" text-anchor="middle" fill="#4fd1ff" font-size="11" font-weight="600">Документы</text>
+
+                    <!-- rows -->
+                    <line x1="390" y1="72" x2="710" y2="72" stroke="#1e293b"/>
+                    <text x="470" y="91" text-anchor="middle" fill="white" font-size="12">"User"</text>
+                    <text x="640" y="91" text-anchor="middle" fill="#4ade80" font-size="12">1, 2, 3</text>
+
+                    <line x1="390" y1="102" x2="710" y2="102" stroke="#1e293b"/>
+                    <text x="470" y="121" text-anchor="middle" fill="white" font-size="12">"not found"</text>
+                    <text x="640" y="121" text-anchor="middle" fill="#f87171" font-size="12">1, 3</text>
+
+                    <line x1="390" y1="132" x2="710" y2="132" stroke="#1e293b"/>
+                    <text x="470" y="151" text-anchor="middle" fill="white" font-size="12">level: ERROR</text>
+                    <text x="640" y="151" text-anchor="middle" fill="#f87171" font-size="12">1, 3</text>
+
+                    <line x1="390" y1="162" x2="710" y2="162" stroke="#1e293b"/>
+                    <text x="470" y="181" text-anchor="middle" fill="white" font-size="12">id: 42</text>
+                    <text x="640" y="181" text-anchor="middle" fill="#4ade80" font-size="12">1, 2</text>
+
+                    <line x1="390" y1="192" x2="710" y2="192" stroke="#1e293b"/>
+                    <text x="470" y="211" text-anchor="middle" fill="white" font-size="12">service: user-service</text>
+                    <text x="640" y="211" text-anchor="middle" fill="#4ade80" font-size="12">1, 2</text>
+
+                    <line x1="580" y1="40" x2="580" y2="260" stroke="#1e3a5f"/>
+
+                    <!-- ── KQL query example ── -->
+                    <rect x="390" y="280" width="320" height="50" rx="8"
+                          fill="#0c2340" stroke="#4fd1ff" stroke-width="1.5"/>
+                    <text x="550" y="302" text-anchor="middle"
+                          fill="#94a3b8" font-size="11">KQL-запрос:</text>
+                    <text x="550" y="322" text-anchor="middle"
+                          fill="#4fd1ff" font-size="12" font-weight="600">log.level: ERROR AND service: user-service</text>
+
+                    <!-- result arrow -->
+                    <text x="550" y="350" text-anchor="middle"
+                          fill="#94a3b8" font-size="11">→ пересечение [1,3] ∩ [1,2] = <tspan fill="#4ade80" font-weight="600">документ 1</tspan> за ~мс</text>
+
+                    <!-- arrows docs → index -->
+                    <line x1="340" y1="72" x2="386" y2="110"
+                          stroke="#475569" stroke-width="1" marker-end="url(#arr3)" opacity="0.6"/>
+                    <line x1="340" y1="148" x2="386" y2="148"
+                          stroke="#475569" stroke-width="1" marker-end="url(#arr3)" opacity="0.6"/>
+                    <line x1="340" y1="224" x2="386" y2="185"
+                          stroke="#475569" stroke-width="1" marker-end="url(#arr3)" opacity="0.6"/>
+                </svg>
+            </div>
+        </section>
+
+        <!-- UI DEMO -->
+        <section>
+            <h2>OpenSearch Dashboards: Discover</h2>
+            <div class="card">
+                <table>
+                    <tr><th>Элемент UI</th><th>Назначение</th></tr>
+                    <tr><td>Index Pattern</td><td>Выбор источника данных</td></tr>
+                    <tr><td>Time range</td><td>Last 15m / 1h / custom</td></tr>
+                    <tr><td>Search bar</td><td>KQL-запросы</td></tr>
+                    <tr><td>Add filter</td><td>Визуальные фильтры по полям</td></tr>
+                    <tr><td>Document</td><td>Полный JSON записи</td></tr>
+                </table>
+            </div>
+            <p class="muted">Демонстрация: открыть Discover → установить время → добавить фильтры → открыть документ</p>
+        </section>
+
+        <!-- REAL FILTERS -->
+        <section>
+            <h2>Реальные фильтры проекта</h2>
+            <div class="card">
+                <ul>
+                    <li><code>kubernetes.namespace_name: itm-platform-dev</code><br>
+                        <span style="color: var(--text-muted); font-size: 0.75em;">→ только dev-окружение</span>
+                    </li>
+                    <li><code>kubernetes.container_name: user-service</code><br>
+                        <span style="color: var(--text-muted); font-size: 0.75em;">→ только логи user-service</span>
+                    </li>
+                    <li><code>log.level: ERROR</code><br>
+                        <span style="color: var(--text-muted); font-size: 0.75em;">→ только ошибки</span>
+                    </li>
+                    <li><code>kubernetes.container_name: user-service AND log.level: ERROR</code><br>
+                        <span style="color: var(--text-muted); font-size: 0.75em;">→ ошибки конкретного сервиса</span>
+                    </li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- PRACTICE -->
+        <section>
+            <h2>Практика: ваша очередь</h2>
+            <div class="card">
+                <ul>
+                    <li>Найдите все ERROR-логи за последний час<br>
+                        <code style="color: var(--accent); font-size: 0.75em;">log.level: ERROR</code>
+                    </li>
+                    <li>Найдите только логи user-service<br>
+                        <code style="color: var(--accent); font-size: 0.75em;">kubernetes.container_name: user-service</code>
+                    </li>
+                    <li>Найдите ошибки только user-service<br>
+                        <code style="color: var(--accent); font-size: 0.75em;">kubernetes.container_name: user-service AND log.level: ERROR</code>
+                    </li>
+                    <li>★ Придумайте и выполните свой запрос</li>
+                </ul>
+            </div>
+            <p class="muted">Откройте любой найденный документ и изучите все его поля</p>
+        </section>
+
+        <!-- GOOD LOGS -->
+        <section>
+            <h2>Качество логов — ответственность разработчика</h2>
+            <div class="card-row">
+                <div class="card warn-border">
+                    <p class="warn">Плохой лог</p>
+                    <pre><code class="language-java" style="font-size: 0.65em;">log.error("Something went wrong");
+log.error("Error: " + e.getMessage());
+log.info("done");</code></pre>
+                    <ul>
+                        <li>Нет контекста</li>
+                        <li>Конкатенация строк</li>
+                        <li>Нет стектрейса</li>
+                    </ul>
+                </div>
+                <div class="card ok-border">
+                    <p class="ok">Хороший лог</p>
+                    <pre><code class="language-java" style="font-size: 0.65em;">log.error("User not found: id={}", id, ex);
+log.info("User created: userId={}, role={}",
+         user.getId(), user.getRole());</code></pre>
+                    <ul>
+                        <li>Есть контекст и ID</li>
+                        <li>Параметры через {}</li>
+                        <li>Стектрейс передаётся</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- OBSERVABILITY INTRO -->
+        <section>
+            <h2>Мониторинг шире, чем логи</h2>
+            <div class="card">
+                <p>В индустрии принято говорить об <span class="accent">Observability</span> — наблюдаемости системы.<br>
+                Три столпа observability:</p>
+                <br>
+                <table>
+                    <tr>
+                        <th>Столп</th>
+                        <th>Что даёт</th>
+                        <th>Инструменты</th>
+                    </tr>
+                    <tr>
+                        <td><span class="accent">Logs</span></td>
+                        <td>Что именно произошло и с каким контекстом</td>
+                        <td>OpenSearch, ELK</td>
+                    </tr>
+                    <tr>
+                        <td><span class="ok">Metrics</span></td>
+                        <td>Числовые показатели системы во времени</td>
+                        <td>Prometheus + Grafana</td>
+                    </tr>
+                    <tr>
+                        <td style="color: #c084fc;">Traces</td>
+                        <td>Путь запроса через несколько сервисов</td>
+                        <td>Zipkin, Jaeger, Tempo</td>
+                    </tr>
+                </table>
+            </div>
+            <p class="muted">OpenSearch — это про Logs. Но в реальном проекте используют все три.</p>
+        </section>
+
+        <!-- TRACING -->
+        <section>
+            <h2>Distributed Tracing — трассировка</h2>
+            <div class="card-row">
+                <div class="card warn-border">
+                    <p style="color: var(--warn); font-weight: 600; margin-top: 0;">Проблема</p>
+                    <ul>
+                        <li>Запрос проходит через<br><span class="accent">api-gateway → user-service → notification-service</span></li>
+                        <li>Ответ пришёл за 3 секунды — кто виноват?</li>
+                        <li>Логи есть в каждом сервисе, но они не связаны</li>
+                    </ul>
+                </div>
+                <div class="card ok-border">
+                    <p class="ok" style="font-weight: 600; margin-top: 0;">Решение: TraceId</p>
+                    <ul>
+                        <li>Первый сервис генерирует <code>traceId</code></li>
+                        <li>Каждый следующий сервис передаёт его через HTTP-заголовки</li>
+                        <li>Все логи по одному запросу имеют один <code>traceId</code></li>
+                        <li>Одним фильтром в OpenSearch находим весь путь запроса</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- TRACING VISUAL -->
+        <section>
+            <h2>Как выглядит трейс в Zipkin / Jaeger</h2>
+            <div style="margin: 10px auto; width: 93%;">
+                <svg viewBox="0 0 900 252" style="width:100%;height:auto;display:block;" xmlns="http://www.w3.org/2000/svg">
+                    <!-- background -->
+                    <rect width="900" height="252" fill="#0f172a" rx="10"/>
+
+                    <!-- Header -->
+                    <text x="16" y="22" fill="#64748b" font-family="monospace" font-size="11">traceId:</text>
+                    <text x="70" y="22" fill="#4fd1ff" font-family="monospace" font-size="11">a1b2c3d4e5f67890abcd</text>
+                    <text x="640" y="22" fill="#64748b" font-family="monospace" font-size="11">Сервисов: 3 · Спанов: 4 · Итого:</text>
+                    <text x="848" y="22" fill="#f87171" font-family="monospace" font-size="12" font-weight="bold">3200ms</text>
+
+                    <!-- Ruler line -->
+                    <line x1="222" y1="36" x2="884" y2="36" stroke="#1e293b" stroke-width="1.5"/>
+
+                    <!-- Ruler ticks: 0 / 800 / 1600 / 2400 / 3200ms -->
+                    <!-- scale = (884-222)/3200 = 662/3200 = 0.20688 px/ms -->
+                    <!-- 0ms → x=222 -->
+                    <line x1="222" y1="36" x2="222" y2="41" stroke="#475569" stroke-width="1"/>
+                    <text x="222" y="32" fill="#475569" font-size="10" text-anchor="middle" font-family="monospace">0</text>
+                    <!-- 800ms → x=222+800*0.20688=387.5≈388 -->
+                    <line x1="388" y1="36" x2="388" y2="41" stroke="#475569" stroke-width="1"/>
+                    <text x="388" y="32" fill="#475569" font-size="10" text-anchor="middle" font-family="monospace">800ms</text>
+                    <!-- 1600ms → x=222+1600*0.20688=553 -->
+                    <line x1="553" y1="36" x2="553" y2="41" stroke="#475569" stroke-width="1"/>
+                    <text x="553" y="32" fill="#475569" font-size="10" text-anchor="middle" font-family="monospace">1600ms</text>
+                    <!-- 2400ms → x=222+2400*0.20688=718.5≈719 -->
+                    <line x1="719" y1="36" x2="719" y2="41" stroke="#475569" stroke-width="1"/>
+                    <text x="719" y="32" fill="#475569" font-size="10" text-anchor="middle" font-family="monospace">2400ms</text>
+                    <!-- 3200ms → x=884 -->
+                    <line x1="884" y1="36" x2="884" y2="41" stroke="#475569" stroke-width="1"/>
+                    <text x="884" y="32" fill="#475569" font-size="10" text-anchor="middle" font-family="monospace">3200ms</text>
+
+                    <!-- Vertical grid lines -->
+                    <line x1="388" y1="41" x2="388" y2="225" stroke="#1e293b" stroke-width="0.5" stroke-dasharray="3,3"/>
+                    <line x1="553" y1="41" x2="553" y2="225" stroke="#1e293b" stroke-width="0.5" stroke-dasharray="3,3"/>
+                    <line x1="719" y1="41" x2="719" y2="225" stroke="#1e293b" stroke-width="0.5" stroke-dasharray="3,3"/>
+
+                    <!-- ROW 1: api-gateway — root span 0→3200ms: x=222, w=662 -->
+                    <circle cx="13" cy="66" r="5" fill="#4fd1ff"/>
+                    <text x="24" y="70" fill="#e2e8f0" font-size="12" font-family="monospace" font-weight="600">api-gateway</text>
+                    <text x="24" y="83" fill="#64748b" font-size="10" font-family="monospace">POST /api/users/register</text>
+                    <rect x="222" y="56" width="662" height="20" rx="3" fill="#4fd1ff" opacity="0.85"/>
+                    <text x="553" y="70" fill="#0f172a" font-size="10" font-family="monospace" font-weight="bold" text-anchor="middle">3200ms</text>
+
+                    <!-- tree lines row1→row2 -->
+                    <line x1="20" y1="76" x2="20" y2="106" stroke="#334155" stroke-width="1.2"/>
+                    <line x1="20" y1="106" x2="32" y2="106" stroke="#334155" stroke-width="1.2"/>
+
+                    <!-- ROW 2: user-service — 40→1460ms: x=230, w=1420*0.20688=293.8≈294 -->
+                    <circle cx="38" cy="106" r="4.5" fill="#34d399"/>
+                    <text x="48" y="110" fill="#e2e8f0" font-size="12" font-family="monospace" font-weight="600">user-service</text>
+                    <text x="48" y="123" fill="#64748b" font-size="10" font-family="monospace">createUser()</text>
+                    <rect x="230" y="96" width="294" height="20" rx="3" fill="#34d399" opacity="0.85"/>
+                    <text x="377" y="110" fill="#0f172a" font-size="10" font-family="monospace" font-weight="bold" text-anchor="middle">1420ms</text>
+
+                    <!-- tree lines row2→row3 -->
+                    <line x1="38" y1="116" x2="38" y2="146" stroke="#334155" stroke-width="1.2"/>
+                    <line x1="38" y1="146" x2="52" y2="146" stroke="#334155" stroke-width="1.2"/>
+
+                    <!-- ROW 3: DB query — 70→460ms: x=236, w=390*0.20688=80.7≈81 -->
+                    <circle cx="58" cy="146" r="3.5" fill="#60a5fa"/>
+                    <text x="66" y="150" fill="#e2e8f0" font-size="11" font-family="monospace">user-service</text>
+                    <text x="66" y="163" fill="#64748b" font-size="10" font-family="monospace">saveToDatabase() · PostgreSQL</text>
+                    <rect x="236" y="136" width="81" height="18" rx="3" fill="#60a5fa" opacity="0.85"/>
+                    <text x="276" y="149" fill="#0f172a" font-size="9" font-family="monospace" font-weight="bold" text-anchor="middle">390ms</text>
+
+                    <!-- tree lines row2→row4 -->
+                    <line x1="38" y1="116" x2="38" y2="183" stroke="#334155" stroke-width="1.2"/>
+                    <line x1="38" y1="183" x2="52" y2="183" stroke="#334155" stroke-width="1.2"/>
+
+                    <!-- ROW 4: notification-service — 1460→3200ms: x=524, w=1740*0.20688=360≈360 -->
+                    <circle cx="58" cy="183" r="3.5" fill="#c084fc"/>
+                    <text x="66" y="187" fill="#e2e8f0" font-size="11" font-family="monospace">notification-service</text>
+                    <text x="66" y="200" fill="#64748b" font-size="10" font-family="monospace">sendWelcomeEmail()</text>
+                    <rect x="524" y="173" width="360" height="18" rx="3" fill="#c084fc" opacity="0.85"/>
+                    <text x="704" y="186" fill="#0f172a" font-size="10" font-family="monospace" font-weight="bold" text-anchor="middle">1740ms</text>
+
+                    <!-- BOTTLENECK annotation -->
+                    <line x1="524" y1="44" x2="524" y2="173" stroke="#f87171" stroke-width="1.5" stroke-dasharray="4,3" opacity="0.75"/>
+                    <rect x="488" y="201" width="126" height="20" rx="4" fill="#7f1d1d" opacity="0.9"/>
+                    <text x="551" y="215" fill="#fca5a5" font-size="11" font-family="monospace" font-weight="bold" text-anchor="middle">⚠ УЗКОЕ МЕСТО</text>
+
+                    <!-- Legend -->
+                    <circle cx="222" cy="241" r="4" fill="#4fd1ff"/>
+                    <text x="231" y="245" fill="#64748b" font-size="10" font-family="monospace">api-gateway</text>
+                    <circle cx="322" cy="241" r="4" fill="#34d399"/>
+                    <text x="331" y="245" fill="#64748b" font-size="10" font-family="monospace">user-service</text>
+                    <circle cx="422" cy="241" r="4" fill="#60a5fa"/>
+                    <text x="431" y="245" fill="#64748b" font-size="10" font-family="monospace">DB</text>
+                    <circle cx="462" cy="241" r="4" fill="#c084fc"/>
+                    <text x="471" y="245" fill="#64748b" font-size="10" font-family="monospace">notification-service</text>
+                </svg>
+            </div>
+            <p class="muted">Waterfall-диаграмма: каждый цветной блок — один сервис, ширина = время. Сразу видно, кто тормозит.</p>
+        </section>
+
+        <!-- TRACING SPRING BOOT -->
+        <section>
+            <h2>Tracing в Spring Boot 3</h2>
+            <div class="card">
+                <p style="margin-top: 0;"><span class="accent">Micrometer Tracing</span> — стандарт для Spring Boot 3</p>
+                <pre><code class="language-xml" style="font-size: 0.62em;">&lt;!-- pom.xml --&gt;
+&lt;dependency&gt;
+    &lt;groupId&gt;io.micrometer&lt;/groupId&gt;
+    &lt;artifactId&gt;micrometer-tracing-bridge-brave&lt;/artifactId&gt;
+&lt;/dependency&gt;
+&lt;dependency&gt;
+    &lt;groupId&gt;io.zipkin.reporter2&lt;/groupId&gt;
+    &lt;artifactId&gt;zipkin-reporter-brave&lt;/artifactId&gt;
+&lt;/dependency&gt;</code></pre>
+                <br>
+                <ul>
+                    <li>Micrometer автоматически добавляет <code>traceId</code> и <code>spanId</code> в MDC</li>
+                    <li>Они попадают в каждый лог — без дополнительного кода</li>
+                    <li>Трейсы отправляются в <span class="accent">Zipkin</span> или <span class="accent">Jaeger</span> для визуализации</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- METRICS -->
+        <section>
+            <h2>Метрики: Prometheus + Grafana</h2>
+            <div class="card-row">
+                <div class="card">
+                    <p class="ok" style="font-weight: 600; margin-top: 0;">Prometheus</p>
+                    <ul>
+                        <li>Собирает числовые метрики (pull-модель)</li>
+                        <li>Хранит временны́е ряды</li>
+                        <li>Язык запросов: <code>PromQL</code></li>
+                        <li>Умеет отправлять алерты</li>
+                    </ul>
+                </div>
+                <div class="card">
+                    <p class="ok" style="font-weight: 600; margin-top: 0;">Grafana</p>
+                    <ul>
+                        <li>Визуализирует данные из Prometheus</li>
+                        <li>Готовые дашборды для Spring Boot, JVM, K8s</li>
+                        <li>Алерты → Slack / PagerDuty</li>
+                        <li>Может подключать OpenSearch как источник</li>
+                    </ul>
+                </div>
+            </div>
+            <p class="muted">Стандартный стек: Micrometer (в коде) → Prometheus (сбор) → Grafana (UI)</p>
+        </section>
+
+        <!-- METRICS IN SPRING BOOT -->
+        <section>
+            <h2>Метрики в Spring Boot: минимальная настройка</h2>
+            <div class="card">
+                <pre><code class="language-xml" style="font-size: 0.62em;">&lt;!-- pom.xml --&gt;
+&lt;dependency&gt;
+    &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+    &lt;artifactId&gt;spring-boot-starter-actuator&lt;/artifactId&gt;
+&lt;/dependency&gt;
+&lt;dependency&gt;
+    &lt;groupId&gt;io.micrometer&lt;/groupId&gt;
+    &lt;artifactId&gt;micrometer-registry-prometheus&lt;/artifactId&gt;
+&lt;/dependency&gt;</code></pre>
+                <pre><code class="language-yaml" style="font-size: 0.62em;"># application.yml
+management:
+  endpoints.web.exposure.include: health,metrics,prometheus
+  metrics.tags.application: user-service   # тег для фильтрации в Grafana</code></pre>
+                <p><code style="color: var(--accent);">GET /actuator/prometheus</code> — сотни метрик, Prometheus забирает их сам</p>
+            </div>
+        </section>
+
+        <!-- OBSERVABILITY BIG PICTURE -->
+        <section>
+            <h2>Всё вместе: расследование инцидента</h2>
+            <div class="card">
+                <ol style="padding-left: 1.2em; line-height: 2.0; margin: 0;">
+                    <li><span class="ok">Grafana</span> — latency выросла в 14:32, видим аномалию</li>
+                    <li><span style="color: #c084fc;">Zipkin / Jaeger</span> — находим медленный <code>traceId</code>, видим что тормозит <code>payment-service</code></li>
+                    <li><span class="accent">OpenSearch</span> — фильтруем по <code>traceId</code>, читаем конкретную ошибку с контекстом</li>
+                </ol>
+                <br>
+                <table style="font-size: 0.75em; margin-top: 10px;">
+                    <tr>
+                        <th>Инструмент</th>
+                        <th>Вопрос</th>
+                    </tr>
+                    <tr><td class="ok">Метрики (Prometheus/Grafana)</td><td><em>Когда? Насколько плохо? Тренд?</em></td></tr>
+                    <tr><td style="color: #c084fc;">Трейсы (Zipkin/Jaeger)</td><td><em>Где именно? Какой сервис? Сколько времени?</em></td></tr>
+                    <tr><td class="accent">Логи (OpenSearch)</td><td><em>Что произошло? Почему? Какой контекст?</em></td></tr>
+                </table>
+            </div>
+        </section>
+
+        <!-- SUMMARY -->
+        <section>
+            <h2>Главные выводы</h2>
+            <div class="card">
+                <ul>
+                    <li>В микросервисах нужна <span class="accent">централизованная система логирования</span></li>
+                    <li><span class="accent">OpenSearch</span> — open-source форк Elasticsearch, хранит и индексирует логи</li>
+                    <li>Цепочка: <span class="accent">stdout → Fluentd → OpenSearch → UI</span></li>
+                    <li><span class="accent">JSON-логи</span> через log4j2 JsonTemplateLayout — структурированные, легко искать</li>
+                    <li>KQL-фильтры по namespace, container, log.level, traceId — находят любой лог за секунды</li>
+                    <li>Качество логов — <span class="accent">ответственность разработчика</span></li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- QUESTIONS -->
+        <section>
+            <h2>Спасибо</h2>
+            <p class="accent">Вопросы?</p>
+        </section>
+
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/reveal.js@5/dist/reveal.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/reveal.js@5/plugin/notes/notes.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/reveal.js@5/plugin/highlight/highlight.js"></script>
+<script>
+    Reveal.initialize({
+        hash: true,
+        transition: 'slide',
+        backgroundTransition: 'fade',
+        width: 1280,
+        height: 800,
+        margin: 0.04,
+        minScale: 0.1,
+        maxScale: 2.0,
+        plugins: [ RevealHighlight, RevealNotes ]
+    });
+</script>
+
+</body>
+</html>
