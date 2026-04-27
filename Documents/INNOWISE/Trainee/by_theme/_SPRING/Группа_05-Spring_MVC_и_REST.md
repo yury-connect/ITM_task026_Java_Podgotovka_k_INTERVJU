@@ -157,36 +157,37 @@ public class UserController {
 
 **Детали и важные параметры:**
 
-**`@PathVariable`:**
+#### **`@PathVariable`:**
 ```java
 @GetMapping("/users/{userId}/orders/{orderId}")
 public String get(@PathVariable Long userId, @PathVariable Long orderId)
 ```
-
-- Можно указать имя, если параметр метода отличается: `@PathVariable("user_id") Long id`.
-    
+- Можно указать имя, если параметр метода отличается: 
+	  `@PathVariable("user_id") Long id`.    
 - С версии 4.3+ можно не указывать имя, если совпадает с именем переменной.
 
-**`@RequestParam`:**
+#### **`@RequestParam`:**
 ```java
 @GetMapping("/users")
 public String get(@RequestParam(defaultValue = "1") int page,
                   @RequestParam(required = false) String name)
 ```
-
 - `required = true` (по умолчанию) — исключение, если параметр отсутствует.    
 - `defaultValue` — значение по умолчанию (неявно делает `required=false`).    
-- Можно получить `Map<String, String>` всех параметров: `@RequestParam Map<String, String> allParams`.    
+- Можно получить `Map<String, String>` всех параметров: 
+	  `@RequestParam Map<String, String> allParams`.    
 
-**`@RequestHeader`:**
+#### **`@RequestHeader`:**
 ```java
 public String get(@RequestHeader("Accept-Language") String lang)
 ```
-- Можно получить все заголовки: `@RequestHeader MultiValueMap<String, String> headers`.
+- Можно получить все заголовки: 
+	  `@RequestHeader MultiValueMap<String, String> headers`.
 
-**`@CookieValue`:**
+#### **`@CookieValue`:**
 ```java
-public String get(@CookieValue(value = "JSESSIONID", required = false) String sessionId)
+public String get(@CookieValue
+	(value = "JSESSIONID", required = false) String sessionId)
 ```
 
 **Важный нюанс:** Все эти аннотации могут быть использованы вместе в одном методе.
@@ -196,47 +197,50 @@ public String get(@CookieValue(value = "JSESSIONID", required = false) String se
 
 **Ответ:** Для приема JSON в теле HTTP-запроса используется аннотация **`@RequestBody`**.
 
-**Пример:**
+#### **Пример:**
 ```java
 @PostMapping("/users")
 public User createUser(@RequestBody User user) {
+
     // user автоматически десериализован из JSON
     return userService.save(user);
 }
 ```
 
-**Как работает под капотом:**
-
+#### **Как работает под капотом:**
 1. `DispatcherServlet` определяет, что параметр метода помечен `@RequestBody`.
     
-2. Вызывает `HandlerMethodArgumentResolver` для `@RequestBody` (реализация `RequestResponseBodyMethodProcessor`).
+2. Вызывает `HandlerMethodArgumentResolver` 
+	   для `@RequestBody` (реализация `RequestResponseBodyMethodProcessor`).
     
 3. Этот резолвер определяет тип содержимого (`Content-Type: application/json`).
     
-4. Выбирает подходящий `HttpMessageConverter` из зарегистрированных:
-    
+4. Выбирает подходящий `HttpMessageConverter` из зарегистрированных:    
     - `MappingJackson2HttpMessageConverter` (Jackson 2) — стандартный для JSON.
         
     - `GsonHttpMessageConverter`, `JsonbHttpMessageConverter` и другие.
-        
-5. Конвертер читает `HttpServletRequest.getInputStream()` и десериализует JSON в Java-объект.
     
-6. Выполняется валидация, если есть `@Valid` или `@Validated`.
+5. Конвертер читает `HttpServletRequest.getInputStream()` 
+	   и десериализует JSON в Java-объект.
     
+6. Выполняется валидация, если есть `@Valid` или `@Validated`.    
 
-**Важные нюансы:**
+#### **Важные нюансы:**
 - Можно принять `List<T>`: `@RequestBody List<User> users`.
     
 - Можно принять `Map<String, Object>`.
     
-- Требуется `Content-Type: application/json` в запросе (иначе 415 Unsupported Media Type).
+- Требуется `Content-Type: application/json` в запросе 
+	  (иначе 415 Unsupported Media Type).
     
-- С Jackson можно кастомизировать десериализацию через аннотации (`@JsonIgnore`, `@JsonProperty`, `@JsonFormat`).    
+- С Jackson можно кастомизировать десериализацию 
+	  через аннотации (`@JsonIgnore`, `@JsonProperty`, `@JsonFormat`).    
 
 ---
-### 53. Как вернуть JSON? (Автоматически через `HttpMessageConverter` и Jackson)
+### 53. Как вернуть JSON? <br>(Автоматически через `HttpMessageConverter` и `Jackson`)
 
-**Ответ:** Spring MVC автоматически конвертирует возвращаемое значение метода в JSON, когда:
+**Ответ:** Spring MVC автоматически конвертирует возвращаемое значение метода 
+в JSON, когда:
 - Метод помечен `@ResponseBody` или класс — `@RestController`.    
 - Клиент указал `Accept: application/json` (или `*/*`).    
 
@@ -292,6 +296,7 @@ public ResponseEntity<User> getUser(@PathVariable Long id) {
     }
     return ResponseEntity.ok(user); // 200 + тело
 }
+
 @PostMapping("/users")
 public ResponseEntity<User> create(@RequestBody User user) {
     User saved = userService.save(user);
@@ -302,13 +307,13 @@ public ResponseEntity<User> create(@RequestBody User user) {
 
 **Когда использовать `ResponseEntity` вместо `@ResponseBody`:**
 
-|Сценарий|`@ResponseBody`|`ResponseEntity`|
-|---|---|---|
-|Успешный ответ с данными, статус 200|✅ (по умолчанию)|✅|
-|Изменение статус-кода (201, 204, 404, 409)|❌ (нужен `ResponseEntity`)|✅|
-|Добавление заголовков (Location, ETag, Cache-Control)|❌|✅|
-|Возврат разных статусов в одном методе|❌|✅|
-|Ответ без тела (204 No Content)|❌|✅ (`build()`)|
+| Сценарий                                                  | `@ResponseBody`            | `ResponseEntity` |
+| --------------------------------------------------------- | -------------------------- | ---------------- |
+| Успешный ответ с данными, <br>статус 200                  | ✅ (по умолчанию)           | ✅                |
+| Изменение статус-кода <br>(201, 204, 404, 409)            | ❌ (нужен `ResponseEntity`) | ✅                |
+| Добавление заголовков <br>(Location, ETag, Cache-Control) | ❌                          | ✅                |
+| Возврат разных статусов <br>в одном методе                | ❌                          | ✅                |
+| Ответ без тела (204 No Content)                           | ❌                          | ✅ (`build()`)    |
 
 **Статические фабричные методы `ResponseEntity`:**
 ```java
@@ -327,7 +332,7 @@ ResponseEntity.internalServerError().body(error) // 500
 
 **Ответ:** `@ModelAttribute` — аннотация Spring MVC для связывания параметров запроса с **полями объекта** (data binding). Она работает на уровне методов класса и на параметрах методов.
 
-**Два основных применения:**
+#### **Два основных применения:**
 
 **1. На параметре метода — привязка параметров запроса к полям объекта:**
 ```java
@@ -344,6 +349,7 @@ public String register(@ModelAttribute User user) {
 ```java
 @Controller
 public class MyController {
+
     @ModelAttribute("currentUser")
     public User getCurrentUser() {
         return securityContext.getUser(); // добавляется во все модели
@@ -357,14 +363,15 @@ public class MyController {
 }
 ```
 
-**Где применяется:**
+#### **Где применяется:**
 - **HTML-формы (Thymeleaf, JSP)** — для отображения и отправки данных формы.
     
-- **Фильтры/интерсепторы** — для предзаполнения общих атрибутов (текущий пользователь, настройки).
+- **Фильтры/интерсепторы** — для предзаполнения общих атрибутов 
+	  (текущий пользователь, настройки).
     
 - **REST API** — реже, но можно использовать вместо `@RequestBody` для form-urlencoded.    
 
-**Важные нюансы:**
+#### **Важные нюансы:**
 - Поддерживает `BindingResult` для валидации: `@ModelAttribute User user, BindingResult result`.
     
 - `@ModelAttribute` на методе выполняется **перед каждым** запросом в контроллере.
@@ -372,14 +379,16 @@ public class MyController {
 - Можно использовать `@SessionAttributes` для сохранения `@ModelAttribute` между запросами.    
 
 ---
-### 56. Как обрабатывать исключения в REST контроллерах? (`@ExceptionHandler`, `@ControllerAdvice`)
+### 56. Как обрабатывать исключения в REST контроллерах? <br>(`@ExceptionHandler`, `@ControllerAdvice`)
 
-**Ответ:** В Spring MVC есть два основных способа централизованной обработки исключений в REST:
+**Ответ:** В Spring MVC есть два основных способа централизованной 
+обработки исключений в REST:
 
 **Способ 1: `@ExceptionHandler` внутри контроллера** (локальный):
 ```java
 @RestController
 public class UserController {
+
     @GetMapping("/user/{id}")
     public User get(@PathVariable Long id) { ... }
     
@@ -429,14 +438,17 @@ public class GlobalExceptionHandler {
 3. `@ControllerAdvice` без ограничений.    
 
 **Важные моменты:**
-- Методы `@ExceptionHandler` могут принимать `HttpServletRequest`, `HttpServletResponse`, `WebRequest`.    
+- Методы `@ExceptionHandler` могут принимать 
+	  `HttpServletRequest`, `HttpServletResponse`, `WebRequest`.    
 - Можно возвращать `ResponseEntity` для полного контроля.    
-- `@ControllerAdvice` поддерживает ограничения: `@ControllerAdvice(assignableTypes = UserController.class)`.    
+- `@ControllerAdvice` поддерживает ограничения: 
+	  `@ControllerAdvice(assignableTypes = UserController.class)`.    
 
 ---
-### 57. В чем разница между `@ControllerAdvice` и `@RestControllerAdvice`?
+### 57. В чем разница между <br>`@ControllerAdvice` и `@RestControllerAdvice`?
 
-**Ответ:** `@RestControllerAdvice` — это специализированная версия `@ControllerAdvice` для REST API.
+**Ответ:** `@RestControllerAdvice` — это специализированная версия 
+`@ControllerAdvice` для REST API.
 
 **Состав `@RestControllerAdvice`:**
 ```java
@@ -462,6 +474,7 @@ public @interface RestControllerAdvice {
 public class RestExceptionHandler { ... }
 
 // И:
+
 @ControllerAdvice
 @ResponseBody
 public class RestExceptionHandler { ... }
@@ -470,11 +483,11 @@ public class RestExceptionHandler { ... }
 **Вывод:** Для современных REST-приложений используйте `@RestControllerAdvice` — это сокращает код и делает намерения явными.
 
 ---
-### 58. Что такое `HandlerInterceptor`? Чем отличается от Filter (сервлетный)?
+### 58. Что такое `HandlerInterceptor`? <br>Чем отличается от Filter (сервлетный)?
 
 **Ответ:** `HandlerInterceptor` — это интерфейс Spring MVC для перехвата HTTP-запросов **на уровне диспетчера Spring**, до и после вызова контроллера.
 
-**Методы `HandlerInterceptor`:**
+#### **Методы `HandlerInterceptor`:**
 ```java
 public interface HandlerInterceptor {
 
@@ -487,7 +500,7 @@ public interface HandlerInterceptor {
 }
 ```
 
-**Отличия от сервлетного `Filter`:**
+#### **Отличия от сервлетного `Filter`:**
 
 |Характеристика|`Filter` (Servlet API)|`HandlerInterceptor` (Spring MVC)|
 |---|---|---|
@@ -498,24 +511,31 @@ public interface HandlerInterceptor {
 |Может использовать Spring-бины|Да (через внедрение)|Да (легко)|
 |Порядок выполнения|**Внешний** (раньше)|**Внутренний** (после `DispatcherServlet`)|
 
-**Когда что использовать:**
+#### **Когда что использовать:**
 - **`Filter`** — для низкоуровневых вещей: логирование IP, CORS, сжатие, аутентификация на уровне контейнера, кодировка (`CharacterEncodingFilter`).
     
 - **`HandlerInterceptor`** — для Spring-специфичных задач: проверка прав на основе аннотаций контроллера, добавление общих атрибутов в модель, измерение времени выполнения контроллера.    
 
-**Пример интерсептора:**
+#### **Пример интерсептора:**
 ```java
 @Component
 public class PerformanceInterceptor implements HandlerInterceptor {
     @Override
-    public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) {
+    public boolean preHandle(
+		    HttpServletRequest request, 
+		    HttpServletResponse response, 
+		    Object handler) {
         request.setAttribute("startTime", System.currentTimeMillis());
         return true;
     }
     
     @Override
-    public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex) {
-        long duration = System.currentTimeMillis() - (long) request.getAttribute("startTime");
+    public void afterCompletion(
+		    HttpServletRequest request, 
+		    HttpServletResponse response, 
+		    Object handler, Exception ex) {
+        long duration = System.currentTimeMillis() - 
+		        (long) request.getAttribute("startTime");
         log.info("Request {} took {} ms", request.getRequestURI(), duration);
     }
 }
@@ -573,11 +593,14 @@ public class WebConfig implements WebMvcConfigurer {
 **Важно:** В Spring Boot, если вы реализуете `WebMvcConfigurer`, ваши настройки **добавляются** к авто-конфигурации, а не заменяют её. Если нужно полностью заменить конфигурацию, используйте `@EnableWebMvc`.
 
 ---
-### 60. Как настроить CORS в Spring Boot? (`@CrossOrigin`)
+### 60. Как настроить **CORS** в Spring Boot? (`@CrossOrigin`)
 
-**Ответ:** CORS (Cross-Origin Resource Sharing) настраивается в Spring Boot на трех уровнях:
+**CORS (Cross-Origin Resource Sharing)** — механизм безопасности браузера, который разрешает или запрещает веб-страницам обращаться к ресурсам на другом домене, порту или протоколе. (*"**Пускать** или **не пускать** запросы с других сайтов?"*)
 
-**Уровень 1: `@CrossOrigin` на уровне контроллера или метода (самый простой):**
+**Ответ:** CORS (Cross-Origin Resource Sharing) настраивается 
+	в Spring Boot на трех уровнях:
+
+**Уровень 1: `@CrossOrigin` на уровне контроллера или метода (*самый простой*):**
 ```java
 @RestController
 @CrossOrigin(origins = "https://example.com") // для всего контроллера
@@ -589,7 +612,7 @@ public class UserController {
 }
 ```
 
-**Уровень 2: Глобальная конфигурация через `WebMvcConfigurer` (рекомендуемый способ):**
+**Уровень 2: Глобальная конфигурация через `WebMvcConfigurer` (*рекомендуемый способ*):**
 ```java
 @Configuration
 public class WebConfig implements WebMvcConfigurer {
@@ -606,7 +629,7 @@ public class WebConfig implements WebMvcConfigurer {
 }
 ```
 
-**Уровень 3: Через `application.properties` (Spring Boot 2+):**
+**Уровень 3: Через `application.properties` (*Spring Boot 2+*):**
 ```properties
 spring.mvc.cors.allowed-origins=https://example.com
 spring.mvc.cors.allowed-methods=GET,POST,PUT,DELETE
@@ -615,18 +638,17 @@ spring.mvc.cors.allow-credentials=true
 spring.mvc.cors.max-age=3600
 ```
 
-**Как работает CORS в Spring:**
+#### **Как работает CORS в Spring:**
 1. При preflight-запросе (OPTIONS) Spring автоматически отвечает заголовками CORS.
     
 2. При основном запросе проверяет заголовок `Origin` и добавляет `Access-Control-Allow-Origin` в ответ.    
 
-**Важные нюансы:**
+#### **Важные нюансы:**
 - Если используются `@CrossOrigin` + глобальная конфигурация, они объединяются (более специфичная имеет приоритет).
     
 - `allowCredentials = true` и `allowedOrigins = "*"` несовместимы (нужно указывать конкретные origins).
     
 - Для WebFlux (реактивный стек) используется `CorsConfiguration` и `WebFluxConfigurer`.
-    
 
 **Частая ошибка:** Не настроен OPTIONS-метод для preflight-запросов. Spring обрабатывает его автоматически, если CORS настроен правильно.
 
