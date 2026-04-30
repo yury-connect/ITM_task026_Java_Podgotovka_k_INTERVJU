@@ -5,7 +5,7 @@
 Вопросы отсортированы по реальной частоте задавания на технических собеседованиях (2025–2026):
 
 ---
-### Самые частые (Core концепции и Health Checks)
+## 1. Самые частые (Core концепции и Health Checks)
 1. Что такое Kubernetes и какие проблемы он решает по сравнению с простым запуском Docker-контейнеров?
 2. Что такое Pod? Чем Pod отличается от контейнера и почему нельзя запускать контейнер напрямую в Kubernetes?
 3. Что такое Deployment? Как он работает и зачем нужен?
@@ -17,7 +17,7 @@
 9. Как организовать Graceful Shutdown в Spring Boot приложении при удалении или обновлении Pod?
 10. Что такое Ingress? В чём разница между Ingress и Service (LoadBalancer)? Когда нужен Ingress-контроллер?
 
-### Средняя частота (Resources, Scaling, Storage и Networking)
+## 2. Средняя частота (Resources, Scaling, Storage и Networking)
 11. Что такое Horizontal Pod Autoscaler (HPA)? По каким метрикам обычно масштабируют Spring Boot приложения (CPU, Memory, custom metrics через Micrometer)?
 12. Как в Kubernetes хранить данные и временные файлы Spring Boot приложения (emptyDir, hostPath, PersistentVolume и PersistentVolumeClaim)?
 13. Что такое Init Container и Sidecar? Приведите примеры использования в Java/Spring Boot приложениях (ожидание БД, миграции Flyway/Liquibase, логирование).
@@ -26,7 +26,7 @@
 16. Что такое Rolling Update? Как обновить Spring Boot приложение без downtime (стратегии обновления)?
 17. Как Kubernetes обеспечивает отказоустойчивость и self-healing приложений?
 
-### Реже, но всё равно важны (Troubleshooting и Ops)
+## 3. Реже, но всё равно важны (Troubleshooting и Ops)
 18. Как диагностировать проблемы с Pod (ImagePullBackOff, CrashLoopBackOff, постоянные перезапуски)? Какие команды kubectl вы используете (describe, logs, events)?
 19. Что такое ReplicaSet и как он связан с Deployment?
 20. Node Selector, Affinity и Anti-Affinity. Как предотвратить попадание двух инстансов одного сервиса на одну ноду?
@@ -35,7 +35,7 @@
 23. Чем отличаются Labels и Annotations?
 24. Что такое Network Policies и в каких случаях их применяют (например, ограничение доступа к БД)?
 
-### Редкие / Продвинутые
+## 4. Редкие / Продвинутые
 25. Что такое Control Plane и Worker Node? Основные компоненты архитектуры Kubernetes.
 26. Что делает DaemonSet и в каких случаях его используют?
 27. Что такое Job и CronJob?
