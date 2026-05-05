@@ -7,6 +7,21 @@
 - DB: Postgres (информация о пользователе), Mongo (аватар, документы)
 
 ---
+## **User Service**. Таблица эндпоинтов *(REST API)*
+Все эндпоинты скрыты за Gateway, который проверяет JWT и проксирует запросы.  
+Базовый путь: `/api/v1/{service-name}/...`
 
+### `[HTTP-API-1.1]`
+
+|Метод|Эндпоинт|Описание|Роль|
+|---|---|---|---|
+|POST|`/api/v1/users/register`|Регистрация нового пользователя|public|
+|POST|`/api/v1/users/login`|Возвращает JWT (через Keycloak)|public|
+|GET|`/api/v1/users/{id}`|Получить профиль пользователя|user, admin|
+|PUT|`/api/v1/users/{id}`|Обновить профиль|user, admin|
+|GET|`/api/v1/users/drivers`|Список водителей (для назначения)|admin|
+|POST|`/api/v1/users/drivers/{id}/assign-vehicle`|Привязать водителя к ТС|admin|
+
+---
 
 
