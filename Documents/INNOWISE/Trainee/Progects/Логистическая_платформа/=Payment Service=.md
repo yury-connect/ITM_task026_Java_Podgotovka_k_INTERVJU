@@ -62,4 +62,29 @@ public enum BillStatus {
 ---
 Банковская система залогинивается под ролью BANK и отправляет на этот эндпоинт оплаченный счет, что свидетельствует об оплате данного счета. Все поля счета должны совпасть. После этого счет считается оплаченным и берется в работу, а в ответ бан получает статус 200, что свидетельствует о принятии платформой сообщения банка об оплате.. 
 
+## 🔄 Сценарий работы 
+```text
+1. Delivery Service → POST /payments/cost (рассчет стоимости)
+   ↓
+2. Delivery Service → POST /payments/bill (создание счета)
+   ↓
+3. Payment Service:
+   - Считает cost = baseRate + weight*10 + distance*5
+   - Сохраняет Bill в БД со статусом ACTIVE
+   - Устанавливает dueDate = now + durationDays
+   ↓
+1. Payment Service → возвращает BillResponse клиенту на оплату
+   ↓
+2. Клиент оплачивает → Банк отправляет POST /payments/callback (оплаченный счет)
+   ↓
+3. Payment Service:
+   - Находит Bill по id
+   - Проверяет статус (если ACTIVE → PAID)
+   - Обновляет paidAt
+   ↓
+1. Payment Service уведомляет Delivery Service (через Kafka, topic: paymant.payment-completed)
+   ↓
+2. Delivery Service занимается доставкой товара
+```
+
 
