@@ -69,6 +69,15 @@
 ---
 # ДОСТАВКА
 
+Перевозчик заходит в систему вручную под ролью `DRIVER` и меняет статус доставки товара. Статус может изменяться ТОЛЬКо по бизнес-правилам, описанным ниже по карте. Любое изменение статуса логируется в **Reporting Service**, а так-же отправляется заказчику уведомлением через **Notification Service**
+## 🔄 Бизнес-правила (машина состояний)
+```text
+PENDING → ACCEPTED → IN_TRANSIT → DELIVERED
+   ↓         ↓           ↓
+CANCELLED ← CANCELLED ← CANCELLED
+```
+
+Endpoint для захода перевозчика:
 PATCH `/api/v1/deliveries/{id}/status` *(только для ролей `ADMIN`/`DRIVER`)*
 
 ## 📊 Статусы доставки 
@@ -92,11 +101,7 @@ public enum DeliveryStatus {
 ```
 
 
-## 🔄 Бизнес-правила (машина состояний)
-```text
-PENDING → ACCEPTED → IN_TRANSIT → DELIVERED
-   ↓         ↓           ↓
-CANCELLED ← CANCELLED ← CANCELLED
-```
+---
+
 
 
