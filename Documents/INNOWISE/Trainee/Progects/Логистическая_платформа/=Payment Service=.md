@@ -58,6 +58,30 @@ public class Bill {
     private Instant voidedAt;   // Дата аннулирования
 }
 ```
+
+```sql
+CREATE TABLE payment_bill (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    created_at TIMESTAMPTZ NOT NULL,
+    description VARCHAR(500),
+    client_id BIGINT NOT NULL,
+    amount NUMERIC(19, 2) NOT NULL,
+    due_date DATE NOT NULL,      -- Срок оплаты (день, до которого нужно оплатить)
+    status VARCHAR(30) NOT NULL DEFAULT 'ACTIVE',
+    paid_at TIMESTAMPTZ,
+    voided_at TIMESTAMPTZ,       -- Дата аннулирования
+    
+    CONSTRAINT valid_paid CHECK (
+        (status = 'PAID' AND paid_at IS NOT NULL) OR
+        (status != 'PAID' AND paid_at IS NULL)
+    ),
+    CONSTRAINT valid_voided CHECK (
+        (status = 'VOIDED' AND voided_at IS NOT NULL) OR
+        (status != 'VOIDED' AND voided_at IS NULL)
+    )
+);
+```
+
 #### Сущность `BillStatus` - это статус счета
 ```java
 public enum BillStatus {
@@ -107,4 +131,4 @@ public enum BillStatus {
 2. Delivery Service занимается доставкой товара
 ```
 
-
+---
