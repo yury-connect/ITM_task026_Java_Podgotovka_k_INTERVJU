@@ -164,7 +164,7 @@ public class Main {
 2. **Безопасность (`instanceof ParameterizedType`):** Это обязательная проверка в продакшн-коде. Если кто-то напишет `class RawConverter extends BaseConverter`, не указав тип в скобках, то `getGenericSuperclass()` вернет обычный `Class`, а не `ParameterizedType`, и без этой проверки программа упадет на касте (будет `ClassCastException`).
 
 ---
-Соберем всю суть в три супер-простых предложени:
+### Соберем всю суть в три супер-простых предложени:
 
 1. **Проблема:** В Java из-за «стирания типов» запущенная программа напрочь забывает, какие типы данных были указаны внутри треугольных скобок `<...>`.
     
@@ -180,5 +180,69 @@ public class Main {
 Метод `getGenericSuperclass()` — это просто **туристический гид**, который подходит к памятнику, читает надпись на граните и говорит родительскому классу: _«Шеф, мы строили это под Синюю краску, работаем!»_.
 
 Вот и вся магия. Именно на этом «обмане» стирания типов и держатся все умные фреймворки вроде Spring и Hibernate.
+
+---
+редставь, что сервер присылает нам данные. Иногда это список пользователей, иногда — список товаров. Мы хотим написать **один базовый класс-парсер**, который сам понимает, в какой класс превращать пришедший JSON-текст, без передачи `.class` в конструктор.
+
+Вот наглядный пример, имитирующий работу популярных библиотек (вроде Jackson или Gson):
+```java
+package com.innowise.livecoding.reflection;
+
+import java.lang.reflect.ParameterizedType;
+
+// 1. Модели данных, которые приходят от сервера
+class UserResponse { String name; }
+class ProductResponse { String title; }
+
+// 2. Базовый абстрактный парсер. Он ОДИН для всех типов данных.
+abstract class ApiParser<T> {
+    
+    // Метод, который будет разбирать "якобы JSON"
+    public void parse(String jsonText) {
+        // Заглядываем в "паспорт" наследника через getGenericSuperclass()
+        ParameterizedType superClass = (ParameterizedType) getClass()
+	        .getGenericSuperclass();
+        
+        // Достаем тип класса, который указан в скобках <...>
+        Class<?> targetClass = (Class<?>) superClass
+	        .getActualTypeArguments()[0];
+        
+        System.out.println("Парсер прочитал текст: \"" + jsonText + "\"");
+        System.out.println("-> Магия рефлексии: 
+	        Создаю и возвращаю объект класса: " + targetClass.getSimpleName());
+        System.out.println("--------------------------------------------------");
+    }
+}
+
+// 3. Конкретные парсеры. Внутри них вообще НЕТ кода. Только объявление!
+class UserParser extends ApiParser<UserResponse> {
+    // В байт-коде этого класса навсегда записано: 
+    // мой родитель параметризован UserResponse
+}
+
+class ProductParser extends ApiParser<ProductResponse> {
+    // В байт-коде этого класса навсегда записано: 
+    // мой родитель параметризован ProductResponse
+}
+
+// 4. Проверяем в работе
+public class Main {
+    public static void main(String[] args) {
+        // Создаем парсер для пользователей
+        ApiParser<UserResponse> userParser = new UserParser();
+        userParser.parse("{name: 'Иван'}"); 
+        // Выведет: Создаю и возвращаю объект класса: UserResponse
+
+        // Создаем парсер для товаров
+        ApiParser<ProductResponse> productParser = new ProductParser();
+        productParser.parse("{title: 'Телефон'}"); 
+        // Выведет: Создаю и возвращаю объект класса: ProductResponse
+    }
+}
+```
+#### В чем здесь наглядность?
+Посмотри на классы `UserParser` и `ProductParser`. Они абсолютно **пустые**! В них нет ни строчки логики, нет конструкторов, они ничего не знают про `.class`.
+
+Но благодаря тому, что они просто _унаследовались_ и указали нужный тип в треугольных скобках (`extends ApiParser<UserResponse>`), базовый класс `ApiParser` смог на лету подстроиться под нужную модель данных. Именно так Jackson понимает, как превратить JSON в твой DTO класс.
 
 ---
