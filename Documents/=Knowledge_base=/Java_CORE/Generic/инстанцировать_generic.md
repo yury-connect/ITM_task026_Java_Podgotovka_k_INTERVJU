@@ -12,7 +12,7 @@ class Foo<T> {
 
     T instantiateWithMetaclass(Class<T> clazz) throws Exception {
         // clazz придется передавать вручную,
-        // но компилятор позволит передать только то единственно правильное значение.
+        // но компилятор позволит передать только то единств. правильное знач-е.
         return clazz.newInstance();
     }
 }
