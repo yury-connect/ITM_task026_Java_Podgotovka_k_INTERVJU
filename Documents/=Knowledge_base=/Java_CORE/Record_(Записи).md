@@ -79,7 +79,7 @@ public record UserDTO(Long id, String username, String email) {
 }
 ```
 
-### 🚫 Важные ограничения Record (Что делать НЕЛЬЗЯ)
+### 🚫 Важные **ограничения** Record (*Что делать **НЕЛЬЗЯ***)
 
 Плата за лаконичность и безопасность — строгие правила спецификации:
 
@@ -90,3 +90,35 @@ public record UserDTO(Long id, String username, String email) {
 - Внутрь рекорда **нельзя добавлять дополнительные instance-поля** (обычные переменные класса). Все данные объекта обязаны быть объявлены строго в заголовке `record Имя(...)`.
     
 - **Но можно:** объявлять внутри статические поля (`static`), статические методы, обычные методы бизнес-логики, а также реализовывать любые интерфейсы (`implements MyInterface`).
+  *Пример ниже:*
+```Java
+import java.math.BigDecimal;
+
+// В круглых скобках — единственные разрешенные поля объекта (они всегда final)
+public record Price(BigDecimal amount, String currency) implements Comparable<Price> { // 1. МОЖНО имплементировать интерфейсы
+
+    // 2. МОЖНО объявлять СТАТИЧЕСКИЕ поля (они общие для всех объектов)
+    public static final String DEFAULT_CURRENCY = "USD";
+
+    // 3. МОЖНО писать СТАТИЧЕСКИЕ методы 
+    // (например, фабричные методы для удобного создания)
+    public static Price ofUSD(BigDecimal amount) {
+        return new Price(amount, DEFAULT_CURRENCY);
+    }
+
+    // 4. МОЖНО писать ОБЫЧНЫЕ методы бизнес-логики (например, для проверки или расчетов)
+    public boolean isZero() {
+        return this.amount == null 
+	        || this.amount.compareTo(BigDecimal.ZERO) == 0;
+    }
+
+    // Реализация метода из интерфейса Comparable 
+    // (так как мы написали implements сверху)
+    @Override
+    public int compareTo(Price other) {
+        return this.amount.compareTo(other.amount);
+    }
+}
+```
+
+---
