@@ -5,7 +5,7 @@
 #### Актуальность: очень высокая
 - Stop-the-World паузы.    
 - Непредсказуемые latency-спайки.    
-- Тонкая настройка ([G1](../../../TECHNOLOGIES/Java_GC/GarbageFirst_(G1)_GC_(1).md), [ZGC](Documents/TECHNOLOGIES/Java_GC/ZGC_GC), [Shenandoah](Documents/TECHNOLOGIES/Java_GC/Shenandoah_GC)).    
+- Тонкая настройка ([G1](../../../=Knowledge_base=/JVM/Java_GC/GarbageFirst_(G1)_GC_(1).md), [ZGC](../../../=Knowledge_base=/JVM/Java_GC/ZGC_GC.md), [Shenandoah](../../../=Knowledge_base=/JVM/Java_GC/Shenandoah_GC.md)).    
 #### 📌 Критично для high-load, low-latency систем.
 
 ---

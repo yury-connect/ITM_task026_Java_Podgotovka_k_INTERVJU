@@ -69,7 +69,7 @@ GC <u>по умолчанию</u> в современных версиях Java 
 
 ---
 ### Визуальная схема работы GC
-![|1024x682](./_Attachments_GarbageFirst_(G1)_GC_(3)/G1.png)
+![|1024x682](_Attachments_GarbageFirst_(G1)_GC_(3)/G1.png)
 *(Данную картинку сгенерировал ChatGPT для G1)*
 
 ---

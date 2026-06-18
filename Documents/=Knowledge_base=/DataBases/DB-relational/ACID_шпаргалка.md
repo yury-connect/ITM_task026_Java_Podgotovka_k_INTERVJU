@@ -54,7 +54,7 @@ INSERT INTO orders (user_id, product_id) VALUES (999, 1);
 1. **NoSQL** (*MongoDB, Cassandra*) — Часто жертвуют ACID ради скорости.    
 2. **Распределенные БД** — Используют [**BASE**](BASE_vs_ACID_шпаргалка.md) 
 	   (*Basically Available, Soft state, Eventually consistent*).    
-3. **Микросервисы** — Транзакции через [**Saga**](../../MicroServices/Архитектурные_паттерны/Saga.md) или **2PC**.    
+3. **Микросервисы** — Транзакции через [**Saga**](../../../TECHNOLOGIES/MicroServices/Архитектурные_паттерны/Saga.md) или **2PC**.    
 
 ### **Как проверить?**
 **Для SQL-БД:**
