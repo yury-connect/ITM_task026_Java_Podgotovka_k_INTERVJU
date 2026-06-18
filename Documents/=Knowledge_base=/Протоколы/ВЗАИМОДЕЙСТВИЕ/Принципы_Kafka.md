@@ -51,8 +51,10 @@ public class BasicProducerExample {
     public BasicProducerExample(String bootstrapServers) {
         Properties props = new Properties();
         props.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapServers);
-        props.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class.getName());
-        props.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, StringSerializer.class.getName());
+        props.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, 
+	        StringSerializer.class.getName());
+        props.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, 
+	        StringSerializer.class.getName());
         
         // Оптимизация производительности
         props.put(ProducerConfig.ACKS_CONFIG, "all"); // Ждать подтверждения от всех реплик
@@ -65,12 +67,16 @@ public class BasicProducerExample {
     
     // Синхронная отправка
     public void sendMessageSync(String topic, String key, String value) {
-        ProducerRecord<String, String> record = new ProducerRecord<>(topic, key, value);
+        ProducerRecord<String, String> record = 
+	        new ProducerRecord<>(topic, key, value);
         
         try {
             RecordMetadata metadata = producer.send(record).get();
-            System.out.printf("Message sent to topic=%s, partition=%d, offset=%d%n",
-                    metadata.topic(), metadata.partition(), metadata.offset());
+            System.out.printf("Message sent to topic=%s, partition=%d, 
+	            offset=%d%n", 
+	            metadata.topic(), 
+	            metadata.partition(), 
+	            metadata.offset());
         } catch (InterruptedException | ExecutionException e) {
             System.err.println("Error sending message: " + e.getMessage());
         }
@@ -82,12 +88,17 @@ public class BasicProducerExample {
         
         producer.send(record, new Callback() {
             @Override
-            public void onCompletion(RecordMetadata metadata, Exception exception) {
+            public void onCompletion(RecordMetadata metadata, 
+	            Exception exception) {
                 if (exception == null) {
-                    System.out.printf("Async message sent to topic=%s, partition=%d, offset=%d%n",
-                            metadata.topic(), metadata.partition(), metadata.offset());
+                    System.out.printf(
+                    "Async message sent to topic=%s, partition=%d, offset=%d%n",
+                            metadata.topic(), 
+                            metadata.partition(), 
+                            metadata.offset());
                 } else {
-                    System.err.println("Error sending async message: " + exception.getMessage());
+                    System.err.println(
+                    "Error sending async message: " + exception.getMessage());
                 }
             }
         });
