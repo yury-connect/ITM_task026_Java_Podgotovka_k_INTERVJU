@@ -211,15 +211,10 @@ props.put(ConsumerConfig.PARTITION_ASSIGNMENT_STRATEGY_CONFIG,
 |**CooperativeSticky**|Текущее назначение + состояние "что ещё не перераспределено" + кеш|**Выше всего** — но разница в мегабайтах, не гигабайтах [](https://cwiki.apache.org/confluence/pages/diffpages.action?originalId=345377642&pageId=345377643)|
 
 ---
-
 ### 💡 Насколько больше памяти у `Sticky`/`CooperativeSticky`?
-
 Точных цифр нет, но есть **контекст**:
-	
 - Память на **группу потребителей** — это не память на брокер.
-    
 - Для 500 потребителей и 2000 партиций, метаданные топиков занимают **79% памяти ConsumerGroup** (по данным KIP-1101) [](https://cwiki.apache.org/confluence/pages/diffpages.action?originalId=345377642&pageId=345377643).
-    
 - Sticky-стратегии добавляют к этому **ещё один слой кеша** — но он несопоставимо меньше, чем метаданные самих партиций.
 
 **Грубая оценка:** +10-30% к памяти ConsumerGroup по сравнению с Range/RoundRobin.
