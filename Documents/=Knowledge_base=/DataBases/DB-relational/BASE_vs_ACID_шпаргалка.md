@@ -41,7 +41,7 @@ _(Для распределенных систем и NoSQL)_
 > «**BASE** жертвует строгой согласованностью ради доступности и масштабируемости. Например, в соцсетях лайк может появиться не сразу, но система всегда отвечает».
 
 **Глубже:**
-> «В  [**CAP**-теореме](CAP-теорема.md) BASE — это **AP-системы** (Availability + Partition Tolerance). Они используют механизмы вроде **Quorum**, **Read Repair** и **Hinted Handoff** для eventual consistency».
+> «В  [**CAP**-теореме](../../Microservices/CAP-теорема.md) BASE — это **AP-системы** (Availability + Partition Tolerance). Они используют механизмы вроде **Quorum**, **Read Repair** и **Hinted Handoff** для eventual consistency».
 
 ---
 ## **🔹 Что запомнить?**
