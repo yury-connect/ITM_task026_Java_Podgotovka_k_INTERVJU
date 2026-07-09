@@ -1,3 +1,4 @@
+[***GitHub**link*](https://github.com/yury-connect/ITM_task026_Java_Podgotovka_k_INTERVJU/blob/main/Documents/%3DKnowledge_base%3D/DataBases/DB-relational/PostgreSQL/PostgreSQL_%D1%81%D0%B8%D1%81%D1%82%D0%B5%D0%BC%D0%BD%D1%8B%D0%B5_%D1%81%D1%82%D0%BE%D0%BB%D0%B1%D1%86%D1%8B.md)
 В PostgreSQL каждая строка (tuple) таблицы содержит набор **системных столбцов** (system columns), которые не видны при обычном запросе (`SELECT *`), но могут быть явно запрошены [](https://postgresql.ac.cn/docs/current/ddl-system-columns.html)[](https://www.commandprompt.com/ppbook/x8747.html). Эти столбцы содержат служебную информацию, критически важную для понимания работы MVCC и внутреннего устройства базы данных [](https://www.highgo.ca/2020/05/20/phoney-table-columns-in-postgresql/).
 
 Ниже представлен перечень всех системных атрибутов, с описанием их типа значения и примерами.
@@ -18,11 +19,9 @@
 - **Внутреннее представление:** В заголовке кортежа (`HeapTupleHeaderData`) хранятся не только эти системные атрибуты, но и битовые маски (`t_infomask`), которые кешируют статус транзакций (`XMIN_COMMITTED`, `XMAX_INVALID` и т.д.) для ускорения проверок видимости [](https://raw.githubusercontent.com/postgres/postgres/master/src/include/access/htup_details.h)[](https://cgi.cse.unsw.edu.au/~cs9315/21T1/lectures/pg-tuples/slides.html).
     
 - **Команда `SELECT`:** Чтобы увидеть значения системных столбцов, их нужно явно указать в запросе:
-    
-    sql
-    
-    SELECT ctid, xmin, xmax, tableoid, * FROM your_table;
-    
+```sql
+SELECT ctid, xmin, xmax, tableoid, * FROM your_table;
+```
 
 Эти системные столбцы — фундамент, на котором построена механика MVCC, но они предназначены для внутреннего использования и отладки. Для надежной идентификации логических строк в приложении всегда следует использовать **первичный ключ** (Primary Key), а не `ctid` или `xmin` [](https://postgresql.ac.cn/docs/current/ddl-system-columns.html)[](https://www.postgresql.org/docs/19/ddl-system-columns.html).
 
