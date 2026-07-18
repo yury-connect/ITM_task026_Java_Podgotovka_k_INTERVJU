@@ -76,22 +76,47 @@ graph TD
     A[Интерфейс] --> B[Абстрактный класс]
     B --> C[Конкретный класс]
 ```
+```markdown
+graph TD  
+A[Интерфейс] --> B[Абстрактный класс]  
+B --> C[Конкретный класс]
+```
+
 ```mermaid
 graph TD
     A[Collection] --> B[List]
     A --> C[Set]
 ```
+```markdown
+graph TD  
+A[Collection] --> B[List]  
+A --> C[Set]
+```
+
 ```mermaid
 flowchart LR
     A[Запрос] --> B{Валидация}
     B -->|Ошибка| C[400]
     B -->|Успех| D[Обработка]
 ```
+```markdown
+flowchart LR  
+A[Запрос] --> B{Валидация}  
+B -->|Ошибка| C[400]  
+B -->|Успех| D[Обработка]
+```
+
 ```mermaid
 sequenceDiagram
     Client->>Server: GET /api
     Server-->>Client: 200 OK
 ```
+```markdown
+sequenceDiagram  
+Client->>Server: GET /api  
+Server-->>Client: 200 OK
+```
+
 🎯 Для: архитектурных схем, `flowcharts`, `sequence` `diagrams`, `class diagrams`.
 
 ---
@@ -113,49 +138,61 @@ GitHub поддерживает специальные блоки-предупр
 > [!CAUTION]
 > Критично!
 
+```markdown
+> [!NOTE]
+> Полезная заметка
+
+> [!TIP]
+> Совет по коду
+
+> [!IMPORTANT]
+> Важный момент
+
+> [!WARNING]
+> Осторожно!
+
+> [!CAUTION]
+> Критично!
+```
+
 Выглядит как **цветные плашки** — супер для выделения ключевых мыслей.
 
 ---
 ## ✅ 3. Сворачиваемые блоки (details)
 
 <details>
-<summary>📘 Нажми, чтобы раскрыть код</summary>
-```java
-public class Main {
-    public static void main(String[] args) {
-        System.out.println("Hello!");
-    }
-}
-```
+<summary>📘 Нажми, чтобы раскрыть блок текста</summary>
+
+Тут пишем текст
+
 </details>
 
 ```markdown
 <details>
+<summary>📘 Нажми, чтобы раскрыть блок текста</summary>
+
+Тут пишем текст
 
 </details>
-
-📘 Нажми, чтобы раскрыть код ```java public class Main { public static void main(String[] args) { System.out.println("Hello!"); } } ```
 ```
 🎯 Для: длинных примеров/ вопросов которые не хочется разворачивать всегда.
 
 ---
 ## ✅ 4. Таблицы с выравниванием
 
-```markdown
 | Лево | Центр | Право |
 |:-----|:-----:|------:|
 | 1    |   2   |     3 |
-```
 
-| Лево | Центр | Право |
-|:-----|:-----:|------:|
-| 1    |   2   |     3 |
+
 Работает красиво и предсказуемо.
 
 ---
 ## ✅ 5. Эмодзи ✨
 
 GitHub поддерживает эмодзи-коды:
+
+:rocket: :java: :bulb: :warning: :check:
 ```markdown
 :rocket: :java: :bulb: :warning: :check:
 ```
@@ -163,9 +200,19 @@ GitHub поддерживает эмодзи-коды:
 
 Полный список: [emojipedia.org/github](https://emojipedia.org/github)
 
+---
+## ✅ 6. Ссылки на заголовки (якоря)
 
+## 👑 Исключения
 
+Перейти к [✅ 1. Mermaid — диаграммы в коде](#✅ 1. Mermaid — диаграммы в коде)
+```markdown
+## 👑 Исключения
+Перейти к [✅ 1. Mermaid — диаграммы в коде](#✅ 1. Mermaid — диаграммы в коде)
+Перейти к [Исключениям](#исключения)
+```
 
+GitHub автоматически генерирует якоря из заголовков (транслит + нижний регистр).
 
 
 
