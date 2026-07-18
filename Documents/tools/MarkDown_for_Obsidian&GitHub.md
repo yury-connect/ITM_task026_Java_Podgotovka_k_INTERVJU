@@ -4,6 +4,7 @@
 ## 📚 Оглавление
 
 - 2. [Alerts (Admonitions) — цветные блоки](#admonitions)
+- [Alerts — цветные блоки](#alerts-admonitions-цветные-блоки)
 
 
 - [✅ 1. Mermaid — диаграммы в коде](#mermaid--диаграммы-в-коде)
