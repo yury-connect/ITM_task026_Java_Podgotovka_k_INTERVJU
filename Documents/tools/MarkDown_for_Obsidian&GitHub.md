@@ -68,34 +68,121 @@
 
 ---
 ## 🧠 Схема
-```graph TD
+## ✅ 1. Mermaid — диаграммы в коде
+
+GitHub **нативно поддерживает Mermaid** с 2022 года.
+```mermaid
+graph TD
+    A[Интерфейс] --> B[Абстрактный класс]
+    B --> C[Конкретный класс]
+```
+```mermaid
+graph TD
     A[Collection] --> B[List]
     A --> C[Set]
 ```
+```mermaid
+flowchart LR
+    A[Запрос] --> B{Валидация}
+    B -->|Ошибка| C[400]
+    B -->|Успех| D[Обработка]
+```
+```mermaid
+sequenceDiagram
+    Client->>Server: GET /api
+    Server-->>Client: 200 OK
+```
+🎯 Для: архитектурных схем, `flowcharts`, `sequence` `diagrams`, `class diagrams`.
 
 ---
-## ⚠️ Важно
+## ✅ 2. Alerts (Admonitions) — цветные блоки
 
-- `ArrayList` — быстрый доступ
-    
-- `LinkedList` — быстрая вставка
-    
+GitHub поддерживает специальные блоки-предупреждения:
+> [!NOTE]
+> Полезная заметка
 
-text
+> [!TIP]
+> Совет по коду
+
+> [!IMPORTANT]
+> Важный момент
+
+> [!WARNING]
+> Осторожно!
+
+> [!CAUTION]
+> Критично!
+
+Выглядит как **цветные плашки** — супер для выделения ключевых мыслей.
 
 ---
-## 🧪 Как проверить
-1. Напиши конспект в Obsidian  
-2. Закоммить и запушить на GitHub  
-3. Открой на GitHub — если всё ок → 🔥
+## ✅ 3. Сворачиваемые блоки (details)
+
+<details>
+<summary>📘 Нажми, чтобы раскрыть код</summary>
+```java
+public class Main {
+    public static void main(String[] args) {
+        System.out.println("Hello!");
+    }
+}
+```
+</details>
+
+```markdown
+<details>
+
+</details>
+
+📘 Нажми, чтобы раскрыть код ```java public class Main { public static void main(String[] args) { System.out.println("Hello!"); } } ```
+```
+🎯 Для: длинных примеров/ вопросов которые не хочется разворачивать всегда.
+
 ---
+## ✅ 4. Таблицы с выравниванием
+
+```markdown
+| Лево | Центр | Право |
+|:-----|:-----:|------:|
+| 1    |   2   |     3 |
+```
+
+| Лево | Центр | Право |
+|:-----|:-----:|------:|
+| 1    |   2   |     3 |
+Работает красиво и предсказуемо.
+
+---
+## ✅ 5. Эмодзи ✨
+
+GitHub поддерживает эмодзи-коды:
+```markdown
+:rocket: :java: :bulb: :warning: :check:
+```
+→ 🚀 ☕ 💡 ⚠️ ✅
+
+Полный список: [emojipedia.org/github](https://emojipedia.org/github)
+
+
+
+
+
+
+
+
+
+
+
+********
+
 ## ❌ Чего избегать
-| Что | Почему |
-|-----|--------|
-| `$$` LaTeX | Не работает на GitHub |
+| Что                     | Почему                     |
+| ----------------------- | -------------------------- |
+| `$$` LaTeX              | Не работает на GitHub      |
 | Плагины типа `Dataview` | Ломают рендеринг на GitHub |
-| Собственные CSS-классы | GitHub игнорирует |
-| `[TOC]` (оглавление) | GitHub не поддерживает |
+| Собственные CSS-классы  | GitHub игнорирует          |
+| `[TOC]` (оглавление)    | GitHub не поддерживает     |
+
 ---
 🎯 **Вывод**: используй **стандартный Markdown + Mermaid + Alerts + Details** — и конспекты будут идеальны и в Obsidian, и на GitHub.
 
