@@ -8,9 +8,32 @@
 
 ### ⚠️ Самое важное
 	
-- **Это не постоянный ID**: `ctid` — это **физический адрес** строки на диске. 
+- **Это не постоянный ID**: `ctid` — это **физический адрес** строки на диске (номер страницы + позиция в ней). 
   Он меняется при `UPDATE` или `VACUUM FULL` и поэтому **не должен использоваться в качестве первичного ключа** или для долгосрочной идентификации строк [](https://postgrespro.ru/docs/postgrespro/current/ddl-system-columns?lang=en)[](https://lists.osgeo.org/pipermail/postgis-users/2005-September/009425.html).
     
 - **Быстрый доступ**: `ctid` позволяет выполнить **Tid Scan** — самый быстрый способ прямого доступа к строке (например, `SELECT * FROM table WHERE ctid = '(10,5)'`). Для PostgreSQL версии 14+ также доступен сканир-е диапазона `ctid` [](https://postgrespro.ru/list/thread-id/1858245)[](https://git.cse.iitb.ac.in/abuhujairkhan/postgres-fd-implementation/-/commits/388b959315205b0b65efb074ec84e1d7fad62402)[](https://git.cse.iitb.ac.in/abuhujairkhan/postgres-fd-implementation/-/blob/27e1f14563cf982f1f4d71e21ef247866662a052/src/backend/optimizer/plan/setrefs.c).
     
 - **Особенности**: На `ctid` **нельзя создать индекс** [](https://v2.postgres.ai/docs/postgres-howtos/advanced-topics/misc/tuple-sparsity)[](https://raw.githubusercontent.com/postgres-ai/postgres-howtos/main/0004_tuple_sparsenes.md).
+
+> `ctid` меняется ТОЛЬКО при **любой операцией, которая физически создает новую версию строки** (*когда строка **физически перезаписывается** в новом месте*).
+
+---
+### 🎯 Что сказать на собеседовании
+
+> "`ctid` — это физический адрес строки на диске. Он меняется **при любой операции, которая создает новую версию строки**: `INSERT` и `UPDATE`.  
+> При `DELETE` `ctid` не меняется, потому что строка просто помечается как удаленная через `xmax`. `ctid` не является постоянным идентификатором и **не должен использоваться как первичный ключ**, потому что `VACUUM FULL` и `CLUSTER` перезаписывают его."
+
+---
+
+|Действие|`ctid` меняется?|
+|---|---|
+|`INSERT`|✅ Да|
+|`UPDATE`|✅ Да (всегда)|
+|`DELETE`|❌ Нет|
+|`VACUUM FULL` / `CLUSTER`|✅ Да|
+|`SELECT` (чтение)|❌ Нет|
+|`VACUUM` (обычный)|❌ Нет (просто освобождает место)|
+
+Главный вывод: **"транзакция на запись"** — это очень широкое понятие. `UPDATE` и `INSERT` меняют `ctid`, а `DELETE` — нет.
+
+---
