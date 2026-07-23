@@ -1,4 +1,4 @@
-Конспект по материалам статьи: [ссылка]([https://habr.com/ru/companies/postgrespro/articles/445820/](https://habr.com/ru/companies/postgrespro/articles/446652/)
+Конспект по материалам статьи: [ссылка](https://habr.com/ru/companies/postgrespro/articles/446652/)
 
 ---
 ## 🎯 Введение: Что такое **Снимок** (*Snapshot*)?
