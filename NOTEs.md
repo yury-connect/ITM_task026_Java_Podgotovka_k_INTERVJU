@@ -1,6 +1,11 @@
 Ссылки на смежные ресурсы, которые могут быть полезны.
 
 
+**2026-07-24** 
+почтать по безопасности, прикольный ресурс [ссылка](https://codechick.io/tutorials/rest-api-design/rest-autentifikaciya)
+
+---
+
 *"Дорогу осилит идущий..."* -ссылка на *github*-репозиторий, `github.com` 
 - [Теория](https://github.com/KFalcon2022/lessons)
 - [Задачки](https://github.com/KFalcon2022/practical-tasks)
