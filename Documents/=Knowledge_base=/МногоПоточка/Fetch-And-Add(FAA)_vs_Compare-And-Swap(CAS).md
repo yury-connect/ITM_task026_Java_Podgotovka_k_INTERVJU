@@ -1,4 +1,5 @@
 # Fetch-And-Add (*FAA*)
+[статья1](https://proselyte.net/cas-faa-java/) [видео про **CAS**](https://youtu.be/oxmMm6QK98s?si=bj4joZixxJZOneqB)
 
 ---
 > [!IMPORTANT]
