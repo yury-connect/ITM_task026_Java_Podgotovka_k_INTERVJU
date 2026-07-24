@@ -1,0 +1,18 @@
+
+Архитектурный стиль REST базируется на шести основных принципах (*ограничениях*): ==клиент-серверная архитектура, отсутствие состояния и кэширование. Полный список включает также единообразие интерфейса, многоуровневую систему и код по требованию==. [](https://skillbox.ru/media/code/rest-api-chto-eto-takoe-i-kak-rabotaet/)
+
+Основные принципы REST:   / ссылки: ([**Wiki**](https://ru.wikipedia.org/wiki/REST) / [**SkilBox**](https://skillbox.ru/media/code/rest-api-chto-eto-takoe-i-kak-rabotaet/) / [YouTube](https://www.youtube.com/watch?v=0B8znG96ih4)))
+
+- **Клиент-сервер (Client-Server):** Разделение интерфейса пользователя и логики хранения данных. Клиент и сервер могут развиваться независимо друг от друга. [](https://skillbox.ru/media/code/rest-api-chto-eto-takoe-i-kak-rabotaet/)
+
+- **Отсутствие состояния (Stateless):** Сервер не хранит информацию о сеансе клиента. Каждый новый запрос содержит все данные, нужные для его обработки. [](https://ru.linkedin.com/pulse/six-essential-rest-principles-how-apply-them-spring-ferreira-neto-5rkjf?tl=ru)
+
+- **Кэширование (Cacheable):** Ответы сервера должны явно или неявно помечаться как кэшируемые или некэшируемые, чтобы клиент мог использовать повторные данные. [](https://restapitutorial.ru/lessons/whatisrest/)
+
+- **Единообразие интерфейса (Uniform Interface):** Единые правила идентификации ресурсов (через URL), использование стандартных методов (например, GET, POST) и самоописываемые сообщения. [](https://ru.linkedin.com/pulse/six-essential-rest-principles-how-apply-them-spring-ferreira-neto-5rkjf?tl=ru)
+
+- **Многоуровневая система (Layered System):** Клиент может работать с промежуточными серверами (прокси, шлюзы, балансировщики), не зная об этом и не взаимодействуя с конечным сервером напрямую. 
+
+- **Код по требованию (Code on Demand):** Необязательное ограничение: сервер может передавать клиенту исполняемый код (например, скрипты или апплеты) для расширения его возможностей. [](https://skillbox.ru/media/code/rest-api-chto-eto-takoe-i-kak-rabotaet/)
+
+---
