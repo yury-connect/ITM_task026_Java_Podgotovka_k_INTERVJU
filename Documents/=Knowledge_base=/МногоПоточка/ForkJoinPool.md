@@ -61,11 +61,7 @@ pool.invoke(new MyRecursiveTask()); // выполняем задачу
 Поток 2 крадёт задачу у потока 1 → работа идёт параллельно
 ```
 
-
-
-
 ---
-
 ### Основные классы
 
 |Класс|Назначение|
@@ -73,9 +69,7 @@ pool.invoke(new MyRecursiveTask()); // выполняем задачу
 |**`ForkJoinPool`**|Сам пул потоков|
 |**`RecursiveTask<V>`**|Задача, возвращающая результат|
 |**`RecursiveAction`**|Задача без результата (void)|
-
-java
-
+```java
 class SumTask extends RecursiveTask<Integer> {
     @Override
     protected Integer compute() {
@@ -88,9 +82,9 @@ class SumTask extends RecursiveTask<Integer> {
         }
     }
 }
+```
 
 ---
-
 ### Где используется
 
 |Место|Что делает|
@@ -99,32 +93,28 @@ class SumTask extends RecursiveTask<Integer> {
 |**`Arrays.parallelSort()`**|Сортирует большие массивы параллельно|
 |**`CompletableFuture`**|Может использовать `ForkJoinPool`|
 |**Свои рекурсивные задачи**|Вычисление чисел Фибоначчи, обход дерева и т.д.|
-
-java
-
+```java
 // Пример: parallelStream использует ForkJoinPool
 list.parallelStream()          // ForkJoinPool.commonPool()
     .map(x -> heavyOperation()) // выполняется параллельно
     .collect(toList());
+```
 
 ---
-
 ### Виды пулов
 
 |Пул|Описание|
 |---|---|
 |**`commonPool()`**|Общий для всех, создаётся автоматически (по умолчанию)|
 |**`new ForkJoinPool(N)`**|Свой пул с N потоками|
-
-java
-
+```java
 // Общий пул (используется Stream API)
 ForkJoinPool common = ForkJoinPool.commonPool();
 // Свой пул
 ForkJoinPool custom = new ForkJoinPool(8); // 8 потоков
+```
 
 ---
-
 ### Когда использовать
 
 |Ситуация|Решение|
@@ -137,11 +127,12 @@ ForkJoinPool custom = new ForkJoinPool(8); // 8 потоков
 ---
 
 ### Итог
-
-text
-
+```text
 ForkJoinPool = пул потоков для параллельных рекурсивных задач
      ↓
 + Work Stealing (эффективная загрузка CPU)
 + Fork/Join (разделяй и властвуй)
 + commonPool() для Stream API
+```
+
+---
