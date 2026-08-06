@@ -77,8 +77,7 @@ MVCC (Multi-Version Concurrency Control) — это архитектурная �
 - **Очистка индексов**: Удаляет из индексов ссылки на удаленные версии строк [](https://postgrespro.com/blog/pgsql/5967918).
     
 - **Обновление карт**: Обновляет `Free Space Map` (FSM) для указания свободного места и `Visibility Map` (VM) для указания страниц, содержащих только видимые для всех строки. Это ускоряет последующие сканирования [](https://www.postgresql.eu/events/pgconfde2025/sessions/session/6582/slides/671/PGConf.de%20-%20MVCC.pdf#1#1)[](https://postgrespro.com/blog/pgsql/5967918)[](https://beta.pgcon.org/2015/schedule/attachments/367_Vacuum.pdf#1#1).
-    
 
 `VACUUM` работает конкурентно с обычными операциями, не блокируя их на длительное время [](https://postgrespro.com/blog/pgsql/5967918). Однако долго живущие транзакции могут сдвигать "горизонт транзакций" и мешать `VACUUM` очищать "мертвые" строки, что ведет к разрастанию таблиц [](https://www.postgresql.eu/events/pgconfde2025/sessions/session/6582/slides/671/PGConf.de%20-%20MVCC.pdf#1#1)[](https://postgrespro.com/blog/pgsql/5967918).
 
---
+---
