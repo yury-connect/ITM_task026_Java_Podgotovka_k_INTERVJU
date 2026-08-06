@@ -171,12 +171,15 @@ Spring Cache поддерживает **Spring Expression Language (SpEL)** д
 @Cacheable(value = "users", key = "#id")
 public User getUser(Long id) { ... }
 // Сложный ключ из нескольких аргументов
+
 @Cacheable(value = "users", key = "#firstName + '_' + #lastName")
 public User getUserByName(String firstName, String lastName) { ... }
 // Доступ к полям объекта
+
 @Cacheable(value = "users", key = "#user.id")
 public User updateUser(User user) { ... }
 // Доступ к вложенным свойствам
+
 @Cacheable(value = "orders", key = "#user.id + '_' + #order.status")
 public Order getOrder(User user, Order order) { ... }
 ```
@@ -188,7 +191,7 @@ public Order getOrder(User user, Order order) { ... }
 public User getUser(Long id) { ... }
 ```
 
-**`unless`** — НЕ кешировать, если условие истинно (проверяется после выполнения метода):
+**`unless`** — НЕ кешировать, если условие истинно (проверяется после вып-я метода):
 ```java
 @Cacheable(value = "users", unless = "#result == null || #result.isInactive()")
 public User getUser(Long id) { ... }
