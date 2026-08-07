@@ -6,7 +6,7 @@
 ---
 ### Основная модель: <br>отправитель → Exchange → Queue → получатель
 
-**Ключевая идея:** отправитель не отправляет сообщение напрямую в очередь. Вместо этого он отправляет его в **Exchange (обменник)**, а Exchange уже решает, в какую очередь (Queue) направить сообщение [](https://rabbitmq.cn/tutorials/amqp-concepts#exchange-fanout)[](https://www.cloudamqp.com/blog/part4-rabbitmq-for-beginners-exchanges-routing-keys-bindings.html).
+**Ключевая идея:** отправитель не отправляет сообщение напрямую в очередь. Вместо этого он отправляет его в **Exchange (обменник)**, а *Exchange* уже решает, в какую очередь (*Queue*) направить сообщение [](https://rabbitmq.cn/tutorials/amqp-concepts#exchange-fanout)[](https://www.cloudamqp.com/blog/part4-rabbitmq-for-beginners-exchanges-routing-keys-bindings.html).
 ```text
 Отправитель (Producer) → Exchange → Queue → Получатель (Consumer)
 ```
@@ -14,16 +14,16 @@
 ---
 ### Ключевые компоненты
 
-| Компонент                            | Что делает                                                | Важно                                                                                                                                                                                                                                     |
-| ------------------------------------ | --------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **Producer (*отправитель*)**         | Создаёт и отправляет сообщения                            | Не знает про очереди, отправляет только в Exchange                                                                                                                                                                                        |
-| **Exchange (обменник)**              | Получает сообщение и решает, куда его направить           | **Не хранит** сообщения — только маршрутизирует [](https://cloud.tencent.com.cn/developer/article/2572867?policyId=1003)                                                                                                                  |
-| **Queue (очередь)**                  | Хранит сообщения до тех пор, пока их не заберёт Consumer  | Буфер сообщений, FIFO [](https://hpe-help-w.docs.opsramp.com/integrations/middleware/rabbitmq/#version-history)[](https://raw.githubusercontent.com/OneUptime/blog/refs/heads/master/posts/2026-02-20-rabbitmq-getting-started/README.md) |
-| **Consumer (получатель)**            | Забирает сообщения из очереди и обрабатывает их           | Может быть несколько подписчиков на одну очередь                                                                                                                                                                                          |
-| **Binding (связка)**                 | Правило, которое связывает Exchange и Queue               | Задаёт маршрутизацию [](https://developer.aliyun.com/article/1589633)                                                                                                                                                                     |
-| **Routing Key (ключ маршрутизации)** | Метка на сообщении, по которой Exchange принимает решение | Часть маршрутизации                                                                                                                                                                                                                       |
-| **Virtual Host (vHost)**             | Пространство имён для изоляции                            | Разделяет окружения (dev/prod) в одном кластере [](https://hpe-help-w.docs.opsramp.com/integrations/middleware/rabbitmq/#version-history)                                                                                                 |
-| **Channel (канал)**                  | Лёгкое соединение внутри одного TCP-коннекта              | Позволяет использовать одно TCP-соединение для многих операций [](https://developer.aliyun.com/article/1589633)                                                                                                                           |
+| Компонент                                  | Что делает                                                | Важно                                                                                                                                                                                                                                     |
+| :----------------------------------------- | :-------------------------------------------------------- | :---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Producer** <br>(*отправитель*)           | Создаёт и отправляет сообщения                            | Не знает про очереди, отправляет только в Exchange                                                                                                                                                                                        |
+| **Consumer** <br>(*получатель*)            | Забирает сообщения из очереди и обрабатывает их           | Может быть несколько подписчиков на одну очередь                                                                                                                                                                                          |
+| **Exchange** <br>(обменник)                | Получает сообщение и решает, куда его направить           | **Не хранит** сообщения — только маршрутизирует [](https://cloud.tencent.com.cn/developer/article/2572867?policyId=1003)                                                                                                                  |
+| **Queue** <br>(*очередь*)                  | Хранит сообщения до тех пор, пока их не заберёт Consumer  | Буфер сообщений, FIFO [](https://hpe-help-w.docs.opsramp.com/integrations/middleware/rabbitmq/#version-history)[](https://raw.githubusercontent.com/OneUptime/blog/refs/heads/master/posts/2026-02-20-rabbitmq-getting-started/README.md) |
+| **Binding** <br>(*связка*)                 | Правило, которое связывает *Exchange* и *Queue*           | Задаёт маршрутизацию [](https://developer.aliyun.com/article/1589633)                                                                                                                                                                     |
+| **Routing Key** <br>(*ключ маршрутизации*) | Метка на сообщении, по которой Exchange принимает решение | Часть маршрутизации                                                                                                                                                                                                                       |
+| **Virtual Host** <br>(*vHost*)             | Пространство имён для изоляции                            | Разделяет окружения (dev/prod) в одном кластере [](https://hpe-help-w.docs.opsramp.com/integrations/middleware/rabbitmq/#version-history)                                                                                                 |
+| **Channel** <br>(*канал*)                  | Лёгкое соединение внутри одного TCP-коннекта              | Позволяет использовать одно TCP-соединение для многих операций [](https://developer.aliyun.com/article/1589633)                                                                                                                           |
 
 ---
 ### 4 типа Exchange
@@ -66,22 +66,16 @@
 **Если Consumer упал и не подтвердил получение** — сообщение останется в очереди и будет отправлено другому Consumer'у.
 
 ---
-
 ### Для собеседования: 3 основных преимущества
-
-1. **Слабая связанность (Decoupling):** отправитель не знает получателя [](https://github.com/Netcracker/qubership-rabbitmq/blob/fix/doc_fixes/docs/public/architecture.md).
-    
-2. **Асинхронность:** обработка не блокирует основной поток.
-    
-3. **Надёжность:** persistence и подтверждения гарантируют доставку.
-    
+1. **Слабая связанность (Decoupling):** отправитель не знает получателя [](https://github.com/Netcracker/qubership-rabbitmq/blob/fix/doc_fixes/docs/public/architecture.md).    
+2. **Асинхронность:** обработка не блокирует основной поток.    
+3. **Надёжность:** persistence и подтверждения гарантируют доставку.    
 
 ---
-
 ### Частые ошибки (о которых стоит упомянуть)
 
-- Если очередь не привязана к Exchange, сообщение будет потеряно [](https://cloud.tencent.com.cn/developer/article/2572867?policyId=1003).
-    
-- Не использовать persistence без необходимости (падение производительности) [](https://cloud.tencent.com.cn/document/product/1495/122760).
-    
+- Если очередь не привязана к Exchange, сообщение будет потеряно [](https://cloud.tencent.com.cn/developer/article/2572867?policyId=1003).    
+- Не использовать persistence без необходимости (падение производительности) [](https://cloud.tencent.com.cn/document/product/1495/122760).  
 - Не закрывать Connection/Channel корректно (утечка ресурсов).
+
+---
