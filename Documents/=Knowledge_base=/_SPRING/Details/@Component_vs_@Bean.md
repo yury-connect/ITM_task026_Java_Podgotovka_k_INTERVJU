@@ -15,7 +15,7 @@
 | **Условное создание**          | `@ConditionalOnClass` <br>и т.д.      | `@ConditionalOnClass`, <br>`@ConditionalOnMissingBean` <br>и т.д. |
 | **Инициализация/уничтожение**  | `@PostConstruct`, `@PreDestroy`       | `initMethod`, `destroyMethod`                                     |
 | **Тип возвращаемого значения** | Сам класс                             | **Любой** тип <br>(*интерфейс, <br>абстрактный класс*)            |
-| **Проксирование (scope)**      | Да, <br>через `@Scope`                | Да, <br>через `@Scope`                                            |
+| **Проксирование (*scope*)**    | Да, <br>через `@Scope`                | Да, <br>через `@Scope`                                            |
 
 ---
 ## **Алиасы** (*несколько имён*)
@@ -31,8 +31,7 @@ public class MyService {
 ### `@Bean` – **ЕСТЬ** алиасы
 ```java
 @Configuration
-public class AppConfig {
-    
+public class AppConfig {    
     @Bean(name = {"weatherService", "weatherApi", "openweather"})
     public WeatherService weatherService() {
         return new OpenWeatherService();
@@ -52,7 +51,7 @@ private WeatherService service;  // Работает!
 ```java
 @Component
 public class UserService {
-
+	
     private final UserRepository repository;
     
     // Зависимости внедряются Spring'ом автоматически
@@ -100,7 +99,7 @@ public class DataSourceConfig {
 ```
 
 ---
-## Возврат интерфейса
+## Возврат **интерфейса**
 
 ### `@Component` – возвращает конкретный **класс**
 ```java
@@ -164,7 +163,7 @@ public class AppConfig {
 ```
 
 ---
-## Условное создание (пример)
+## **Условное** создание (*пример*)
 ```java
 @Configuration
 public class DatabaseConfig {
