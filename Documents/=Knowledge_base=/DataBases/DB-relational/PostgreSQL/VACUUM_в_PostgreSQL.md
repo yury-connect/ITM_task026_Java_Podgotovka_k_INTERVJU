@@ -3,19 +3,13 @@
 ## 🎯 **Кратко** (*для собеседования*)
 
 #### В PostgreSQL есть **3 вида** VACUUM:
-	
 1. **Standard VACUUM** — обычная очистка (*не блокирует чтение/запись*)
-    
 2. **VACUUM FULL** — полная очистка (*блокирует таблицу, возвращает место ОС*)
-    
 3. **VACUUM FREEZE** — "*заморозка*" старых транзакций (*защита от `wraparound`*)
 
 #### **Главное отличие:**
-	
 - **Standard** — чистит «мусор» (*dead tuples*) и освобождает место внутри таблицы для переиспользования.
-    
 - **FULL** — делает то же самое, но **сжимает** таблицу и **возвращает** место операционной системе (*но полностью **блокирует** таблицу*!).
-    
 - **FREEZE** — обновляет возраст транзакций, принудительно помечая строки как «замороженные» (не зависит от `vacuum_freeze_min_age`).
 
 ---
@@ -109,13 +103,9 @@ autovacuum_analyze_scale_factor = 0.1
 ## 🚨 Когда делать **VACUUM FULL**?
 
 **Только когда:**
-	
 - Таблица **очень сильно** раздулась (*в 2+ раза больше, чем нужно*)
-    
 - Есть **свободное место на диске** (*минимум размер таблицы × 2*)
-    
 - Можно **остановить работу** с таблицей (*или делать ночью*)
-
 ```sql
 -- Проверить размер таблицы
 SELECT pg_size_pretty(pg_total_relation_size('table_name'));
@@ -149,5 +139,42 @@ VACUUM FREEZE table_name;
 | **Защита от *wraparound***                 | `VACUUM FREEZE;` |
 
 > **Самое важное:** `VACUUM` не возвращает место ОС, `VACUUM FULL` — возвращает, но блокирует таблицу!
+
+---
+---
+---
+В PostgreSQL есть две основные формы команды `VACUUM`, и они принципиально отличаются по тому, как блокируют таблицу:
+
+- **Обычный `VACUUM` (без `FULL`):** Блокирует **всю таблицу**, но с более слабой блокировкой `SHARE UPDATE EXCLUSIVE`[](https://pganalyze.com/docs/log-insights/autovacuum/A67/)[](https://marc.info/?l=postgresql-admin&m=113908038604903&q=mbox)[](https://www.postgresql.org/docs/12/sql-vacuum.html).
+    
+- **`VACUUM FULL`:** Блокирует **всю таблицу** с самой сильной блокировкой `ACCESS EXCLUSIVE`[](https://pganalyze.com/docs/log-insights/autovacuum/A67/)[](https://www.postgresql.org/message-id/680cbe0e0811050606u61882abfk9c704d593697cff7%40mail.gmail.com)[](https://www.postgresql.org/docs/12/sql-vacuum.html).
+
+Разница здесь не в том, _какая часть таблицы_ блокируется (всегда вся таблица), а в том, _насколько строгая блокировка_ накладывается и какие операции она блокирует.
+
+### 🔒 Сравнение блокировок
+
+|Команда|Тип блокировки|Уровень блокировки|
+|---|---|---|
+|**`VACUUM`** (обычный)|`SHARE UPDATE EXCLUSIVE`|Блокирует **всю таблицу**|
+|**`VACUUM FULL`**|`ACCESS EXCLUSIVE`|Блокирует **всю таблицу**|
+
+Эта разница в типе блокировки критична для повседневной работы.
+
+### 🛠️ Обычный `VACUUM`: "Мягкая" блокировка
+Обычный `VACUUM` накладывает блокировку `SHARE UPDATE EXCLUSIVE`[](https://pganalyze.com/docs/log-insights/autovacuum/A67/)[](https://marc.info/?l=postgresql-admin&m=113908038604903&q=mbox)[](https://www.postgresql.org/message-id/15713.1035830389%40sss.pgh.pa.us). Несмотря на грозное название, она **не блокирует** обычные операции чтения (`SELECT`) и изменения данных (`INSERT`, `UPDATE`, `DELETE`)[](https://marc.info/?l=postgresql-admin&m=113908038604903&q=mbox)[](https://www.postgresql.org/docs/12/sql-vacuum.html).
+
+Основная цель этой блокировки — помешать другим процессам, которые тоже меняют структуру таблицы, например, созданию индекса или запуску др. `VACUUM`[](https://marc.info/?l=postgresql-admin&m=113908038604903&q=mbox).
+
+### 🚧 `VACUUM FULL`: "Жесткая" эксклюзивная блокировка
+`VACUUM FULL` работает намного агрессивнее: он физически переписывает всю таблицу в новый файл, чтобы сжать её до минимального размера[](https://www.postgresql.org/message-id/680cbe0e0811050606u61882abfk9c704d593697cff7%40mail.gmail.com)[](https://www.postgresql.org/docs/12/sql-vacuum.html). Для этого ему требуется исключительная блокировка `ACCESS EXCLUSIVE`[](https://pganalyze.com/docs/log-insights/autovacuum/A67/)[](https://www.postgresql.org/docs/12/sql-vacuum.html)[](https://www.postgresql.org/message-id/CAApHDvrLiwiB8o%2b3R2M4JbwyovhD7Btt0h%3d%2b8_d85Lt%2boxoy7Q%40mail.gmail.com).
+
+Это означает, что на время выполнения `VACUUM FULL` **таблица становится полностью недоступной** для любых операций, включая чтение (`SELECT`)[](https://www.postgresql.org/message-id/680cbe0e0811050606u61882abfk9c704d593697cff7%40mail.gmail.com)[](https://www.postgresql.org/docs/12/sql-vacuum.html).
+
+### 💡 Рекомендации
+Именно из-за сильной блокировки **`VACUUM FULL` не рекомендуется для рутинного использования**[](https://www.postgresql.org/docs/12/sql-vacuum.html). Он может серьезно сказаться на доступности базы данных, особенно для больших таблиц в production-среде[](https://www.postgresql.org/message-id/CAApHDvrLiwiB8o%2b3R2M4JbwyovhD7Btt0h%3d%2b8_d85Lt%2boxoy7Q%40mail.gmail.com). Обычный `VACUUM` справляется со своей задачей по очистке "мертвых" строк, не мешая работе приложения.
+
+Если вам нужно срочно освободить место и вы вынуждены применить `VACUUM FULL`, лучше всего делать это в период минимальной нагрузки на систему, так как эта операция надолго "уронит" доступ к таблице для всех остальных пользователей и процессов.
+
+Надеюсь, это объяснение помогло прояснить ситуацию. Если появятся другие вопросы по PostgreSQL — обращайтесь.
 
 ---
