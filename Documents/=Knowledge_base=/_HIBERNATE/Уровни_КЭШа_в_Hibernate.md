@@ -106,10 +106,11 @@
 |**Кто видит**|Только текущая сессия (другие сессии не видят)|
 |**Сброс**|`session.evict(entity)`, `session.clear()`, `session.close()`|
 
-**Как это работает:**
+#### **Как это работает:**
 ```java
 // Первый запрос — загрузка из БД
 User user1 = session.get(User.class, 1L); // SELECT в БД
+
 // Второй запрос — данные берутся из L1 кэша (SQL НЕ отправляется!)
 User user2 = session.get(User.class, 1L); // БЕЗ SELECT!
 ```
@@ -129,7 +130,6 @@ User user2 = session.get(User.class, 1L); // БЕЗ SELECT!
 |**Стратегии**|`READ_ONLY`, `NONSTRICT_READ_WRITE`, `READ_WRITE`, `TRANSACTIONAL`|
 
 #### **Как настроить:**
-
 **Шаг 1:** Добавить зависимость (например, EhCache):
 ```xml
 <dependency>
