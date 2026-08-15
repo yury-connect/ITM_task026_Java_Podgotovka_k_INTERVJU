@@ -70,7 +70,7 @@ SELECT * FROM information_schema.innodb_trx; -- (MySQL)
 | ------------ | --------------------------------------------------- |
 | Atomicity    | `WAL` + `Rollback`                                  |
 | Consistency  | `Ограничения БД`                                    |
-| Isolation    | Уровни изоляции ([**MVCC**](PostgreSQL/=MVCC.md), `блокировки`) |
+| Isolation    | Уровни изоляции ([**MVCC**](PostgreSQL/=MVCC(1).md), `блокировки`) |
 | Durability   | `WAL` + `fsync`                                     |
 |              |                                                     |
 
@@ -120,7 +120,7 @@ SELECT * FROM information_schema.innodb_trx; -- (MySQL)
 | `Serializable`     | ✅          | ✅              | ✅        |
 
 #### **Б. Механизмы**
-- [**MVCC**](PostgreSQL/=MVCC.md) (*версионирование*): Чтение «снимка» данных (*PostgreSQL*).    
+- [**MVCC**](PostgreSQL/=MVCC(1).md) (*версионирование*): Чтение «снимка» данных (*PostgreSQL*).    
 - **Блокировки:** Пессимистичные (`SELECT FOR UPDATE`) или оптимистичные.    
 
 ---

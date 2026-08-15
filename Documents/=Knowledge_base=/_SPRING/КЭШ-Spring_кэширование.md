@@ -40,10 +40,8 @@
 	
 - **Ответственность**: предоставлять объекты `Cache` по их именам.
     
-- **Основные методы**:
-	    
+- **Основные методы**:	    
     - `Cache getCache(String name)`: получить кеш по имени.
-        
     - `Collection<String> getCacheNames()`: получить список всех доступных кешей.
     
 - **Популярные реализации**:
@@ -57,20 +55,15 @@
 |`CompositeCacheManager`|Объединяет несколько `CacheManager` (позволяет использовать цепочку).|
 
 #### 2.2.2. `Cache`
-Это **интерфейс**, представляющий конкретное хранилище кеша (по сути — «кеш-корзина»).
+Это **интерфейс**, предст-й конкретное хранилище кеша (по сути — «кеш-корзина»).
 	
 - **Ответственность**: выполнять операции CRUD над кеш-данными.
     
-- **Основные методы**:
-	    
+- **Основные методы**:	    
     - `ValueWrapper get(Object key)`: получить значение по ключу.
-        
-    - `<T> T get(Object key, Class<T> type)`: получить значение с приведением типа.
-        
+    - `<T> T get(Object key, Class<T> type)`: получить знач-е с приведением типа.
     - `void put(Object key, Object value)`: сохранить пару "ключ-значение".
-        
     - `void evict(Object key)`: удалить запись по ключу.
-        
     - `void clear()`: очистить весь кеш.
 
 #### 2.2.3. `KeyGenerator`
@@ -178,12 +171,15 @@ Spring Cache поддерживает **Spring Expression Language (SpEL)** д
 @Cacheable(value = "users", key = "#id")
 public User getUser(Long id) { ... }
 // Сложный ключ из нескольких аргументов
+
 @Cacheable(value = "users", key = "#firstName + '_' + #lastName")
 public User getUserByName(String firstName, String lastName) { ... }
 // Доступ к полям объекта
+
 @Cacheable(value = "users", key = "#user.id")
 public User updateUser(User user) { ... }
 // Доступ к вложенным свойствам
+
 @Cacheable(value = "orders", key = "#user.id + '_' + #order.status")
 public Order getOrder(User user, Order order) { ... }
 ```
@@ -195,7 +191,7 @@ public Order getOrder(User user, Order order) { ... }
 public User getUser(Long id) { ... }
 ```
 
-**`unless`** — НЕ кешировать, если условие истинно (проверяется после выполнения метода):
+**`unless`** — НЕ кешировать, если условие истинно (проверяется после вып-я метода):
 ```java
 @Cacheable(value = "users", unless = "#result == null || #result.isInactive()")
 public User getUser(Long id) { ... }
