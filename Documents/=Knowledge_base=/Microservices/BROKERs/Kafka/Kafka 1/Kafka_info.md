@@ -71,9 +71,9 @@ spring:
 @Service
 @RequiredArgsConstructor
 public class KafkaProducerService {
-
+	
     private final KafkaTemplate<String, String> kafkaTemplate;
-
+	
     public void send(String topic, String message) {
         kafkaTemplate.send(topic, message);
     }
@@ -94,7 +94,7 @@ public class KafkaConsumer {
 ```
 
 ---
-### 5️⃣ Создание топика (опционально)
+### 5️⃣ Создание топика *(опционально)*
 ```java
 @Bean
 public NewTopic topic() {
