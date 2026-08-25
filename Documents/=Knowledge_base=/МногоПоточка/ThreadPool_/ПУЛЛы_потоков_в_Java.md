@@ -16,7 +16,8 @@ Executors.newSingleThreadExecutor();
 ```java
 Executors.newScheduledThreadPool(5);
 ```
-### **5. `ForkJoinPool`** - для рекурсивных задач (*разделяй и властвуй*)
+### **5. [`ForkJoinPool`](Documents/=Knowledge_base=/МногоПоточка/ThreadPool_/ForkJoinPool)** - для рекурсивных задач 
+(*разделяй и властвуй*)
 - Использует **work-stealing** (воровство задач)    
 - Создается под количество ядер: `ForkJoinPool.commonPool()`    
 - Для задач: `RecursiveTask` (с возвратом) и `RecursiveAction` (без)    
@@ -26,3 +27,5 @@ pool.invoke(new MyRecursiveTask());
 ```
 
 **Основной принцип:** переиспользование потоков вместо создания новых, управление очередью задач.
+
+---
