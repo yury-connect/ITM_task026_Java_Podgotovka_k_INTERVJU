@@ -14,4 +14,4 @@ WAL (**Write-Ahead Logging**, журнал предзаписи) — это ==м
 - **Репликация**: журнал помогает передавать точную историю изменений на другие запасные серверы. [1](https://www.reddit.com/r/AskComputerScience/comments/1dfazpm/what_is_the_difference_between_a_write_ahead_log/?tl=ru)
 
 ---
-### Далее: <br> [Как работает WAL в **PostgreSQL**](Documents/=Knowledge_base=/DataBases/DB-relational/PostgreSQL/WAL_в_PostgreSQL)
+### Далее: <br> [Как работает WAL в **PostgreSQL**](DB-relational/=PostgreSQL=/WAL_в_PostgreSQL.md)

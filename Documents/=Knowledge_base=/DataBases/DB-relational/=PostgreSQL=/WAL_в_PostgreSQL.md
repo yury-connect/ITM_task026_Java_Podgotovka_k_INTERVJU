@@ -1,4 +1,4 @@
-# Как работает WAL в **PostgreSQL**
+# Как работает [WAL](Documents/=Knowledge_base=/DataBases/WAL_(Write-Ahead_Logging)) в **PostgreSQL**
 
 В **PostgreSQL** механизм WAL (Write-Ahead Logging) используется для обеспечения транзакционности (свойство ACID — Durability), быстрого восстановления после сбоев и работы репликации.
 
