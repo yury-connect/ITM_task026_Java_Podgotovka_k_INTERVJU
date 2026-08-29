@@ -20,11 +20,11 @@
 ```java
 Runnable task = () -> System.out.println("Hello from Runnable");
 executor.execute(task); // Ничего не возвращает
+```
 
 **Callable (с результатом):**
 
-java
-
+```java
 Callable<Integer> task = () -> {
     Thread.sleep(1000);
     return 42; // Результат вычисления
@@ -43,10 +43,13 @@ Integer result = future.get(); // 42
 ```java
 // Фиксированный пул из 5 потоков
 ExecutorService executor = Executors.newFixedThreadPool(5);
+
 // Кэширующий пул (создает потоки по мере необходимости)
 ExecutorService executor = Executors.newCachedThreadPool();
+
 // Одиночный поток (все задачи выполняются последовательно)
 ExecutorService executor = Executors.newSingleThreadExecutor();
+
 // Пул для отложенных задач
 ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(3);
 ```
