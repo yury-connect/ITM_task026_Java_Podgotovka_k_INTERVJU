@@ -16,7 +16,7 @@ Executors.newSingleThreadExecutor();
 ```java
 Executors.newScheduledThreadPool(5);
 ```
-### **5. [`ForkJoinPool`](Documents/=Knowledge_base=/МногоПоточка/ThreadPool_/ForkJoinPool)** - для рекурсивных задач 
+### **5. [`ForkJoinPool`](ForkJoinPool.md)** - для рекурсивных задач 
 (*разделяй и властвуй*)
 - Использует **work-stealing** (воровство задач)    
 - Создается под количество ядер: `ForkJoinPool.commonPool()`    
