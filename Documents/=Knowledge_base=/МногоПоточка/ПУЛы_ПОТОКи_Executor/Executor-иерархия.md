@@ -1,7 +1,7 @@
+## Иерархия **Executor**
 
 ---
-
-## 📦 Полная иерархия Executor (Итоговая структура)
+## 📦 Полная иерархия **Executor** (*Итоговая структура*)
 
 Вот **объединённая и полная структура**, которая включает все интерфейсы, их реализации и связь с `ForkJoinPool`.
 ```text
@@ -58,66 +58,58 @@
 | **`ForkJoinPool`**                | **Особый вид пула** <br>для рекурсивных задач <br>(параллельные стримы, `CompletableFuture`). <br>Работает по принципу **work-stealing** (воровство задач). | `ForkJoinPool.commonPool()` <br>(по умолчанию) или `new ForkJoinPool(parallelism)`                       |
 
 ---
-## 3️⃣ **Разница между `execute()**` и `submit()` (Важный нюанс)
+## 3️⃣ **Разница между `execute()` и `submit()`** (Важный нюанс)
 
-|Метод|Откуда|Принимает|Возвращает|Исключения|
-|---|---|---|---|---|
-|**`execute`**|`Executor`|Только `Runnable`|`void`|Исключение **теряется** (идёт в `System.err`)|
-|**`submit`**|`ExecutorService`|`Runnable` или `Callable`|`Future<?>` или `Future<V>`|Исключение **можно получить** через `future.get()`|
-
----
-## 4️⃣ **Как это всё связано с `Executors` (фабричный класс)**
-
-`Executors` — это утилитный класс с фабричными методами для создания готовых пулов:
-
-|Метод|Возвращает|Под капотом (`ThreadPoolExecutor`)|
-|---|---|---|
-|`newFixedThreadPool(n)`|`ExecutorService`|`corePoolSize = n`, `maxPoolSize = n`, `LinkedBlockingQueue`|
-|`newCachedThreadPool()`|`ExecutorService`|`corePoolSize = 0`, `maxPoolSize = ∞`, `SynchronousQueue`|
-|`newSingleThreadExecutor()`|`ExecutorService`|`corePoolSize = 1`, `maxPoolSize = 1`, `LinkedBlockingQueue`|
-|`newScheduledThreadPool(n)`|`ScheduledExecutorService`|На основе `ScheduledThreadPoolExecutor`|
-|`newWorkStealingPool()` (Java 8)|`ExecutorService`|На основе `ForkJoinPool` (воровство задач)|
+| Метод         | Откуда            | Принимает                     | Возвращает                          | Исключения                                                 |
+| ------------- | ----------------- | ----------------------------- | ----------------------------------- | ---------------------------------------------------------- |
+| **`execute`** | `Executor`        | Только <br>`Runnable`         | `void`                              | Исключение **теряется** <br>(идёт в `System.err`)          |
+| **`submit`**  | `ExecutorService` | `Runnable` <br>или `Callable` | `Future<?>` <br>или <br>`Future<V>` | Исключение <br>**можно получить** <br>через `future.get()` |
 
 ---
+## 4️⃣ **Как это всё связано с `Executors`** (фабричный класс)
 
+`Executors` — это утилитный класс с фабрич-ми методами для создания готовых пулов:
+
+| Метод                                | Возвращает                 | Под капотом (`ThreadPoolExecutor`)                                   |
+| ------------------------------------ | -------------------------- | -------------------------------------------------------------------- |
+| `newFixedThreadPool(n)`              | `ExecutorService`          | `corePoolSize = n`, <br>`maxPoolSize = n`, <br>`LinkedBlockingQueue` |
+| `newCachedThreadPool()`              | `ExecutorService`          | `corePoolSize = 0`, <br>`maxPoolSize = ∞`, <br>`SynchronousQueue`    |
+| `newSingleThreadExecutor()`          | `ExecutorService`          | `corePoolSize = 1`, <br>`maxPoolSize = 1`, <br>`LinkedBlockingQueue` |
+| `newScheduledThreadPool(n)`          | `ScheduledExecutorService` | На основе <br>`ScheduledThreadPoolExecutor`                          |
+| `newWorkStealingPool()` <br>(Java 8) | `ExecutorService`          | На основе `ForkJoinPool` <br>(воровство задач)                       |
+
+---
 ## 5️⃣ **Про `ForkJoinPool` — что это и зачем**
 
 - **Суть:** Пул для задач, которые могут рекурсивно разбиваться на подзадачи (Divide and Conquer).
     
-- **Механизм:** **Work-Stealing** — если поток закончил свои задачи, он может "украсть" задачу из очереди другого потока.
+- **Механизм:** **Work-Stealing** — если поток закончил свои задачи, он может "*украсть*" задачу из очереди другого потока.
     
-- **Где используется:**
+- **Где используется:**    
+    - `parallelStream()` (*по умолчанию*)        
+    - `CompletableFuture` (*в некоторых режимах*)        
+    - Рекурсивные алгоритмы (*например, `RecursiveTask`*)
     
-    - `parallelStream()` (по умолчанию)
-        
-    - `CompletableFuture` (в некоторых режимах)
-        
-    - Рекурсивные алгоритмы (например, `RecursiveTask`)
-        
-- **Как создать:** `ForkJoinPool.commonPool()` (общий пул на всё приложение) или `new ForkJoinPool(parallelism)` (свой).
-    
+- **Как создать:** `ForkJoinPool.commonPool()` (общий пул на всё приложение) или `new ForkJoinPool(parallelism)` (свой).    
 
 ---
-
-## 6️⃣ **Стратегии отказа (RejectedExecutionHandler)**
+## 6️⃣ **Стратегии отказа (`RejectedExecutionHandler`)**
 
 Когда очередь заполнена и достигнут `maximumPoolSize`, срабатывает обработчик:
 
-|Стратегия|Что делает|Когда использовать|
-|---|---|---|
-|**`AbortPolicy`**|Бросает `RejectedExecutionException` (по умолчанию)|Когда ошибка критична|
-|**`CallerRunsPolicy`**|Выполняет задачу в потоке, который вызвал `submit()`|Чтобы замедлить подачу задач (создать backpressure)|
-|**`DiscardPolicy`**|Молча удаляет задачу|Когда потеря задачи допустима|
-|**`DiscardOldestPolicy`**|Удаляет самую старую задачу из очереди и повторяет попытку|Для замены старых задач новыми|
+| Стратегия                 | Что делает                                                     | Когда использовать                                    |
+| ------------------------- | -------------------------------------------------------------- | ----------------------------------------------------- |
+| **`AbortPolicy`**         | Бросает `RejectedExecutionException` <br>(по умолчанию)        | Когда ошибка критична                                 |
+| **`CallerRunsPolicy`**    | Выполняет задачу в потоке, <br>который вызвал `submit()`       | Чтобы замедлить подачу задач (*создать backpressure*) |
+| **`DiscardPolicy`**       | Молча удаляет задачу                                           | Когда потеря задачи допустима                         |
+| **`DiscardOldestPolicy`** | Удаляет самую старую задачу <br>из очереди и повторяет попытку | Для замены старых задач новыми                        |
 
 ---
-
-## 7️⃣ **Главное правило (запомни для собеседования)**
+## 7️⃣ **Главное правило** (*запомни для собеседования*)
 
 > **На практике мы почти всегда работаем через интерфейсы (`ExecutorService` или `ScheduledExecutorService`), а конкретные реализации (`ThreadPoolExecutor`, `ForkJoinPool`) получаем через фабричные методы `Executors` или создаём вручную, когда нужен тонкий контроль.**
 
 ---
-
 ## 🎤 **Идеальный скрипт для собеседования (обновлённый)**
 
 > _«В Java есть иерархия исполнителей. В корне — интерфейс `Executor` с методом `execute()`. Его расширяет `ExecutorService`, добавляя управление пулом, завершение и работу с результатами через `Future`. `ScheduledExecutorService` — это интерфейс для отложенных и периодических задач._
@@ -127,17 +119,16 @@
 > _Отдельно стоит `ForkJoinPool` для рекурсивных задач — он использует work-stealing и лежит в основе `parallelStream()`. Разница между `execute()` и `submit()` в том, что `submit()` возвращает `Future`, позволяя получить результат и поймать исключение, а `execute()` просто запускает задачу без обратной связи.»_
 
 ---
+## 📊 Итоговая шпаргалка (*для быстрого повторения*)
 
-## 📊 Итоговая шпаргалка (для быстрого повторения)
+| Понятие                       | Связь                                               | Ключевое слово                                                     |
+| ----------------------------- | --------------------------------------------------- | ------------------------------------------------------------------ |
+| `Executor`                    | Интерфейс, корень                                   | `execute(Runnable)`                                                |
+| `ExecutorService`             | Расширяет `Executor`                                | `submit()`, `shutdown()`, `Future`                                 |
+| `ScheduledExecutorService`    | Расширяет `ExecutorService`                         | `schedule()`, `scheduleAtFixedRate()`                              |
+| `ThreadPoolExecutor`          | Класс — реализация `ExecutorService`                | 7 параметров, очередь, стратегия отказа                            |
+| `ScheduledThreadPoolExecutor` | Класс — наследник `ThreadPoolExecutor`              | Для задержек и периодичности                                       |
+| `ForkJoinPool`                | Отдельный класс (не наследник `ThreadPoolExecutor`) | Work-stealing, `parallelStream`, `CompletableFuture`               |
+| `Executors`                   | Утилитный класс                                     | `newFixedThreadPool`, `newCachedThreadPool`, `newWorkStealingPool` |
 
-|Понятие|Связь|Ключевое слово|
-|---|---|---|
-|`Executor`|Интерфейс, корень|`execute(Runnable)`|
-|`ExecutorService`|Расширяет `Executor`|`submit()`, `shutdown()`, `Future`|
-|`ScheduledExecutorService`|Расширяет `ExecutorService`|`schedule()`, `scheduleAtFixedRate()`|
-|`ThreadPoolExecutor`|Класс — реализация `ExecutorService`|7 параметров, очередь, стратегия отказа|
-|`ScheduledThreadPoolExecutor`|Класс — наследник `ThreadPoolExecutor`|Для задержек и периодичности|
-|`ForkJoinPool`|Отдельный класс (не наследник `ThreadPoolExecutor`)|Work-stealing, `parallelStream`, `CompletableFuture`|
-|`Executors`|Утилитный класс|`newFixedThreadPool`, `newCachedThreadPool`, `newWorkStealingPool`|
-
-Теперь у тебя **полный, структурированный ответ**, который покрывает и теорию, и практику, и нюансы для собеседования. 🚀
+---
