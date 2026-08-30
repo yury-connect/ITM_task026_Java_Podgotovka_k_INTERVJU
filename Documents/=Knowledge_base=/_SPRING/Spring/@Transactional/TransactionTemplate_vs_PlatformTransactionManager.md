@@ -18,13 +18,12 @@
     - **Read-only (Только чтение)**: Флаг, что транзакция только читает данные [](http://rwinch.github.io/spring-framework/data-access/transaction/strategies.html).
     
 - **`TransactionStatus` (Состояние)** [](http://rwinch.github.io/spring-framework/data-access/transaction/strategies.html)[](https://spring.pleiades.io/spring-framework/docs/1.2.7/javadoc-api/org/springframework/transaction/package-summary.html): Этот интерфейс отражает текущее _состояние_ конкретной транзакции. Через него можно:
-    
+	    
     - Проверить, является ли транзакция новой.
         
     - Установить флаг `rollback-only` (принудительный откат).
         
     - Проверить, отмечена ли транзакция на откат [](http://rwinch.github.io/spring-framework/data-access/transaction/strategies.html).
-        
 
 ### 🧬 Иерархия и реализации: От абстракции к конкретике
 
@@ -46,18 +45,17 @@
 1. **Декларативный (`@Transactional`)**: Самый популярный способ. Вы просто вешаете аннотацию `@Transactional` на метод, а Spring AOP автоматически подхватывает правильный `PlatformTransactionManager` и оборачивает метод в транзакцию. Это чистый и ненавязчивый подход [](https://docs.spring.io/spring-framework/docs/6.0.0-RC3/reference/pdf/data-access.pdf#19#1).
     
 2. **Программный (`TransactionTemplate`)**: Этот подход используется, когда нужен более тонкий контроль. **`TransactionTemplate`** — это **обертка над `PlatformTransactionManager`**, которая сильно упрощает работу с ним [](https://docs.spring.io/spring-framework/docs/1.0.2/javadoc-api/org/springframework/transaction/support/TransactionTemplate.html#getTransactionManager\(\))[](https://spring.pleiades.io/spring/reference/6.2/data-access/transaction/programmatic.html).
-    
+	    
     - Вы создаете `TransactionTemplate`, передавая ему нужный `PlatformTransactionManager`.
         
     - Затем вызываете его метод `execute()`, передавая блок кода в виде колбэка (`TransactionCallback`).
         
     - Шаблон сам берет на себя всю "грязную" работу: открытие, коммит, откат и обработку исключений. Он по сути, реализует паттерн "Шаблонный метод" для транзакций [](https://docs.spring.io/spring-framework/reference/6.2/data-access/transaction/programmatic.html)[](https://cloud.tencent.cn/developer/article/1937169?from=15425#3)[](https://spring.pleiades.io/spring/reference/6.2/data-access/transaction/programmatic.html).
-        
 
 ### 💎 Итоговая схема связей
 
 Представьте это так:
-
+	
 1. **`PlatformTransactionManager`** — это **интерфейс**, который задает контракт для управления транзакциями.
     
 2. **`AbstractPlatformTransactionManager`** — это абстрактный класс, который реализует общую логику и служит фундаментом для конкретных реализаций.
@@ -67,6 +65,7 @@
 4. **`TransactionTemplate`** — это удобный **инструмент**, который использует `PlatformTransactionManager`, чтобы предоставить простой программный API.
     
 5. **`@Transactional`** — это **декларативный способ**, который использует всё ту же инфраструктуру `PlatformTransactionManager` "под капотом".
-    
 
 Таким образом, независимо от того, используете ли вы `@Transactional` или `TransactionTemplate`, в конечном итоге все упирается в `PlatformTransactionManager`. Это и есть суть элегантной абстракции Spring.
+
+---
