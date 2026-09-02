@@ -1,10 +1,6 @@
----
+# 🔍 Index Scan vs Index Only Scan — супер-кратко
 
 ---
-Index Scan vs Index Only Scan
-
-## 🔍 Index Scan vs Index Only Scan — супер-кратко
-
 ### 📌 **Index Scan (Сканирование индекса)**
 1. Находит в индексе **адреса** (TID) нужных строк.    
 2. Идёт **в таблицу** (heap) по этим адресам, чтобы прочитать остальные данные.    
