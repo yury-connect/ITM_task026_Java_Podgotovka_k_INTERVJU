@@ -24,6 +24,7 @@
 19.Как в общих чертах работают proling, tiered compilation, inlining, devirtualization и escape analysis?
 20.Что такое JMH и почему микробенчмарки “на коленке” в Java часто дают ложные выводы о производительности?
 ```
+
 ---
 
 **1. В чем разница между JDK, JRE и JVM?**
