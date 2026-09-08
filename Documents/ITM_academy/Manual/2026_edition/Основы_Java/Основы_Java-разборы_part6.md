@@ -6,21 +6,21 @@
 93.Что такое функциональный интерфейс и зачем он нужен в Java?
 94.Чем lambda-выражение отличается от анонимного класса?
 95.Что такое method reference и когда он действительно улучшает код, а когда только ухудшает читаемость?
-96.Почему локальные переменные, захватываемые lambda-выражением, должны быть eectively 躽nal?
+96.Почему локальные переменные, захватываемые lambda-выражением, должны быть effectively final?
 97.Что такое замыкание в контексте Java lambda-выражений и как оно работает?
 98.Что такое Stream в Java и чем он концептуально отличается от коллекции?
 99.Что такое stream pipeline и почему промежуточные операции ленивые?
 100.Какие операции у Stream являются intermediate, а какие terminal?
 101.Что такое stateless и stateful intermediate operations?
 102.Почему sorted() и distinct() могут резко менять стоимость pipeline?
-103.Чем map() отличается от 런atMap()?
+103.Чем map() отличается от flatMap()?
 104.Как Stream работает под капотом на уровне single-pass обработки элементов и почему один и тот же Stream нельзя использовать повторно?
 105.Почему reduce() и collect() — это не одно и то же?
 106.Что такое mutable reduction и из чего состоит Collector: supplier, accumulator, combiner, nisher?
 107.Что означают характеристики collector’а вроде CONCURRENT, UNORDERED и IDENTITY_FINISH?
 108.Как работают groupingBy(), partitioningBy() и downstream collectors?
 109.Почему побочные эффекты внутри stream-операций считаются опасной практикой?
-110.Как работают short-circuit операции вроде ndFirst(), ndAny(), anyMatch() и allMatch(), когда parallelStream() действительно может помочь, а когда только ухудшит ситуацию, и какую роль здесь играет Spliterator?
+110.Как работают short-circuit операции вроде ndFirst(), andAny(), anyMatch() и allMatch(), когда parallelStream() действительно может помочь, а когда только ухудшит ситуацию, и какую роль здесь играет Spliterator?
 ```
 ---
 **93. Функциональный интерфейс и его роль в Java**
