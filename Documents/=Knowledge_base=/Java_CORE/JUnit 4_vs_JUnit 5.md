@@ -1,18 +1,36 @@
-# 🧪 JUnit 4 vs JUnit 5
+# 🧪 **`JUnit 4`** vs **`JUnit 5
+`**
+#### **Вариант ответа № 1:**
+### 🧪 Главные отличия JUnit 4 и JUnit 5
+- **Модульность:** JUnit 4 — один монолитный фреймворк. JUnit 5 разделен на три части: 1️⃣**Platform** (запуск), 2️⃣**Jupiter** (новый API) и 3️⃣**Vintage** (поддержка старых тестов JUnit 3/4).
+    
+- **Понятные аннотации:**    
+    - `@Before` / `@After` $\rightarrow$ `@BeforeEach` / `@AfterEach` (каждый тест)        
+    - `@BeforeClass` / `@AfterClass` $\rightarrow$ `@BeforeAll` / `@AfterAll` (один раз на класс) 
+    - `@Ignore` $\rightarrow$ `@Disabled` (пропустить)
+    
+- **Единый механизм расширений:** Мешанину из `@RunWith` и `@Rule` заменили на один гибкий аннотатор `@ExtendWith`.
+    
+- **Новые фичи из коробки:**    
+    - Удобные параметризованные тесты (`@ParameterizedTest`).        
+    - Группировка тестов во вложенные классы (`@Nested`).        
+    - Человекочитаемые названия (`@DisplayName`).  !!!!!       
+    - `assertAll()` — проверка сразу нескольких условий (*тест не падают на первой же ошибке*).        
 
-- 🏛️ **Архитектура:** JUnit 4 — практически единый фреймворк. JUnit 5 разделён на **Platform** (запуск), **Jupiter** (новый API) и **Vintage** (запуск старых тестов JUnit 3/4).
-- 🏷️ **Аннотации:** в основном изменились названия:
-    - `@Before` → `@BeforeEach`
-    - `@After` → `@AfterEach`
-    - `@BeforeClass` → `@BeforeAll`
-    - `@AfterClass` → `@AfterAll`
-    - `@Ignore` → `@Disabled`
-    - `@Test` в JUnit 5 — `org.junit.jupiter.api.Test`
-- 🛠️ **Расширения:** в JUnit 4 использовались `@RunWith` и `Rule`, в JUnit 5 — единый механизм **Extensions** через `@ExtendWith`.
-- ⚡ **Возможности:** JUnit 5 добавил более удобные **параметризованные тесты** (`@ParameterizedTest`), вложенные тесты (`@Nested`), понятные имена (`@DisplayName`) и `assertAll`.
+> **Ответ для собеседования:**> 
+> JUnit 5 стал модульным, ушел от монструозных раннеров/рулов к единому `@ExtendWith`, обновил названия аннотаций (`@BeforeEach`) и получил полноценную встроенную поддержку параметризованных и вложенных тестов.
 
-### 🎯 Совсем кратко для собеса:
-> **JUnit 5 — это более современная и расширяемая версия JUnit 4.  
-> Основные изменения — новые аннотации `@BeforeEach/@AfterEach`, единый механизм Extensions вместо `Runner/Rule`, плюс удобные параметризованные и вложенные тесты.**
+#### **Вариант ответа № 2:**
+- 🏛️ **Архитектура:** JUnit 4 — монолитная библиотека (`junit.jar`). JUnit 5 состоит из 3 независимых модулей: `JUnit Platform` (запуск тестов), `JUnit Jupiter` (новый API) и `JUnit Vintage` (обратная совместимость с JUnit 3/4).
+    
+- 🏷️ **Аннотации:**    
+    - `@Test` — в JUnit 5 находится в пакете `org.junit.jupiter.api`.        
+    - `@Before` / `@After` $\rightarrow$ заменены на `@BeforeEach` / `@AfterEach`.        
+    - `@BeforeClass` / `@AfterClass` $\rightarrow$ заменены на `@BeforeAll` / `@AfterAll`.        
+    - `@Ignore` $\rightarrow$ заменена на `@Disabled`.
+    
+- 🛠️ **Расширяемость:** Вместо громоздких `@RunWith` и `Rule` в JUnit 5 используется единая модель расширений **`@ExtendWith`** (например, `@ExtendWith(MockitoExtension.class)`).
+    
+- ⚡ **Новые фичи:** Встроенная поддержка параметризованных тестов (`@ParameterizedTest`), иерархических вложенных тестов (`@Nested`), кастомных имен (`@DisplayName`) и группировки утверждений (`assertAll`).
 
 ---
