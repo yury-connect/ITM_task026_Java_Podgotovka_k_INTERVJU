@@ -1,4 +1,5 @@
 # Какие **четыре статуса жизненного цикла** `Entity` объекта (*Entity Instance’s Life Cycle*) вы можете перечислить?
+[ссылка на оригинал](Documents/ITM_academy/itm05_Hibernate/solutions/19_4_статуса_ж_ц_Entity)
 
 ---
 ## 🔄 Жизненный цикл `Entity` в *JPA*
