@@ -8,9 +8,11 @@ switch (payment) {
     case CreditCardPayment cc:
         System.out.println("Прокатываем карту");
         break; // БЕЗ BREAK - провалится в следующий case!
+        
     case PayPalPayment pp:
         System.out.println("Перенаправляем на PayPal");
         break;
+        
     default:
         System.out.println("Неизвестный платеж");
 }
@@ -26,18 +28,17 @@ switch (payment) {
 // ✅ Новый стиль (без fall-through!)
 switch (payment) {
     case CreditCardPayment cc -> System.out.println("Прокатываем карту");
-    case PayPalPayment pp     -> System.out.println("Перенаправляем на PayPal");
+    
+    case PayPalPayment pp     -> System.out.println("Перенапр. на PayPal");
+    
     case CryptoPayment crypto -> System.out.println("Ждем подтверждения");
     // break НЕ НУЖЕН!
 }
 ```
 
-**Что происходит:**
-	
-- Стрелка `->` означает, что выполняется **только один блок** для выбранного `case`.
-    
+**Что происходит:**	
+- Стрелка `->` означает, что вып-ся **только один блок** для выбранного `case`.
 - **Fall-through отсутствует** по умолчанию.
-    
 - Не нужен `break`, т.к. после выполнения блока `switch` завершается автоматически.
 
 ---
@@ -51,6 +52,7 @@ switch (payment) {
         logPayment(cc);
         // break НЕ НУЖЕН даже в блоке!
     }
+    
     case PayPalPayment pp -> {
         System.out.println("Перенаправляем на PayPal");
         redirectToPayPal(pp);
