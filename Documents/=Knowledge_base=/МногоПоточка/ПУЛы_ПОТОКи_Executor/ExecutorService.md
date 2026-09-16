@@ -39,6 +39,4 @@
 
 - `close()` — закрывает исполнитель (удобно использовать с конструкцией `try-with-resources`). [1](https://javarush.com/quests/lectures/questservlets.level19.lecture06), [2](https://metanit.com/java/tutorial/8.14.php)
 
-Если хотите, я могу показать **пример кода** с использованием `ExecutorService` и объяснить разницу между задачами `Runnable` и `Callable`.
-
 ---
