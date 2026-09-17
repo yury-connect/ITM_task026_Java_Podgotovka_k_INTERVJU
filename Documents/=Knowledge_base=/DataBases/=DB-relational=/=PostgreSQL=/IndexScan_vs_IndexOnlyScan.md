@@ -9,7 +9,7 @@
 1. **Поиск в индексе:** База данных находит нужные записи (например, `WHERE id = 5`) и получает из индекса физический адрес строки в основной таблице.
     
 2. **Обращение к таблице:** По этому адресу она извлекает саму строку данных (все её столбцы) из основной таблицы (heap) [](https://www.rockdata.net/tutorial/plan-index-scan-types/#bitmap-index-scan)[](https://www.percona.com/blog/one-index-three-different-postgresql-scan-types-bitmap-index-and-index-only/?trk=public_post-text)[](https://www.percona.com/blog/one-index-three-different-postgresql-scan-types-bitmap-index-and-index-only/).
-
+	
 Этот метод эффективен, когда нужно получить небольшое количество строк, но каждое такое обращение — это две операции ввода-вывода (сначала индекс, потом таблица).
 
 ## ⚡ `Index Only Scan` (*Сканирование **только** по индексу*)
