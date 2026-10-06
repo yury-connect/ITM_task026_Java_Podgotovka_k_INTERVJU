@@ -1,4 +1,4 @@
-# 🌳 GiST — «инфраструктура для сложных типов» (третий по частоте)
+# 🌳 **GiST** — «инфраструктура для сложных типов» <br>(*третий по частоте*)
 
 **Принцип работы**: Это не один индекс, а **инфраструктура (*фреймворк*)**, в рамках которой можно реализовать разные стратегии индексации для сложных типов данных. Он позволяет строить сбалансированные деревья, где каждый узел хранит «обобщённую» информацию о своих потомках (например, ограничивающий прямоугольник для геометрии)[](https://www.postgresql.org/docs/current/indexes-types.html?utm_source=balun_courses&utm_medium=organic&utm_campaign=junior_golang?utm_source=telegram&utm_medium=cpc&utm_campaign=Golang_google&utm_term=vnutrennee-ustrojstvo-allokatora&erid=LjN8KS8u1?utm_source=balun_courses&utm_medium=organic&utm_campaign=junior_golang?utm_source=telegram&utm_medium=cpc&utm_campaign=Golang_google&utm_term=vnutrennee-ustrojstvo-allokatora&erid=LjN8KS8u1).
 

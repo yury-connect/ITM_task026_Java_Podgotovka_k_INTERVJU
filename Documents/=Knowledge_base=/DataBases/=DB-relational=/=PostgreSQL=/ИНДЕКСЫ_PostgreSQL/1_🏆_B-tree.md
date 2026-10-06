@@ -1,4 +1,4 @@
-# 🏆 B-tree — «рабочая лошадка» (*используется в 95% случаев*)
+# 🏆 **B-tree** — «рабочая лошадка» <br>(*используется в 95% случаев*)
 
 **Принцип работы**: Сбалансированное дерево, где данные отсортированы по ключу. Это классический индекс, кот-й по умолчанию создаётся командой `CREATE INDEX`[](https://www.postgresql.org/docs/current/indexes-types.html?utm_source=balun_courses&utm_medium=organic&utm_campaign=junior_golang?utm_source=telegram&utm_medium=cpc&utm_campaign=Golang_google&utm_term=vnutrennee-ustrojstvo-allokatora&erid=LjN8KS8u1?utm_source=balun_courses&utm_medium=organic&utm_campaign=junior_golang?utm_source=telegram&utm_medium=cpc&utm_campaign=Golang_google&utm_term=vnutrennee-ustrojstvo-allokatora&erid=LjN8KS8u1).
 
