@@ -1,4 +1,4 @@
-# 2️⃣ Частичный индекс (Partial Index) ✂️
+# 2️⃣ Частичный индекс (*Partial Index*) ✂️
 
 Индекс, включающий в себя не все строки таблицы, а только подпадающие под условие `WHERE`: `CREATE INDEX ON orders (created_at) WHERE status = 'PENDING'`.
 
