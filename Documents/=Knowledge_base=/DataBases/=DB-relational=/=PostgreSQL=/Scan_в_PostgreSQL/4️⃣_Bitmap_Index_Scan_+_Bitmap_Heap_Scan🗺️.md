@@ -1,5 +1,4 @@
-# 4️⃣ Bitmap Index Scan + Bitmap Heap Scan 🗺️
-
+# 4️⃣ 🗺️ Bitmap Scan <br>(*Bitmap Index Scan + Bitmap Heap Scan*)
 Умный компромиссный механизм Postgres, который превращает медленный Random I/O в быстрый Sequential I/O!
 
 - ⚙️ **Принцип работы:** Проходит в два этапа:
