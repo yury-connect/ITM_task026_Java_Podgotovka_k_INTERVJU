@@ -1,4 +1,4 @@
-**OSIV (Open Session in View)** — это паттерн и настройка в Spring Boot / Spring ORM, которая удерживает Hibernate Session (и, соответственно, соединение с базой данных) **открытой на протяжении всего времени обработки HTTP-запроса** — вплоть до отрисовки шаблона или формирования JSON-ответа во View/Controller layer.
+**OSIV (Open Session in View)** — это паттерн и настройка в Spring Boot / Spring ORM, которая удерживает Hibernate Session (*и, соответственно, соединение с базой данных*) **открытой на протяжении всего времени обработки HTTP-запроса** — вплоть до отрисовки шаблона или формирования JSON-ответа во View/Controller layer.
 
 В Spring Boot по умолчанию эта настройка включена (`spring.jpa.open-in-view=true`).
 
@@ -32,7 +32,7 @@ spring:
 ```
 
 #### Что делать вместо OSIV, чтобы не было `LazyInitializationException`:
-
+	
 - 🎯 **Использовать DTO и Projection:** Не отдавать Entity напрямую из контроллеров. Маппить данные в DTO внутри `@Transactional` слоя сервиса.
     
 - 🔗 **Fetch Joins / Entity Graphs:** Загружать необходимые связанные сущности за один SQL-запрос с помощью `JOIN FETCH` в JPQL или аннотации `@EntityGraph`.
@@ -42,3 +42,5 @@ spring:
 ### 🎤 Короткая шпаргалка для собеседования
 
 > «**OSIV (Open Session in View)** держит сессию Hibernate открытой на всё время HTTP-запроса, чтобы избежать `LazyInitializationException` при обращении к ленивым полям во View/Controller. В Spring Boot он включен по умолчанию, но в продакшене считается антипаттерном, так как ведет к истощению пула соединений, неконтролируемым N+1 запросам при сериализации в JSON и размытию слоев. Правильное решение — отключить `open-in-view: false`, загружать нужные данные через `JOIN FETCH` / `EntityGraph` внутри `@Transactional` сервиса и возвращать DTO.» 🚀
+
+---
