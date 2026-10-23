@@ -14,14 +14,13 @@
 
 **`ScheduledThreadPoolExecutor`** — наследник `ThreadPoolExecutor`, реализующий `ScheduledExecutorService`. Использует специальную очередь `DelayedWorkQueue`, чтобы задачи «просыпались» в нужное время.
 
-**`ForkJoinPool`** — отдельный, независимый класс. Не наследует `ThreadPoolExecutor`. Создан для алгоритмов «Разделяй и властвуй» и использует механизм **Work-Stealing** (потоки «воруют» задачи из очередей друг друга).
+**`ForkJoinPool`** — отдельный, независимый класс. Не наследует `ThreadPoolExecutor`. Создан для алгоритмов «Разделяй и властвуй» и использует механизм **Work-Stealing** (*потоки «воруют» задачи из очередей друг друга*).
 
 ---
-
 ### 📦 3. Готовые пулы (Фабрика `Executors`)
 
 Утилитный класс `Executors` создает предварительно настроенные пулы, которые скрывают под капотом `ThreadPoolExecutor` или `ForkJoinPool`:
-
+	
 - **`newFixedThreadPool(n)`** — фиксированное количество потоков `n`. Использует бесконечную очередь `LinkedBlockingQueue`.
     
 - **`newCachedThreadPool()`** — гибкий пул (от 0 до `Integer.MAX_VALUE`). Использует `SynchronousQueue` (задачи сразу передаются свободному потоку или создают новый).
@@ -32,15 +31,11 @@
     
 - **`newWorkStealingPool()`** — базируется на `ForkJoinPool`. Создает пул, количество потоков в котором равно количеству ядер процессора.
     
-- **`newVirtualThreadPerTaskExecutor()`** (Java 21+) — создает новый виртуальный поток на каждую задачу.
-    
+- **`newVirtualThreadPerTaskExecutor()`** (Java 21+) — создает новый виртуальный поток на каждую задачу.    
 
 ---
-
 ### 🔗 4. Краткая схема иерархии
-
-text
-
+```text
 Executor (интерфейс: execute)
   └── ExecutorService (интерфейс: submit, shutdown)
         ├── ThreadPoolExecutor (класс: основной движок)
@@ -48,9 +43,9 @@ Executor (интерфейс: execute)
         │           └── (реализует ScheduledExecutorService)
         ├── ScheduledExecutorService (интерфейс: schedule)
         └── ForkJoinPool (отдельный класс: для рекурсии и work-stealing)
+```
 
 ---
-
 ### 🎯 Как это выглядит на практике (для собеса)
 
 1. **Самый базовый** — `Executor` (запустил и забыл).
@@ -60,3 +55,24 @@ Executor (интерфейс: execute)
 3. **С таймером** — `ScheduledExecutorService` (например, `newScheduledThreadPool`), где задачи выполняются по расписанию.
     
 4. **Для параллельных стримов и тяжелых рекурсивных задач** — `ForkJoinPool` (например, `newWorkStealingPool`).
+
+```text
+🌳 Executor (Интерфейс: execute)
+  └── 🌳 ExecutorService (Интерфейс: submit, shutdown, invokeAll)
+        │
+        ├── ⚙️ ThreadPoolExecutor (Класс: основной стандартный движок)
+        │     ├── 🛠️ newFixedThreadPool(N) (Фабрика)
+        │     ├── 🛠️ newCachedThreadPool() (Фабрика)
+        │     └── 🛠️ newSingleThreadExecutor() (Фабрика)
+        │
+        ├── ⏰ ScheduledExecutorService (Интерфейс: schedule, scheduleAtFixedRate)
+        │     └── ⚙️ ScheduledThreadPoolExecutor (Класс: наследует ThreadPoolExecutor)
+        │           ├── 🛠️ newScheduledThreadPool(N) (Фабрика)
+        │           └── 🛠️ newSingleThreadScheduledExecutor() (Фабрика)
+        │
+        ├── 🥋 ForkJoinPool (Класс: отдельная ветка для Work-Stealing)
+        │     └── 🛠️ newWorkStealingPool() (Фабрика)
+        │
+        └── 🧵 ThreadPerTaskExecutor (Класс: Java 21+, скрыт под капотом)
+              └── 🛠️ newVirtualThreadPerTaskExecutor() (Фабрика)
+```
