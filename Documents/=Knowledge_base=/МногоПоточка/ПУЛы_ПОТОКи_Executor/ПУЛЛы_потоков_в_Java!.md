@@ -1,22 +1,16 @@
-В Java существует четкая иерархия интерфейсов и классов, отвечающих за пулы потоков. Всё начинается с простого интерфейса и дорастает до мощных настраиваемых движков.
-
-Вот полная структура — от «корня» до конкретных реализаций.
-
----
-
 ### 🏗️ 1. Иерархия интерфейсов
 
-**`Executor`** — самый корень. Умеет только запускать задачу (`execute(Runnable)`). Не умеет возвращать результат и не управляет жизненным циклом пула.
+**`Executor`** — самый корень. Умеет **только запускать** задачу (`execute(Runnable)`). 
+Не умеет возвращать результат и не управляет жизненным циклом пула.
 
-**`ExecutorService`** — расширяет `Executor`. Добавляет управление жизненным циклом (`shutdown()`, `awaitTermination()`) и возможность получать результаты через `submit()` (возвращает `Future`).
+**`ExecutorService`** — расширяет `Executor`. Добавляет **управление жизненным циклом** (`shutdown()`, `awaitTermination()`) и возможность **получать результаты** через `submit()` (возвращает `Future`).
 
-**`ScheduledExecutorService`** — расширяет `ExecutorService`. Добавляет методы для отложенного и периодического выполнения задач (`schedule()`, `scheduleAtFixedRate()`, `scheduleWithFixedDelay()`).
+**`ScheduledExecutorService`** — расширяет `ExecutorService`. Добавляет методы для **отложенного** и **периодического выполнения** задач (`schedule()`, `scheduleAtFixedRate()`, `scheduleWithFixedDelay()`).
 
 ---
+### ⚙️ 2. Классы-реализации (*Движки*)
 
-### ⚙️ 2. Классы-реализации (Движки)
-
-**`ThreadPoolExecutor`** — главный универсальный класс, реализующий `ExecutorService`. На его настройках (corePoolSize, maximumPoolSize, очередь, keepAliveTime, стратегия отказа) построены все стандартные пулы.
+**`ThreadPoolExecutor`** — главный универсальный **класс**, реализующий `ExecutorService`. На его настройках (corePoolSize, maximumPoolSize, очередь, keepAliveTime, стратегия отказа) построены все стандартные пулы.
 
 **`ScheduledThreadPoolExecutor`** — наследник `ThreadPoolExecutor`, реализующий `ScheduledExecutorService`. Использует специальную очередь `DelayedWorkQueue`, чтобы задачи «просыпались» в нужное время.
 
