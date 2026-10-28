@@ -4,25 +4,17 @@
 int[] multiArr[];
 ```
 
-- multiArr = new int[][3];    
-- multiArr = new int[];    
-- multiArr = new int[3][3];    
-- multiArr = new int[3][];    
+- `multiArr = new int[][3]`;    
+- `multiArr = new int[]`;    
+- `multiArr = new int[3][3]`;    
+- `multiArr = new int[3][]`;    
 
 ---
+## 5/9: Какие ДВА описания массива скомпилируются для данного объявления массива?
 
-**Перевод задания на русский:**
+- `multiArr = new int[][3]`;
+- `multiArr = new int[]`;
+- `multiArr = new int[3][3]`;
+- `multiArr = new int[3][]`;
 
-5/9: Какие ДВА описания массива скомпилируются для данного объявления массива?
-
-java
-
-int[] multiArr[];
-
-- multiArr = new int[][3];
-    
-- multiArr = new int[];
-    
-- multiArr = new int[3][3];
-    
-- multiArr = new int[3][];
+---
