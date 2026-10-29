@@ -18,7 +18,7 @@
     ├── ⚙️ ForkJoinPool (Класс: отдельная ветка для Work-Stealing)
     │     └── 🛠️ newWorkStealingPool() (Фабрика)
     │
-    └── 🧵 ThreadPerTaskExecutor (Класс: Java 21+, скрыт под капотом)
+    └── ⚙️ ThreadPerTaskExecutor (Класс: Java 21+, скрыт под капотом)
           └── 🛠️ newVirtualThreadPerTaskExecutor() (Фабрика)
 ```
 
@@ -45,11 +45,11 @@
 
 #### 🛠️ **Фабрики** (*Создают пулы в классе* `Executors`)
 	
+- **`newSingleThreadExecutor()`** -> Создает `ThreadPoolExecutor` с `core = max = 1` и бесконечной очередью.
+	  
 - **`newFixedThreadPool(N)`** -> Создает `ThreadPoolExecutor` с `core = max = N` и бесконечной очередью `LinkedBlockingQueue`.
     
 - **`newCachedThreadPool()`** -> Создает `ThreadPoolExecutor` с `core = 0`, `max = Integer.MAX_VALUE` и очередью `SynchronousQueue`.
-    
-- **`newSingleThreadExecutor()`** -> Создает `ThreadPoolExecutor` с `core = max = 1` и бесконечной очередью.
     
 - **`newScheduledThreadPool(N)`** -> Создает `ScheduledThreadPoolExecutor` с базовым размером `N`.
     
