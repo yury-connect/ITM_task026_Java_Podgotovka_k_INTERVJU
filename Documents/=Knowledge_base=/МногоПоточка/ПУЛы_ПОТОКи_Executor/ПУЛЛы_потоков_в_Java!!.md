@@ -4,37 +4,37 @@
 ```text
 🌳 Executor (Интерфейс: execute)
   └── 🌳 ExecutorService (Интерфейс: submit, shutdown, invokeAll)
-        │
-        ├── ⚙️ ThreadPoolExecutor (Класс: основной стандартный движок)
-        │     ├── 🛠️ newFixedThreadPool(N) (Фабрика)
-        │     ├── 🛠️ newCachedThreadPool() (Фабрика)
-        │     └── 🛠️ newSingleThreadExecutor() (Фабрика)
-        │
-        ├── ⏰ ScheduledExecutorService (Интерфейс: schedule, scheduleAtFixedRate)
-        │     └── ⚙️ ScheduledThreadPoolExecutor (Класс: насл. ThreadPoolExecutor)
-        │           ├── 🛠️ newScheduledThreadPool(N) (Фабрика)
-        │           └── 🛠️ newSingleThreadScheduledExecutor() (Фабрика)
-        │
-        ├── 🥋 ForkJoinPool (Класс: отдельная ветка для Work-Stealing)
-        │     └── 🛠️ newWorkStealingPool() (Фабрика)
-        │
-        └── 🧵 ThreadPerTaskExecutor (Класс: Java 21+, скрыт под капотом)
-              └── 🛠️ newVirtualThreadPerTaskExecutor() (Фабрика)
+    │
+    ├── ⚙️ ThreadPoolExecutor (Класс: основной стандартный движок)
+    │     ├── 🛠️ newSingleThreadExecutor() (Фабрика)
+    │     ├── 🛠️ newFixedThreadPool(N) (Фабрика)
+    │     └── 🛠️ newCachedThreadPool() (Фабрика)
+    │
+    ├── ⏰ ScheduledExecutorService (Интерфейс: schedule, scheduleAtFixedRate)
+    │     └── ⚙️ ScheduledThreadPoolExecutor (Класс: насл. ThreadPoolExecutor)
+    │           ├── 🛠️ newScheduledThreadPool(N) (Фабрика)
+    │           └── 🛠️ newSingleThreadScheduledExecutor() (Фабрика)
+    │
+    ├── ⚙️ ForkJoinPool (Класс: отдельная ветка для Work-Stealing)
+    │     └── 🛠️ newWorkStealingPool() (Фабрика)
+    │
+    └── 🧵 ThreadPerTaskExecutor (Класс: Java 21+, скрыт под капотом)
+          └── 🛠️ newVirtualThreadPerTaskExecutor() (Фабрика)
 ```
 
 ---
 ### 🔍 Подробный разбор каждого элемента
 
-#### 🌳 Интерфейсы (Задают контракт)
-
+#### 🌳 **Интерфейсы** (*Задают контракт*)
+	
 - **`Executor`** — базовый контракт. Умеет только `execute()`.
     
 - **`ExecutorService`** — основной рабочий контракт. Добавляет `submit()` (возвращает `Future`), управление завершением (`shutdown()`) и пакетный запуск (`invokeAll()`).
     
 - **`ScheduledExecutorService`** — контракт для планировщика (задачи с задержкой или по расписанию).
 
-#### ⚙️ Классы (Реальные движки)
-
+#### ⚙️ **Классы** (*Реальные движки*)
+	
 - **`ThreadPoolExecutor`** — главный класс. Все три фабрики (`Fixed`, `Cached`, `SingleThread`) возвращают именно его (иногда обернутым в защитную обертку, чтобы нельзя было изменить настройки).
     
 - **`ScheduledThreadPoolExecutor`** — наследник `ThreadPoolExecutor`, который реализует интерфейс `ScheduledExecutorService`. Использует специальную очередь `DelayedWorkQueue`.
@@ -43,7 +43,7 @@
     
 - **`ThreadPerTaskExecutor`** — новый класс (Java 21+), который просто создает по одному виртуальному потоку на каждую задачу (не использует пул в классическом понимании).
 
-#### 🛠️ Фабрики (Создают пулы в классе `Executors`)
+#### 🛠️ **Фабрики** (*Создают пулы в классе* `Executors`)
 	
 - **`newFixedThreadPool(N)`** -> Создает `ThreadPoolExecutor` с `core = max = N` и бесконечной очередью `LinkedBlockingQueue`.
     
